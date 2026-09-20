@@ -3,68 +3,376 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>JANA BAZAR</title>
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f6f7;color:#222}
-header{background:#fff;text-align:center;padding:18px;border-bottom:1px solid #ddd}
-.logo{font-size:28px;font-weight:bold;color:#087f3d}
-.tagline{color:#666;margin-top:5px}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f7f6;
+color:#222
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
 
-.topbar{display:flex;gap:10px;padding:15px;background:#fff;position:sticky;top:0;z-index:5}
-.search{flex:1;padding:13px;border:1px solid #ddd;border-radius:10px;font-size:16px}
-.cart-button{border:0;background:#087f3d;color:#fff;border-radius:10px;padding:0 18px;font-size:16px}
+header{
+background:#fff;
+padding:15px;
+border-bottom:1px solid #ddd;
+position:sticky;
+top:0;
+z-index:20
+}
 
-.hero{margin:18px;padding:25px;border-radius:18px;background:#087f3d;color:#fff}
-.hero h1{margin:0 0 10px;font-size:28px}
-.hero p{margin:6px 0;line-height:1.5}
+.header-row{
+max-width:1200px;
+margin:auto;
+display:flex;
+align-items:center;
+gap:15px
+}
 
-.container{padding:0 15px 30px}
-h2{margin-top:25px}
+.logo{
+font-size:26px;
+font-weight:800;
+color:#087f3d;
+white-space:nowrap
+}
 
-.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.category{background:#fff;padding:15px 5px;border-radius:12px;text-align:center;box-shadow:0 2px 7px #ddd}
-.category .icon{font-size:28px;display:block;margin-bottom:6px}
+.search{
+flex:1;
+padding:12px 15px;
+border:1px solid #ddd;
+border-radius:10px
+}
 
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.product{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #ddd}
-.product-image{height:130px;background:#edf2ef;display:flex;align-items:center;justify-content:center;font-size:55px}
-.product-info{padding:12px}
-.product-info h3{margin:0 0 8px;font-size:16px}
-.price{font-weight:bold;color:#087f3d;font-size:19px;margin-bottom:10px}
-.add-button{width:100%;border:0;background:#087f3d;color:#fff;padding:10px;border-radius:8px;font-weight:bold}
+.header-btn{
+border:0;
+background:#087f3d;
+color:white;
+padding:11px 15px;
+border-radius:10px
+}
 
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20}
-.panel{position:absolute;right:0;top:0;width:min(450px,94%);height:100%;background:#fff;padding:20px;overflow:auto}
-.close-button{float:right;border:0;background:#eee;border-radius:50%;width:38px;height:38px;font-size:22px}
+.menu{
+max-width:1200px;
+margin:12px auto 0;
+display:flex;
+gap:8px;
+overflow:auto
+}
 
-.cart-item{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid #ddd}
-.cart-icon{font-size:40px}
-.cart-info{flex:1}
-.quantity{display:flex;gap:10px;align-items:center;margin-top:8px}
-.quantity button{border:0;background:#087f3d;color:#fff;width:30px;height:30px;border-radius:6px;font-size:18px}
-.remove-button{border:0;background:none;color:#d00;margin-top:7px}
+.menu button{
+border:0;
+background:#eef5f0;
+padding:9px 14px;
+border-radius:20px;
+white-space:nowrap
+}
 
-.total{font-size:22px;font-weight:bold;margin:20px 0}
-.checkout-button,.place-button{width:100%;padding:14px;border:0;border-radius:10px;font-size:17px;font-weight:bold;color:#fff}
-.checkout-button{background:#f39c12}
-.place-button{background:#087f3d}
+.hero{
+max-width:1200px;
+margin:20px auto;
+padding:35px 25px;
+border-radius:22px;
+background:#087f3d;
+color:white
+}
 
-.form-group{margin:15px 0}
-.form-group label{display:block;font-weight:bold;margin-bottom:6px}
-.form-group input,.form-group textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+.hero h1{
+font-size:34px;
+margin:0 0 10px
+}
 
-.success{text-align:center;padding:30px 10px}
-.success-icon{font-size:60px}
+.hero p{
+line-height:1.6
+}
 
-.order-card{background:#f4f5f6;padding:15px;border-radius:10px;margin-top:12px}
+.container{
+max-width:1200px;
+margin:auto;
+padding:0 15px 40px
+}
 
-footer{background:#222;color:#fff;text-align:center;padding:25px;margin-top:20px}
+.section-title{
+margin:30px 0 15px
+}
 
-@media(min-width:700px){
-.products{grid-template-columns:repeat(4,1fr)}
-.categories{grid-template-columns:repeat(8,1fr)}
+.categories{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px
+}
+
+.category{
+background:white;
+border:0;
+padding:18px 5px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 2px 8px #00000012
+}
+
+.category .icon{
+font-size:32px;
+display:block;
+margin-bottom:8px
+}
+
+.products{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px
+}
+
+.product{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 2px 8px #00000012
+}
+
+.product-image{
+height:160px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:70px;
+background:#edf3ef
+}
+
+.product-body{
+padding:14px
+}
+
+.product-body h3{
+margin:0 0 8px
+}
+
+.price{
+color:#087f3d;
+font-size:20px;
+font-weight:bold;
+margin-bottom:12px
+}
+
+.primary{
+width:100%;
+border:0;
+background:#087f3d;
+color:white;
+padding:12px;
+border-radius:9px;
+font-weight:bold
+}
+
+.secondary{
+border:1px solid #087f3d;
+background:white;
+color:#087f3d;
+padding:10px 14px;
+border-radius:9px
+}
+
+.wish{
+border:0;
+background:white;
+font-size:22px;
+float:right
+}
+
+footer{
+background:#222;
+color:white;
+text-align:center;
+padding:30px;
+margin-top:30px
+}
+
+/* MODALS */
+.overlay{
+display:none;
+position:fixed;
+inset:0;
+background:#0008;
+z-index:100
+}
+
+.panel{
+background:white;
+width:min(650px,94%);
+max-height:94vh;
+overflow:auto;
+position:absolute;
+top:3%;
+left:50%;
+transform:translateX(-50%);
+border-radius:18px;
+padding:25px
+}
+
+.close{
+float:right;
+border:0;
+background:#eee;
+border-radius:50%;
+width:38px;
+height:38px;
+font-size:22px
+}
+
+.form-group{
+margin:13px 0
+}
+
+.form-group label{
+display:block;
+font-weight:bold;
+margin-bottom:6px
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:9px
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px
+}
+
+.tabs{
+display:flex;
+gap:8px;
+margin:15px 0;
+flex-wrap:wrap
+}
+
+.tabs button{
+border:0;
+background:#eee;
+padding:10px 15px;
+border-radius:8px
+}
+
+.tabs button.active{
+background:#087f3d;
+color:white
+}
+
+.cart-item{
+display:flex;
+gap:12px;
+padding:15px 0;
+border-bottom:1px solid #ddd
+}
+
+.cart-icon{
+font-size:42px
+}
+
+.cart-info{
+flex:1
+}
+
+.qty{
+display:flex;
+gap:10px;
+align-items:center;
+margin-top:8px
+}
+
+.qty button{
+border:0;
+background:#087f3d;
+color:white;
+width:30px;
+height:30px;
+border-radius:6px
+}
+
+.remove{
+border:0;
+background:none;
+color:#d00;
+margin-top:6px
+}
+
+.total{
+font-size:22px;
+font-weight:bold;
+margin:20px 0
+}
+
+.success{
+text-align:center;
+padding:20px
+}
+
+.success-icon{
+font-size:65px
+}
+
+.card{
+background:#fff;
+padding:18px;
+border-radius:14px;
+box-shadow:0 2px 8px #00000010;
+margin:12px 0
+}
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px
+}
+
+.stat{
+background:white;
+padding:18px;
+border-radius:14px
+}
+
+.stat strong{
+display:block;
+font-size:26px;
+color:#087f3d
+}
+
+.status{
+display:inline-block;
+padding:5px 9px;
+border-radius:15px;
+background:#e8f5ec;
+color:#087f3d;
+font-size:13px
+}
+
+.hidden{
+display:none!important
+}
+
+@media(max-width:800px){
+.header-row{flex-wrap:wrap}
+.search{order:3;flex-basis:100%}
+.products{grid-template-columns:repeat(2,1fr)}
+.dashboard{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:500px){
+.categories{grid-template-columns:repeat(2,1fr)}
+.products{grid-template-columns:repeat(2,1fr)}
+.form-grid{grid-template-columns:1fr}
+.hero h1{font-size:28px}
+.panel{padding:18px}
 }
 </style>
 </head>
@@ -72,92 +380,513 @@ footer{background:#222;color:#fff;text-align:center;padding:25px;margin-top:20px
 <body>
 
 <header>
-<div class="logo">🛒 JANA BAZAR</div>
-<div class="tagline">Your Local Multi-Vendor Shopping Platform</div>
-</header>
 
-<div class="topbar">
-<input id="searchBox" class="search" type="search" placeholder="🔎 Search products...">
-<button class="cart-button" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+<div class="header-row">
+
+<div class="logo">🛒 JANA BAZAR</div>
+
+<input
+id="searchBox"
+class="search"
+placeholder="🔎 Search products..."
+>
+
+<button class="header-btn" onclick="openCart()">
+🛒 <span id="cartCount">0</span>
+</button>
+
+<button class="header-btn" onclick="openCustomer()">
+👤 Account
+</button>
+
 </div>
 
+<div class="menu">
+
+<button onclick="showHome()">Home</button>
+<button onclick="filterCategory('Groceries')">Groceries</button>
+<button onclick="filterCategory('Fruits')">Fruits</button>
+<button onclick="filterCategory('Vegetables')">Vegetables</button>
+<button onclick="filterCategory('Personal Care')">Personal Care</button>
+<button onclick="filterCategory('Fashion')">Fashion</button>
+<button onclick="filterCategory('Electronics')">Electronics</button>
+<button onclick="filterCategory('Home')">Home</button>
+<button onclick="openSeller()">🏪 Sell on JANA BAZAR</button>
+
+</div>
+
+</header>
+
+
 <section class="hero">
+
 <h1>JANA BAZAR</h1>
+
 <p>మీ స్థానిక మార్కెట్... మీ చేతిలో!</p>
-<p>Local Products • Local Sellers • Local Delivery</p>
+
+<p>Local Sellers • Local Products • Local Delivery</p>
+
+<button
+class="secondary"
+onclick="openSeller()"
+>
+🏪 Become a Seller
+</button>
+
 </section>
+
 
 <div class="container">
 
-<h2>Categories</h2>
+<h2 class="section-title">📂 Categories</h2>
 
 <div class="categories">
-<div class="category"><span class="icon">🥦</span>Groceries</div>
-<div class="category"><span class="icon">🍎</span>Fruits</div>
-<div class="category"><span class="icon">🥕</span>Vegetables</div>
-<div class="category"><span class="icon">🧴</span>Personal Care</div>
-<div class="category"><span class="icon">👕</span>Fashion</div>
-<div class="category"><span class="icon">📱</span>Electronics</div>
-<div class="category"><span class="icon">🏠</span>Home</div>
-<div class="category"><span class="icon">🛍️</span>More</div>
-</div>
 
-<h2>Popular Products</h2>
+<button class="category" onclick="filterCategory('Groceries')">
+<span class="icon">🥦</span>
+Groceries
+</button>
 
-<div id="productList" class="products">
+<button class="category" onclick="filterCategory('Fruits')">
+<span class="icon">🍎</span>
+Fruits
+</button>
 
-<div class="product" data-name="Premium Rice">
-<div class="product-image">🍚</div>
-<div class="product-info">
-<h3>Premium Rice</h3>
-<div class="price">₹599</div>
-<button class="add-button" onclick="addToCart('Premium Rice',599,'🍚')">Add to Cart</button>
-</div>
-</div>
+<button class="category" onclick="filterCategory('Vegetables')">
+<span class="icon">🥕</span>
+Vegetables
+</button>
 
-<div class="product" data-name="Fresh Milk">
-<div class="product-image">🥛</div>
-<div class="product-info">
-<h3>Fresh Milk</h3>
-<div class="price">₹60</div>
-<button class="add-button" onclick="addToCart('Fresh Milk',60,'🥛')">Add to Cart</button>
-</div>
-</div>
+<button class="category" onclick="filterCategory('Personal Care')">
+<span class="icon">🧴</span>
+Personal Care
+</button>
 
-<div class="product" data-name="Fresh Apples">
-<div class="product-image">🍎</div>
-<div class="product-info">
-<h3>Fresh Apples</h3>
-<div class="price">₹180</div>
-<button class="add-button" onclick="addToCart('Fresh Apples',180,'🍎')">Add to Cart</button>
-</div>
-</div>
+<button class="category" onclick="filterCategory('Fashion')">
+<span class="icon">👕</span>
+Fashion
+</button>
 
-<div class="product" data-name="Body Care">
-<div class="product-image">🧴</div>
-<div class="product-info">
-<h3>Body Care</h3>
-<div class="price">₹199</div>
-<button class="add-button" onclick="addToCart('Body Care',199,'🧴')">Add to Cart</button>
-</div>
-</div>
+<button class="category" onclick="filterCategory('Electronics')">
+<span class="icon">📱</span>
+Electronics
+</button>
+
+<button class="category" onclick="filterCategory('Home')">
+<span class="icon">🏠</span>
+Home
+</button>
+
+<button class="category" onclick="filterCategory('All')">
+<span class="icon">🛍️</span>
+All Products
+</button>
 
 </div>
+
+
+<h2 class="section-title">
+🛍️ Popular Products
+</h2>
+
+<div id="products" class="products"></div>
+
 </div>
+
 
 <footer>
+
 <h3>JANA BAZAR</h3>
+
 <p>Local Multi-Vendor E-Commerce Platform</p>
+
+<p>Customer • Seller • Delivery • Admin</p>
+
 <p>© 2026 JANA BAZAR</p>
+
 </footer>
 
 
+<!-- CUSTOMER ACCOUNT -->
+
+<div id="customerOverlay" class="overlay">
+
+<div class="panel">
+
+<button class="close" onclick="closeModal('customerOverlay')">×</button>
+
+<h2>👤 Customer Account</h2>
+
+<div class="tabs">
+
+<button id="loginTab" onclick="customerTab('login')">
+Login
+</button>
+
+<button id="registerTab" onclick="customerTab('register')">
+Register
+</button>
+
+</div>
+
+
+<div id="loginBox">
+
+<div class="form-group">
+<label>Mobile / Email</label>
+<input id="loginUser">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input id="loginPassword" type="password">
+</div>
+
+<button class="primary" onclick="customerLogin()">
+Login
+</button>
+
+</div>
+
+
+<div id="registerBox" class="hidden">
+
+<div class="form-group">
+<label>Full Name</label>
+<input id="regName">
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input id="regPhone">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input id="regEmail">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input id="regPassword" type="password">
+</div>
+
+<button class="primary" onclick="customerRegister()">
+Create Customer Account
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SELLER -->
+
+<div id="sellerOverlay" class="overlay">
+
+<div class="panel">
+
+<button class="close" onclick="closeModal('sellerOverlay')">×</button>
+
+<h2>🏪 JANA BAZAR Seller Registration</h2>
+
+<p>
+Register your business and start selling on JANA BAZAR.
+</p>
+
+
+<h3>👤 Owner Details</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Owner Name *</label>
+<input id="sellerOwner">
+</div>
+
+<div class="form-group">
+<label>Mobile Number *</label>
+<input id="sellerPhone">
+</div>
+
+</div>
+
+
+<div class="form-group">
+<label>Email</label>
+<input id="sellerEmail">
+</div>
+
+
+<h3>🏪 Business Details</h3>
+
+<div class="form-group">
+<label>Business / Shop Name *</label>
+<input id="businessName">
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Business Type</label>
+
+<select id="businessType">
+
+<option>Individual / Proprietorship</option>
+<option>Partnership</option>
+<option>Private Limited</option>
+<option>LLP</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Business Category</label>
+
+<select id="businessCategory">
+
+<option>Grocery</option>
+<option>Food</option>
+<option>Fashion</option>
+<option>Electronics</option>
+<option>Home</option>
+<option>Personal Care</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="form-group">
+<label>Business Description</label>
+<textarea id="businessDescription" rows="3"></textarea>
+</div>
+
+
+<h3>📍 Business Address</h3>
+
+<div class="form-group">
+<label>Address *</label>
+<textarea id="businessAddress" rows="3"></textarea>
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>City</label>
+<input id="businessCity">
+</div>
+
+<div class="form-group">
+<label>District</label>
+<input id="businessDistrict">
+</div>
+
+<div class="form-group">
+<label>State</label>
+<input id="businessState" value="Andhra Pradesh">
+</div>
+
+<div class="form-group">
+<label>PIN Code</label>
+<input id="businessPin">
+</div>
+
+</div>
+
+
+<h3>📄 Business Registration</h3>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>PAN</label>
+<input id="sellerPan">
+</div>
+
+<div class="form-group">
+<label>GSTIN</label>
+<input id="sellerGst">
+</div>
+
+<div class="form-group">
+<label>Udyam Registration No.</label>
+<input id="sellerUdyam">
+</div>
+
+<div class="form-group">
+<label>FSSAI Licence No.</label>
+<input id="sellerFssai">
+</div>
+
+</div>
+
+<p style="font-size:13px;color:#666">
+Enter only the registrations applicable to your business.
+</p>
+
+
+<h3>🏦 Bank / Payout Details</h3>
+
+<div class="form-group">
+<label>Account Holder Name</label>
+<input id="bankHolder">
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Bank Name</label>
+<input id="bankName">
+</div>
+
+<div class="form-group">
+<label>IFSC</label>
+<input id="bankIfsc">
+</div>
+
+</div>
+
+<div class="form-group">
+<label>Bank Account Number</label>
+<input id="bankAccount" type="password">
+</div>
+
+<div class="form-group">
+<label>UPI ID</label>
+<input id="sellerUpi">
+</div>
+
+
+<h3>🏬 Store Details</h3>
+
+<div class="form-group">
+<label>Store Description</label>
+<textarea id="storeDescription" rows="3"></textarea>
+</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Minimum Order Value</label>
+<input id="minOrder" type="number">
+</div>
+
+<div class="form-group">
+<label>Delivery Charge</label>
+<input id="deliveryCharge" type="number">
+</div>
+
+</div>
+
+
+<h3>📑 Documents</h3>
+
+<div class="form-group">
+<label>PAN Document</label>
+<input type="file">
+</div>
+
+<div class="form-group">
+<label>GST Certificate</label>
+<input type="file">
+</div>
+
+<div class="form-group">
+<label>Udyam Certificate</label>
+<input type="file">
+</div>
+
+<div class="form-group">
+<label>Business Licence</label>
+<input type="file">
+</div>
+
+<div class="form-group">
+<label>FSSAI Certificate</label>
+<input type="file">
+</div>
+
+
+<button class="primary" onclick="registerSeller()">
+Submit Seller Registration
+</button>
+
+</div>
+
+</div>
+
+
+<!-- SELLER DASHBOARD -->
+
+<div id="sellerDashboard" class="overlay">
+
+<div class="panel">
+
+<button class="close" onclick="closeModal('sellerDashboard')">×</button>
+
+<h2>🏪 Seller Dashboard</h2>
+
+<div class="dashboard">
+
+<div class="stat">
+Sales
+<strong>₹0</strong>
+</div>
+
+<div class="stat">
+Orders
+<strong>0</strong>
+</div>
+
+<div class="stat">
+Products
+<strong>0</strong>
+</div>
+
+<div class="stat">
+Earnings
+<strong>₹0</strong>
+</div>
+
+</div>
+
+<div class="card">
+<h3>📦 Products</h3>
+<p>Add and manage your products.</p>
+<button class="secondary">Add Product</button>
+</div>
+
+<div class="card">
+<h3>📋 Orders</h3>
+<p>No seller orders yet.</p>
+<span class="status">Waiting for orders</span>
+</div>
+
+<div class="card">
+<h3>💰 Earnings</h3>
+<p>Commission and payout information will appear here.</p>
+</div>
+
+</div>
+
+</div>
+
+
 <!-- CART -->
+
 <div id="cartOverlay" class="overlay">
 
 <div class="panel">
 
-<button class="close-button" onclick="closeCart()">×</button>
+<button class="close" onclick="closeModal('cartOverlay')">×</button>
 
 <h2>🛒 My Cart</h2>
 
@@ -167,65 +896,89 @@ footer{background:#222;color:#fff;text-align:center;padding:25px;margin-top:20px
 Total: ₹<span id="cartTotal">0</span>
 </div>
 
-<button class="checkout-button" onclick="openCheckout()">
+<button class="primary" onclick="openCheckout()">
 Proceed to Checkout
 </button>
 
 </div>
+
 </div>
 
 
 <!-- CHECKOUT -->
+
 <div id="checkoutOverlay" class="overlay">
 
 <div class="panel">
 
-<button class="close-button" onclick="closeCheckout()">×</button>
+<button class="close" onclick="closeModal('checkoutOverlay')">×</button>
 
 <h2>🧾 Checkout</h2>
 
 <div class="form-group">
 <label>Customer Name</label>
-<input id="customerName" type="text" placeholder="మీ పేరు">
+<input id="checkoutName">
 </div>
 
 <div class="form-group">
 <label>Mobile Number</label>
-<input id="customerPhone" type="tel" placeholder="10 digit mobile number">
+<input id="checkoutPhone">
 </div>
 
 <div class="form-group">
 <label>Delivery Address</label>
-<textarea id="customerAddress" rows="4" placeholder="House No, Street, Area, City, PIN Code"></textarea>
+<textarea id="checkoutAddress" rows="4"></textarea>
 </div>
 
-<div style="background:#f1f8f4;padding:15px;border-radius:10px;margin:15px 0">
-<strong>💵 Payment Method</strong>
-<br><br>
+<h3>💳 Payment Method</h3>
+
+<div class="card">
+
 <label>
-<input type="radio" checked>
-Cash on Delivery
+<input type="radio" name="payment" value="COD" checked>
+💵 Cash on Delivery
 </label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment" value="UPI">
+📱 UPI
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment" value="CARD">
+💳 Debit / Credit Card
+</label>
+
 </div>
+
+<p style="font-size:13px;color:#777">
+Online payment gateway will be connected in the payment integration stage.
+</p>
 
 <div class="total">
-Order Total: ₹<span id="checkoutTotal">0</span>
+Total: ₹<span id="checkoutTotal">0</span>
 </div>
 
-<button class="place-button" onclick="placeOrder()">
+<button class="primary" onclick="placeOrder()">
 ✅ Place Order
 </button>
 
 </div>
+
 </div>
 
 
-<!-- SUCCESS -->
+<!-- ORDER SUCCESS -->
+
 <div id="successOverlay" class="overlay">
 
 <div class="panel">
 
-<button class="close-button" onclick="closeSuccess()">×</button>
+<button class="close" onclick="closeModal('successOverlay')">×</button>
 
 <div class="success">
 
@@ -233,20 +986,20 @@ Order Total: ₹<span id="checkoutTotal">0</span>
 
 <h2>Order Confirmed!</h2>
 
-<p>మీ ఆర్డర్ విజయవంతంగా నమోదైంది.</p>
+<p>Your order has been placed successfully.</p>
 
-<div class="order-card">
+<div class="card">
 <strong>Order ID</strong>
-<br>
+<br><br>
 <span id="orderId"></span>
 </div>
 
-<p>💵 Cash on Delivery</p>
+<p>
+Payment: <strong id="successPayment"></strong>
+</p>
 
-<br>
-
-<button class="place-button" onclick="showOrders()">
-📋 My Orders
+<button class="primary" onclick="showOrders()">
+📦 My Orders
 </button>
 
 <div id="ordersList"></div>
@@ -254,25 +1007,199 @@ Order Total: ₹<span id="checkoutTotal">0</span>
 </div>
 
 </div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div id="adminOverlay" class="overlay">
+
+<div class="panel">
+
+<button class="close" onclick="closeModal('adminOverlay')">×</button>
+
+<h2>👑 JANA BAZAR Admin Dashboard</h2>
+
+<div class="dashboard">
+
+<div class="stat">
+Customers
+<strong id="adminCustomers">0</strong>
+</div>
+
+<div class="stat">
+Sellers
+<strong id="adminSellers">0</strong>
+</div>
+
+<div class="stat">
+Orders
+<strong id="adminOrders">0</strong>
+</div>
+
+<div class="stat">
+Products
+<strong id="adminProducts">0</strong>
+</div>
+
+</div>
+
+<div class="card">
+<h3>🏪 Seller Applications</h3>
+<div id="sellerApplications"></div>
+</div>
+
+<div class="card">
+<h3>📦 Orders</h3>
+<div id="adminOrdersList"></div>
+</div>
+
+</div>
+
 </div>
 
 
 <script>
 
-var cart = [];
+var products=[
+{
+id:1,
+name:"Premium Rice",
+price:599,
+category:"Groceries",
+icon:"🍚"
+},
+{
+id:2,
+name:"Fresh Milk",
+price:60,
+category:"Groceries",
+icon:"🥛"
+},
+{
+id:3,
+name:"Fresh Apples",
+price:180,
+category:"Fruits",
+icon:"🍎"
+},
+{
+id:4,
+name:"Fresh Vegetables",
+price:90,
+category:"Vegetables",
+icon:"🥕"
+},
+{
+id:5,
+name:"Body Care",
+price:199,
+category:"Personal Care",
+icon:"🧴"
+},
+{
+id:6,
+name:"Fashion Shirt",
+price:499,
+category:"Fashion",
+icon:"👕"
+},
+{
+id:7,
+name:"Smart Phone",
+price:9999,
+category:"Electronics",
+icon:"📱"
+},
+{
+id:8,
+name:"Home Product",
+price:299,
+category:"Home",
+icon:"🏠"
+}
+];
 
-try {
-cart = JSON.parse(localStorage.getItem("janaCart") || "[]");
-if(!Array.isArray(cart)) cart = [];
-} catch(e) {
-cart = [];
+var cart=[];
+
+try{
+cart=JSON.parse(localStorage.getItem("janaCart")||"[]");
+if(!Array.isArray(cart))cart=[];
+}catch(e){
+cart=[];
 }
 
 
 function saveCart(){
-try{
 localStorage.setItem("janaCart",JSON.stringify(cart));
-}catch(e){}
+}
+
+
+function renderProducts(list){
+
+var box=document.getElementById("products");
+
+if(list.length===0){
+box.innerHTML="<p>No products found.</p>";
+return;
+}
+
+var html="";
+
+for(var i=0;i<list.length;i++){
+
+var p=list[i];
+
+html+=
+'<div class="product">'+
+'<div class="product-image">'+p.icon+'</div>'+
+'<div class="product-body">'+
+'<button class="wish" onclick="addWishlist('+p.id+')">♡</button>'+
+'<h3>'+p.name+'</h3>'+
+'<small>'+p.category+'</small>'+
+'<div class="price">₹'+p.price+'</div>'+
+'<button class="primary" onclick="addToCart('+p.id+')">Add to Cart</button>'+
+'</div>'+
+'</div>';
+}
+
+box.innerHTML=html;
+}
+
+
+function addToCart(id){
+
+var p=null;
+
+for(var i=0;i<products.length;i++){
+if(products[i].id===id)p=products[i];
+}
+
+if(!p)return;
+
+var item=null;
+
+for(var j=0;j<cart.length;j++){
+if(cart[j].id===id)item=cart[j];
+}
+
+if(item){
+item.qty++;
+}else{
+cart.push({
+id:p.id,
+name:p.name,
+price:p.price,
+icon:p.icon,
+qty:1
+});
+}
+
+saveCart();
+updateCartCount();
+
+alert(p.name+" added to cart.");
 }
 
 
@@ -281,39 +1208,10 @@ function updateCartCount(){
 var count=0;
 
 for(var i=0;i<cart.length;i++){
-count += cart[i].qty;
+count+=cart[i].qty;
 }
 
 document.getElementById("cartCount").textContent=count;
-}
-
-
-function addToCart(name,price,icon){
-
-var found=null;
-
-for(var i=0;i<cart.length;i++){
-if(cart[i].name===name){
-found=cart[i];
-break;
-}
-}
-
-if(found){
-found.qty++;
-}else{
-cart.push({
-name:name,
-price:price,
-icon:icon,
-qty:1
-});
-}
-
-saveCart();
-updateCartCount();
-
-alert(name+" added to cart!");
 }
 
 
@@ -325,46 +1223,40 @@ document.getElementById("cartOverlay").style.display="block";
 }
 
 
-function closeCart(){
-
-document.getElementById("cartOverlay").style.display="none";
-}
-
-
 function renderCart(){
 
 var box=document.getElementById("cartItems");
 
 if(cart.length===0){
 
-box.innerHTML="<p>Your cart is empty 🛒</p>";
+box.innerHTML="<p>Your cart is empty.</p>";
 
 document.getElementById("cartTotal").textContent="0";
 
 return;
 }
 
-var total=0;
 var html="";
+var total=0;
 
 for(var i=0;i<cart.length;i++){
 
-var item=cart[i];
+var x=cart[i];
 
-total += item.price * item.qty;
+total+=x.price*x.qty;
 
-html +=
+html+=
 '<div class="cart-item">'+
-'<div class="cart-icon">'+item.icon+'</div>'+
+'<div class="cart-icon">'+x.icon+'</div>'+
 '<div class="cart-info">'+
-'<strong>'+item.name+'</strong>'+
-'<p>₹'+item.price+' × '+item.qty+'</p>'+
-'<div class="quantity">'+
+'<strong>'+x.name+'</strong>'+
+'<p>₹'+x.price+' × '+x.qty+'</p>'+
+'<div class="qty">'+
 '<button onclick="changeQty('+i+',-1)">−</button>'+
-'<span>'+item.qty+'</span>'+
+'<span>'+x.qty+'</span>'+
 '<button onclick="changeQty('+i+',1)">+</button>'+
 '</div>'+
-'<button class="remove-button" onclick="removeItem('+i+')">Remove</button>'+
+'<button class="remove" onclick="removeCart('+i+')">Remove</button>'+
 '</div>'+
 '</div>';
 }
@@ -377,7 +1269,7 @@ document.getElementById("cartTotal").textContent=total;
 
 function changeQty(index,value){
 
-cart[index].qty += value;
+cart[index].qty+=value;
 
 if(cart[index].qty<=0){
 cart.splice(index,1);
@@ -389,7 +1281,7 @@ renderCart();
 }
 
 
-function removeItem(index){
+function removeCart(index){
 
 cart.splice(index,1);
 
@@ -402,66 +1294,61 @@ renderCart();
 function openCheckout(){
 
 if(cart.length===0){
-alert("Your cart is empty.");
+alert("Cart is empty.");
 return;
 }
 
 var total=0;
 
 for(var i=0;i<cart.length;i++){
-total += cart[i].price * cart[i].qty;
+total+=cart[i].price*cart[i].qty;
 }
 
 document.getElementById("checkoutTotal").textContent=total;
 
-closeCart();
+closeModal("cartOverlay");
 
 document.getElementById("checkoutOverlay").style.display="block";
 }
 
 
-function closeCheckout(){
-
-document.getElementById("checkoutOverlay").style.display="none";
-}
-
-
 function placeOrder(){
 
-var name=document.getElementById("customerName").value.trim();
-var phone=document.getElementById("customerPhone").value.trim();
-var address=document.getElementById("customerAddress").value.trim();
+var name=document.getElementById("checkoutName").value.trim();
+var phone=document.getElementById("checkoutPhone").value.trim();
+var address=document.getElementById("checkoutAddress").value.trim();
 
 if(name===""){
-alert("Please enter customer name.");
+alert("Enter customer name.");
 return;
 }
 
 if(phone.length<10){
-alert("Please enter valid mobile number.");
+alert("Enter valid mobile number.");
 return;
 }
 
 if(address===""){
-alert("Please enter delivery address.");
+alert("Enter delivery address.");
 return;
 }
+
+var payment=document.querySelector('input[name="payment"]:checked').value;
 
 var total=0;
 
 for(var i=0;i<cart.length;i++){
-total += cart[i].price * cart[i].qty;
+total+=cart[i].price*cart[i].qty;
 }
 
-var orderId="JB"+Date.now();
-
 var order={
-id:orderId,
+id:"JB"+Date.now(),
 name:name,
 phone:phone,
 address:address,
+items:cart.slice(),
 total:total,
-payment:"Cash on Delivery",
+payment:payment,
 status:"Order Placed",
 date:new Date().toLocaleString()
 };
@@ -469,105 +1356,4 @@ date:new Date().toLocaleString()
 var orders=[];
 
 try{
-orders=JSON.parse(localStorage.getItem("janaOrders") || "[]");
-if(!Array.isArray(orders)) orders=[];
-}catch(e){
-orders=[];
-}
-
-orders.unshift(order);
-
-try{
-localStorage.setItem("janaOrders",JSON.stringify(orders));
-}catch(e){}
-
-document.getElementById("orderId").textContent=orderId;
-
-cart=[];
-
-saveCart();
-updateCartCount();
-
-closeCheckout();
-
-document.getElementById("successOverlay").style.display="block";
-}
-
-
-function closeSuccess(){
-
-document.getElementById("successOverlay").style.display="none";
-}
-
-
-function showOrders(){
-
-var orders=[];
-
-try{
-orders=JSON.parse(localStorage.getItem("janaOrders") || "[]");
-if(!Array.isArray(orders)) orders=[];
-}catch(e){
-orders=[];
-}
-
-var box=document.getElementById("ordersList");
-
-if(orders.length===0){
-
-box.innerHTML="<p>No orders found.</p>";
-
-return;
-}
-
-var html="<h2>📋 My Orders</h2>";
-
-for(var i=0;i<orders.length;i++){
-
-var o=orders[i];
-
-html +=
-'<div class="order-card">'+
-'<strong>Order ID:</strong> '+o.id+
-'<br><br>'+
-'<strong>Date:</strong> '+o.date+
-'<br><br>'+
-'<strong>Total:</strong> ₹'+o.total+
-'<br><br>'+
-'<strong>Payment:</strong> '+o.payment+
-'<br><br>'+
-'<strong>Status:</strong> 🟢 '+o.status+
-'</div>';
-}
-
-box.innerHTML=html;
-}
-
-
-document.getElementById("searchBox").addEventListener("input",function(){
-
-var value=this.value.toLowerCase();
-
-var products=document.querySelectorAll(".product");
-
-for(var i=0;i<products.length;i++){
-
-var name=products[i].getAttribute("data-name").toLowerCase();
-
-if(name.indexOf(value)!==-1){
-products[i].style.display="block";
-}else{
-products[i].style.display="none";
-}
-
-}
-
-});
-
-
-updateCartCount();
-
-</script>
-
-</body>
-</html>
+orders=JSON.parse(localStorage.g
