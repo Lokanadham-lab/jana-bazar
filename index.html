@@ -2,181 +2,572 @@
 <html lang="te">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JANA BAZAR</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-font-family:Arial,sans-serif;
-background:#f6f7f9;
-color:#222;
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f6f7;color:#222}
+header{background:#fff;text-align:center;padding:18px;border-bottom:1px solid #ddd}
+.logo{font-size:28px;font-weight:bold;color:#087f3d}
+.tagline{color:#666;margin-top:5px}
+
+.topbar{display:flex;gap:10px;padding:15px;background:#fff;position:sticky;top:0;z-index:5}
+.search{flex:1;padding:13px;border:1px solid #ddd;border-radius:10px;font-size:16px}
+.cart-button{border:0;background:#087f3d;color:#fff;border-radius:10px;padding:0 18px;font-size:16px}
+
+.hero{margin:18px;padding:25px;border-radius:18px;background:#087f3d;color:#fff}
+.hero h1{margin:0 0 10px;font-size:28px}
+.hero p{margin:6px 0;line-height:1.5}
+
+.container{padding:0 15px 30px}
+h2{margin-top:25px}
+
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.category{background:#fff;padding:15px 5px;border-radius:12px;text-align:center;box-shadow:0 2px 7px #ddd}
+.category .icon{font-size:28px;display:block;margin-bottom:6px}
+
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.product{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #ddd}
+.product-image{height:130px;background:#edf2ef;display:flex;align-items:center;justify-content:center;font-size:55px}
+.product-info{padding:12px}
+.product-info h3{margin:0 0 8px;font-size:16px}
+.price{font-weight:bold;color:#087f3d;font-size:19px;margin-bottom:10px}
+.add-button{width:100%;border:0;background:#087f3d;color:#fff;padding:10px;border-radius:8px;font-weight:bold}
+
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20}
+.panel{position:absolute;right:0;top:0;width:min(450px,94%);height:100%;background:#fff;padding:20px;overflow:auto}
+.close-button{float:right;border:0;background:#eee;border-radius:50%;width:38px;height:38px;font-size:22px}
+
+.cart-item{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid #ddd}
+.cart-icon{font-size:40px}
+.cart-info{flex:1}
+.quantity{display:flex;gap:10px;align-items:center;margin-top:8px}
+.quantity button{border:0;background:#087f3d;color:#fff;width:30px;height:30px;border-radius:6px;font-size:18px}
+.remove-button{border:0;background:none;color:#d00;margin-top:7px}
+
+.total{font-size:22px;font-weight:bold;margin:20px 0}
+.checkout-button,.place-button{width:100%;padding:14px;border:0;border-radius:10px;font-size:17px;font-weight:bold;color:#fff}
+.checkout-button{background:#f39c12}
+.place-button{background:#087f3d}
+
+.form-group{margin:15px 0}
+.form-group label{display:block;font-weight:bold;margin-bottom:6px}
+.form-group input,.form-group textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+
+.success{text-align:center;padding:30px 10px}
+.success-icon{font-size:60px}
+
+.order-card{background:#f4f5f6;padding:15px;border-radius:10px;margin-top:12px}
+
+footer{background:#222;color:#fff;text-align:center;padding:25px;margin-top:20px}
+
+@media(min-width:700px){
+.products{grid-template-columns:repeat(4,1fr)}
+.categories{grid-template-columns:repeat(8,1fr)}
 }
-header{
-background:#fff;
-padding:18px;
-text-align:center;
-border-bottom:1px solid #ddd;
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🛒 JANA BAZAR</div>
+<div class="tagline">Your Local Multi-Vendor Shopping Platform</div>
+</header>
+
+<div class="topbar">
+<input id="searchBox" class="search" type="search" placeholder="🔎 Search products...">
+<button class="cart-button" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+</div>
+
+<section class="hero">
+<h1>JANA BAZAR</h1>
+<p>మీ స్థానిక మార్కెట్... మీ చేతిలో!</p>
+<p>Local Products • Local Sellers • Local Delivery</p>
+</section>
+
+<div class="container">
+
+<h2>Categories</h2>
+
+<div class="categories">
+<div class="category"><span class="icon">🥦</span>Groceries</div>
+<div class="category"><span class="icon">🍎</span>Fruits</div>
+<div class="category"><span class="icon">🥕</span>Vegetables</div>
+<div class="category"><span class="icon">🧴</span>Personal Care</div>
+<div class="category"><span class="icon">👕</span>Fashion</div>
+<div class="category"><span class="icon">📱</span>Electronics</div>
+<div class="category"><span class="icon">🏠</span>Home</div>
+<div class="category"><span class="icon">🛍️</span>More</div>
+</div>
+
+<h2>Popular Products</h2>
+
+<div id="productList" class="products">
+
+<div class="product" data-name="Premium Rice">
+<div class="product-image">🍚</div>
+<div class="product-info">
+<h3>Premium Rice</h3>
+<div class="price">₹599</div>
+<button class="add-button" onclick="addToCart('Premium Rice',599,'🍚')">Add to Cart</button>
+</div>
+</div>
+
+<div class="product" data-name="Fresh Milk">
+<div class="product-image">🥛</div>
+<div class="product-info">
+<h3>Fresh Milk</h3>
+<div class="price">₹60</div>
+<button class="add-button" onclick="addToCart('Fresh Milk',60,'🥛')">Add to Cart</button>
+</div>
+</div>
+
+<div class="product" data-name="Fresh Apples">
+<div class="product-image">🍎</div>
+<div class="product-info">
+<h3>Fresh Apples</h3>
+<div class="price">₹180</div>
+<button class="add-button" onclick="addToCart('Fresh Apples',180,'🍎')">Add to Cart</button>
+</div>
+</div>
+
+<div class="product" data-name="Body Care">
+<div class="product-image">🧴</div>
+<div class="product-info">
+<h3>Body Care</h3>
+<div class="price">₹199</div>
+<button class="add-button" onclick="addToCart('Body Care',199,'🧴')">Add to Cart</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>
+<h3>JANA BAZAR</h3>
+<p>Local Multi-Vendor E-Commerce Platform</p>
+<p>© 2026 JANA BAZAR</p>
+</footer>
+
+
+<!-- CART -->
+<div id="cartOverlay" class="overlay">
+
+<div class="panel">
+
+<button class="close-button" onclick="closeCart()">×</button>
+
+<h2>🛒 My Cart</h2>
+
+<div id="cartItems"></div>
+
+<div class="total">
+Total: ₹<span id="cartTotal">0</span>
+</div>
+
+<button class="checkout-button" onclick="openCheckout()">
+Proceed to Checkout
+</button>
+
+</div>
+</div>
+
+
+<!-- CHECKOUT -->
+<div id="checkoutOverlay" class="overlay">
+
+<div class="panel">
+
+<button class="close-button" onclick="closeCheckout()">×</button>
+
+<h2>🧾 Checkout</h2>
+
+<div class="form-group">
+<label>Customer Name</label>
+<input id="customerName" type="text" placeholder="మీ పేరు">
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input id="customerPhone" type="tel" placeholder="10 digit mobile number">
+</div>
+
+<div class="form-group">
+<label>Delivery Address</label>
+<textarea id="customerAddress" rows="4" placeholder="House No, Street, Area, City, PIN Code"></textarea>
+</div>
+
+<div style="background:#f1f8f4;padding:15px;border-radius:10px;margin:15px 0">
+<strong>💵 Payment Method</strong>
+<br><br>
+<label>
+<input type="radio" checked>
+Cash on Delivery
+</label>
+</div>
+
+<div class="total">
+Order Total: ₹<span id="checkoutTotal">0</span>
+</div>
+
+<button class="place-button" onclick="placeOrder()">
+✅ Place Order
+</button>
+
+</div>
+</div>
+
+
+<!-- SUCCESS -->
+<div id="successOverlay" class="overlay">
+
+<div class="panel">
+
+<button class="close-button" onclick="closeSuccess()">×</button>
+
+<div class="success">
+
+<div class="success-icon">🎉</div>
+
+<h2>Order Confirmed!</h2>
+
+<p>మీ ఆర్డర్ విజయవంతంగా నమోదైంది.</p>
+
+<div class="order-card">
+<strong>Order ID</strong>
+<br>
+<span id="orderId"></span>
+</div>
+
+<p>💵 Cash on Delivery</p>
+
+<br>
+
+<button class="place-button" onclick="showOrders()">
+📋 My Orders
+</button>
+
+<div id="ordersList"></div>
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+var cart = [];
+
+try {
+cart = JSON.parse(localStorage.getItem("janaCart") || "[]");
+if(!Array.isArray(cart)) cart = [];
+} catch(e) {
+cart = [];
 }
-.logo{
-font-size:30px;
-font-weight:800;
-color:#087f3d;
+
+
+function saveCart(){
+try{
+localStorage.setItem("janaCart",JSON.stringify(cart));
+}catch(e){}
 }
-.tagline{
-color:#666;
-margin-top:6px;
-font-size:16px;
+
+
+function updateCartCount(){
+
+var count=0;
+
+for(var i=0;i<cart.length;i++){
+count += cart[i].qty;
 }
-.topbar{
-display:flex;
-gap:10px;
-padding:18px;
-background:#fff;
+
+document.getElementById("cartCount").textContent=count;
 }
-.search{
-flex:1;
-padding:15px;
-font-size:18px;
-border:1px solid #ddd;
-border-radius:14px;
+
+
+function addToCart(name,price,icon){
+
+var found=null;
+
+for(var i=0;i<cart.length;i++){
+if(cart[i].name===name){
+found=cart[i];
+break;
 }
-.cart-btn{
-background:#087f3d;
-color:white;
-border:0;
-border-radius:14px;
-padding:0 22px;
-font-size:18px;
-font-weight:bold;
 }
-.hero{
-margin:25px;
-padding:35px;
-background:#087f3d;
-color:white;
-border-radius:25px;
+
+if(found){
+found.qty++;
+}else{
+cart.push({
+name:name,
+price:price,
+icon:icon,
+qty:1
+});
 }
-.hero h1{font-size:32px;margin-bottom:12px}
-.hero p{font-size:18px;line-height:1.6}
-.container{padding:0 25px 40px}
-h2{font-size:30px;margin:25px 0}
-.categories{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:14px;
+
+saveCart();
+updateCartCount();
+
+alert(name+" added to cart!");
 }
-.category{
-background:white;
-padding:22px 8px;
-border-radius:18px;
-text-align:center;
-font-size:16px;
-box-shadow:0 3px 12px #ddd;
+
+
+function openCart(){
+
+renderCart();
+
+document.getElementById("cartOverlay").style.display="block";
 }
-.category div{font-size:38px;margin-bottom:10px}
-.products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
+
+
+function closeCart(){
+
+document.getElementById("cartOverlay").style.display="none";
 }
-.product{
-background:white;
-border-radius:22px;
-overflow:hidden;
-box-shadow:0 3px 12px #ddd;
+
+
+function renderCart(){
+
+var box=document.getElementById("cartItems");
+
+if(cart.length===0){
+
+box.innerHTML="<p>Your cart is empty 🛒</p>";
+
+document.getElementById("cartTotal").textContent="0";
+
+return;
 }
-.product-image{
-height:190px;
-background:#eef4f0;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:85px;
+
+var total=0;
+var html="";
+
+for(var i=0;i<cart.length;i++){
+
+var item=cart[i];
+
+total += item.price * item.qty;
+
+html +=
+'<div class="cart-item">'+
+'<div class="cart-icon">'+item.icon+'</div>'+
+'<div class="cart-info">'+
+'<strong>'+item.name+'</strong>'+
+'<p>₹'+item.price+' × '+item.qty+'</p>'+
+'<div class="quantity">'+
+'<button onclick="changeQty('+i+',-1)">−</button>'+
+'<span>'+item.qty+'</span>'+
+'<button onclick="changeQty('+i+',1)">+</button>'+
+'</div>'+
+'<button class="remove-button" onclick="removeItem('+i+')">Remove</button>'+
+'</div>'+
+'</div>';
 }
-.product-info{padding:18px}
-.product h3{font-size:22px;margin-bottom:10px}
-.price{
-font-size:25px;
-font-weight:bold;
-color:#087f3d;
-margin-bottom:15px;
+
+box.innerHTML=html;
+
+document.getElementById("cartTotal").textContent=total;
 }
-.add{
-width:100%;
-padding:14px;
-border:0;
-border-radius:14px;
-background:#087f3d;
-color:white;
-font-size:18px;
-font-weight:bold;
+
+
+function changeQty(index,value){
+
+cart[index].qty += value;
+
+if(cart[index].qty<=0){
+cart.splice(index,1);
 }
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.55);
-display:none;
-z-index:10;
+
+saveCart();
+updateCartCount();
+renderCart();
 }
-.panel{
-position:absolute;
-right:0;
-top:0;
-height:100%;
-width:min(520px,94%);
-background:white;
-padding:28px;
-overflow:auto;
+
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+saveCart();
+updateCartCount();
+renderCart();
 }
-.close{
-float:right;
-border:0;
-background:#eee;
-border-radius:50%;
-width:45px;
-height:45px;
-font-size:25px;
+
+
+function openCheckout(){
+
+if(cart.length===0){
+alert("Your cart is empty.");
+return;
 }
-.panel h2{margin-top:10px}
-.cart-item{
-display:flex;
-gap:15px;
-align-items:center;
-padding:18px 0;
-border-bottom:1px solid #ddd;
+
+var total=0;
+
+for(var i=0;i<cart.length;i++){
+total += cart[i].price * cart[i].qty;
 }
-.cart-icon{font-size:50px}
-.qty{
-display:flex;
-gap:10px;
-align-items:center;
-margin-top:12px;
+
+document.getElementById("checkoutTotal").textContent=total;
+
+closeCart();
+
+document.getElementById("checkoutOverlay").style.display="block";
 }
-.qty button{
-background:#087f3d;
-color:white;
-border:0;
-width:42px;
-height:42px;
-border-radius:10px;
-font-size:22px;
+
+
+function closeCheckout(){
+
+document.getElementById("checkoutOverlay").style.display="none";
 }
-.remove{
-color:#d22;
-border:0;
-background:none;
-font-size:16px;
-margin-top:8px;
+
+
+function placeOrder(){
+
+var name=document.getElementById("customerName").value.trim();
+var phone=document.getElementById("customerPhone").value.trim();
+var address=document.getElementById("customerAddress").value.trim();
+
+if(name===""){
+alert("Please enter customer name.");
+return;
 }
-.total{
-font-size:27px;
-font-weight:bold;
-margin:25px 0;
+
+if(phone.length<10){
+alert("Please enter valid mobile number.");
+return;
 }
-.checkout-btn{
-width:100%;
-padding:17px;
-background:#ff9d00;
-border:0;
-border-radius:15
+
+if(address===""){
+alert("Please enter delivery address.");
+return;
+}
+
+var total=0;
+
+for(var i=0;i<cart.length;i++){
+total += cart[i].price * cart[i].qty;
+}
+
+var orderId="JB"+Date.now();
+
+var order={
+id:orderId,
+name:name,
+phone:phone,
+address:address,
+total:total,
+payment:"Cash on Delivery",
+status:"Order Placed",
+date:new Date().toLocaleString()
+};
+
+var orders=[];
+
+try{
+orders=JSON.parse(localStorage.getItem("janaOrders") || "[]");
+if(!Array.isArray(orders)) orders=[];
+}catch(e){
+orders=[];
+}
+
+orders.unshift(order);
+
+try{
+localStorage.setItem("janaOrders",JSON.stringify(orders));
+}catch(e){}
+
+document.getElementById("orderId").textContent=orderId;
+
+cart=[];
+
+saveCart();
+updateCartCount();
+
+closeCheckout();
+
+document.getElementById("successOverlay").style.display="block";
+}
+
+
+function closeSuccess(){
+
+document.getElementById("successOverlay").style.display="none";
+}
+
+
+function showOrders(){
+
+var orders=[];
+
+try{
+orders=JSON.parse(localStorage.getItem("janaOrders") || "[]");
+if(!Array.isArray(orders)) orders=[];
+}catch(e){
+orders=[];
+}
+
+var box=document.getElementById("ordersList");
+
+if(orders.length===0){
+
+box.innerHTML="<p>No orders found.</p>";
+
+return;
+}
+
+var html="<h2>📋 My Orders</h2>";
+
+for(var i=0;i<orders.length;i++){
+
+var o=orders[i];
+
+html +=
+'<div class="order-card">'+
+'<strong>Order ID:</strong> '+o.id+
+'<br><br>'+
+'<strong>Date:</strong> '+o.date+
+'<br><br>'+
+'<strong>Total:</strong> ₹'+o.total+
+'<br><br>'+
+'<strong>Payment:</strong> '+o.payment+
+'<br><br>'+
+'<strong>Status:</strong> 🟢 '+o.status+
+'</div>';
+}
+
+box.innerHTML=html;
+}
+
+
+document.getElementById("searchBox").addEventListener("input",function(){
+
+var value=this.value.toLowerCase();
+
+var products=document.querySelectorAll(".product");
+
+for(var i=0;i<products.length;i++){
+
+var name=products[i].getAttribute("data-name").toLowerCase();
+
+if(name.indexOf(value)!==-1){
+products[i].style.display="block";
+}else{
+products[i].style.display="none";
+}
+
+}
+
+});
+
+
+updateCartCount();
+
+</script>
+
+</body>
+</html>
