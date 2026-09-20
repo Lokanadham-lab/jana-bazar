@@ -1588,4 +1588,2006 @@ updateCartCount();
 ===================================== */
 
 document
-.getElementById("search
+.getElementById("search")
+.addEventListener(
+"input",
+renderProducts
+);
+
+
+/* =====================================
+   ADD CART
+===================================== */
+
+document
+.getElementById("products")
+.addEventListener(
+"click",
+function(e){
+
+const btn=
+e.target.closest("[data-add]");
+
+if(btn){
+
+addToCart(
+btn.getAttribute("data-add")
+);
+
+}
+
+}
+);
+
+
+function addToCart(id){
+
+const p=
+products.find(
+function(x){
+return x.id===id;
+}
+);
+
+if(!p)
+return;
+
+
+const item=
+cart.find(
+function(x){
+return x.productId===id;
+}
+);
+
+
+if(item){
+
+if(
+item.quantity>=Number(p.stock)
+)
+return toast(
+"Available stock limit reached"
+);
+
+item.quantity++;
+
+}else{
+
+cart.push({
+
+productId:id,
+
+quantity:1
+
+});
+
+}
+
+
+save();
+
+updateCartCount();
+
+toast("Added to cart");
+
+}
+
+
+function updateCartCount(){
+
+document.getElementById(
+"cartCount"
+).textContent=
+cart.reduce(
+function(a,x){
+
+return a+
+Number(x.quantity||0);
+
+},
+0
+);
+
+}
+
+
+/* =====================================
+   CART
+===================================== */
+
+document
+.getElementById("cartBtn")
+.addEventListener(
+"click",
+function(){
+
+renderCart();
+
+show("cartModal");
+
+}
+);
+
+
+function renderCart(){
+
+const el=
+document.getElementById(
+"cartItems"
+);
+
+
+if(!cart.length){
+
+el.innerHTML=
+'<div class="empty">'+
+'<h3>🛒 Cart is empty</h3>'+
+'<p>Add products to continue.</p>'+
+'</div>';
+
+document.getElementById(
+"cartTotal"
+).textContent="₹0";
+
+return;
+
+}
+
+
+let total=0;
+
+
+el.innerHTML=
+cart.map(
+function(item){
+
+const p=
+products.find(
+function(x){
+return x.id===item.productId;
+}
+);
+
+if(!p)
+return "";
+
+
+const qty=
+Number(item.quantity||1);
+
+
+total+=
+p.price*qty;
+
+
+return
+
+'<div class="between" style="padding:12px 0;border-bottom:1px solid #eee">'+
+
+'<div>'+
+'<strong>'+
+esc(p.name)+
+'</strong>'+
+
+'<div class="muted">'+
+money(p.price)+
+' × '+
+qty+
+'</div>'+
+
+'</div>'+
+
+'<div class="row">'+
+
+'<button class="btn small secondary" data-minus="'+
+esc(p.id)+
+'">−</button>'+
+
+'<b>'+
+qty+
+'</b>'+
+
+'<button class="btn small secondary" data-plus="'+
+esc(p.id)+
+'">+</button>'+
+
+'<button class="btn small danger" data-remove="'+
+esc(p.id)+
+'">×</button>'+
+
+'</div>'+
+
+'</div>';
+
+}
+).join("");
+
+
+document.getElementById(
+"cartTotal"
+).textContent=
+money(total);
+
+}
+
+
+document
+.getElementById("cartItems")
+.addEventListener(
+"click",
+function(e){
+
+const minus=
+e.target.closest("[data-minus]");
+
+const plus=
+e.target.closest("[data-plus]");
+
+const remove=
+e.target.closest("[data-remove]");
+
+
+if(minus)
+changeQty(
+minus.getAttribute("data-minus"),
+-1
+);
+
+if(plus)
+changeQty(
+plus.getAttribute("data-plus"),
+1
+);
+
+if(remove)
+removeCart(
+remove.getAttribute("data-remove")
+);
+
+}
+);
+
+
+function changeQty(id,d){
+
+const item=
+cart.find(
+function(x){
+return x.productId===id;
+}
+);
+
+const p=
+products.find(
+function(x){
+return x.id===id;
+}
+);
+
+if(!item||!p)
+return;
+
+
+item.quantity+=d;
+
+
+if(item.quantity<=0){
+
+cart=
+cart.filter(
+function(x){
+return x.productId!==id;
+}
+);
+
+}
+
+
+if(
+item.quantity>p.stock
+)
+item.quantity=p.stock;
+
+
+save();
+
+renderCart();
+
+updateCartCount();
+
+}
+
+
+function removeCart(id){
+
+cart=
+cart.filter(
+function(x){
+return x.productId!==id;
+}
+);
+
+save();
+
+renderCart();
+
+updateCartCount();
+
+}
+
+
+/* =====================================
+   ACCOUNT
+===================================== */
+
+document
+.getElementById("accountBtn")
+.addEventListener(
+"click",
+function(){
+
+updateAccount();
+
+show("customerModal");
+
+}
+);
+
+
+function updateAccount(){
+
+const u=
+currentUser();
+
+const el=
+document.getElementById(
+"accountStatus"
+);
+
+
+if(!u){
+
+el.textContent=
+"Not logged in.";
+
+return;
+
+}
+
+
+el.innerHTML=
+
+'<strong>'+
+esc(u.name)+
+'</strong> • '+
+esc(u.mobile)+
+'<br><br>'+
+
+'<button class="btn small danger" id="logoutBtn">'+
+'Logout'+
+'</button>';
+
+
+document
+.getElementById("logoutBtn")
+.addEventListener(
+"click",
+function(){
+
+localStorage.removeItem(
+CURRENT_USER
+);
+
+updateAccount();
+
+toast("Logged out");
+
+}
+);
+
+}
+
+
+/* LOGIN TAB */
+
+document
+.getElementById("tabLogin")
+.addEventListener(
+"click",
+function(){
+
+document.getElementById(
+"loginPane"
+).style.display="block";
+
+document.getElementById(
+"registerPane"
+).style.display="none";
+
+document.getElementById(
+"tabLogin"
+).classList.add("active");
+
+document.getElementById(
+"tabRegister"
+).classList.remove("active");
+
+}
+);
+
+
+/* REGISTER TAB */
+
+document
+.getElementById("tabRegister")
+.addEventListener(
+"click",
+function(){
+
+document.getElementById(
+"loginPane"
+).style.display="none";
+
+document.getElementById(
+"registerPane"
+).style.display="block";
+
+document.getElementById(
+"tabLogin"
+).classList.remove("active");
+
+document.getElementById(
+"tabRegister"
+).classList.add("active");
+
+}
+);
+
+
+/* REGISTER */
+
+document
+.getElementById("registerBtn")
+.addEventListener(
+"click",
+function(){
+
+const name=
+document.getElementById(
+"regName"
+).value.trim();
+
+const mobile=
+document.getElementById(
+"regMobile"
+).value.trim();
+
+const email=
+document.getElementById(
+"regEmail"
+).value.trim();
+
+const password=
+document.getElementById(
+"regPassword"
+).value;
+
+
+if(
+!name||
+!mobile||
+!password
+)
+return toast(
+"Name, mobile and password required"
+);
+
+
+if(
+users.some(
+function(u){
+return u.mobile===mobile;
+}
+)
+)
+return toast(
+"Mobile already registered"
+);
+
+
+const u={
+
+id:"U"+Date.now(),
+
+name:name,
+
+mobile:mobile,
+
+email:email,
+
+password:password
+
+};
+
+
+users.push(u);
+
+
+localStorage.setItem(
+CURRENT_USER,
+u.id
+);
+
+
+save();
+
+updateAccount();
+
+toast(
+"Registration successful"
+);
+
+}
+);
+
+
+/* LOGIN */
+
+document
+.getElementById("loginBtn")
+.addEventListener(
+"click",
+function(){
+
+const id=
+document
+.getElementById("loginId")
+.value.trim();
+
+const pass=
+document
+.getElementById("loginPassword")
+.value;
+
+
+const u=
+users.find(
+function(x){
+
+return
+(
+x.mobile===id ||
+x.email===id
+)&&
+x.password===pass;
+
+}
+);
+
+
+if(!u)
+return toast(
+"Invalid login details"
+);
+
+
+localStorage.setItem(
+CURRENT_USER,
+u.id
+);
+
+
+updateAccount();
+
+toast(
+"Login successful"
+);
+
+}
+);
+
+
+/* =====================================
+   CHECKOUT
+===================================== */
+
+document
+.getElementById("checkoutBtn")
+.addEventListener(
+"click",
+function(){
+
+if(!cart.length)
+return toast(
+"Cart is empty"
+);
+
+
+const u=
+currentUser();
+
+
+if(u){
+
+document.getElementById(
+"coName"
+).value=u.name;
+
+document.getElementById(
+"coMobile"
+).value=u.mobile;
+
+}
+
+
+hide("cartModal");
+
+show("checkoutModal");
+
+}
+);
+
+
+document
+.getElementById("placeOrderBtn")
+.addEventListener(
+"click",
+function(){
+
+if(!cart.length)
+return toast(
+"Cart is empty"
+);
+
+
+const name=
+document.getElementById(
+"coName"
+).value.trim();
+
+const mobile=
+document.getElementById(
+"coMobile"
+).value.trim();
+
+const address=
+document.getElementById(
+"coAddress"
+).value.trim();
+
+const payment=
+document.getElementById(
+"coPayment"
+).value;
+
+
+if(
+!name||
+!mobile||
+!address
+)
+return toast(
+"Please fill all delivery details"
+);
+
+
+const items=[];
+
+
+for(
+const item of cart
+){
+
+const p=
+products.find(
+function(x){
+return x.id===item.productId;
+}
+);
+
+
+if(
+!p||
+item.quantity>p.stock
+)
+return toast(
+"Stock unavailable for one or more products"
+);
+
+
+items.push({
+
+productId:p.id,
+
+name:p.name,
+
+quantity:item.quantity,
+
+price:p.price,
+
+seller:p.sellerName
+
+});
+
+}
+
+
+const total=
+items.reduce(
+function(a,x){
+
+return a+
+x.price*x.quantity;
+
+},
+0
+);
+
+
+const order={
+
+id:"JB"+Date.now(),
+
+date:
+new Date()
+.toLocaleString("en-IN"),
+
+customer:name,
+
+mobile:mobile,
+
+address:address,
+
+payment:payment,
+
+total:total,
+
+items:items,
+
+status:"Placed"
+
+};
+
+
+orders.push(order);
+
+
+items.forEach(
+function(i){
+
+const p=
+products.find(
+function(x){
+return x.id===i.productId;
+}
+);
+
+if(p)
+p.stock-=i.quantity;
+
+}
+);
+
+
+cart=[];
+
+save();
+
+renderProducts();
+
+updateCartCount();
+
+hide("checkoutModal");
+
+
+document.getElementById(
+"orderResult"
+).innerHTML=
+
+"<p>Order placed successfully.</p>"+
+
+"<p><b>Order ID:</b> "+
+esc(order.id)+
+"</p>"+
+
+"<p><b>Total:</b> "+
+money(order.total)+
+"</p>"+
+
+"<p><b>Status:</b> Placed</p>";
+
+
+show("orderModal");
+
+}
+);
+
+
+/* =====================================
+   SELLER REGISTRATION
+===================================== */
+
+document
+.getElementById("sellerRegisterBtn")
+.addEventListener(
+"click",
+function(){
+
+const shop=
+document.getElementById(
+"sShop"
+).value.trim();
+
+const owner=
+document.getElementById(
+"sOwner"
+).value.trim();
+
+const mobile=
+document.getElementById(
+"sMobile"
+).value.trim();
+
+
+if(
+!shop||
+!owner||
+!mobile
+)
+return toast(
+"Shop, owner and mobile required"
+);
+
+
+const seller={
+
+id:"S"+Date.now(),
+
+shopName:shop,
+
+ownerName:owner,
+
+mobile:mobile,
+
+email:
+document.getElementById(
+"sEmail"
+).value.trim(),
+
+category:
+document.getElementById(
+"sCategory"
+).value,
+
+pin:
+document.getElementById(
+"sPin"
+).value.trim(),
+
+address:
+document.getElementById(
+"sAddress"
+).value.trim(),
+
+pan:
+document.getElementById(
+"sPan"
+).value.trim(),
+
+gst:
+document.getElementById(
+"sGst"
+).value.trim(),
+
+udyam:
+document.getElementById(
+"sUdyam"
+).value.trim(),
+
+fssai:
+document.getElementById(
+"sFssai"
+).value.trim(),
+
+bankHolder:
+document.getElementById(
+"sBankHolder"
+).value.trim(),
+
+bankAccount:
+document.getElementById(
+"sBank"
+).value.trim(),
+
+ifsc:
+document.getElementById(
+"sIfsc"
+).value.trim(),
+
+upi:
+document.getElementById(
+"sUpi"
+).value.trim(),
+
+description:
+document.getElementById(
+"sDescription"
+).value.trim(),
+
+status:"Pending"
+
+};
+
+
+sellers.push(seller);
+
+
+localStorage.setItem(
+CURRENT_SELLER,
+seller.id
+);
+
+
+save();
+
+hide("sellerModal");
+
+renderSeller();
+
+show("sellerDashModal");
+
+toast(
+"Seller application submitted"
+);
+
+}
+);
+
+
+/* SELLER DASHBOARD */
+
+document
+.getElementById("sellerDashBtn")
+.addEventListener(
+"click",
+function(){
+
+openSellerDashboard();
+
+}
+);
+
+
+function openSellerDashboard(){
+
+if(!currentSeller()){
+
+hide("sellerModal");
+
+return toast(
+"Please register as seller first"
+);
+
+}
+
+
+hide("sellerModal");
+
+renderSeller();
+
+show("sellerDashModal");
+
+}
+
+
+document
+.getElementById("sellerAddBtn")
+.addEventListener(
+"click",
+function(){
+
+openProductForm("seller");
+
+}
+);
+
+
+function renderSeller(){
+
+const s=
+currentSeller();
+
+if(!s)
+return;
+
+
+const mine=
+products.filter(
+function(p){
+
+return
+p.sellerType==="seller" &&
+p.sellerId===s.id;
+
+}
+);
+
+
+document.getElementById(
+"sellerHeader"
+).innerHTML=
+
+"<p>"+
+"<b>Shop:</b> "+
+esc(s.shopName)+
+" &nbsp; "+
+"<b>Owner:</b> "+
+esc(s.ownerName)+
+" &nbsp; "+
+"<b>Application:</b> "+
+esc(s.status)+
+"</p>";
+
+
+document.getElementById(
+"sdTotal"
+).textContent=
+mine.length;
+
+
+document.getElementById(
+"sdPending"
+).textContent=
+mine.filter(
+function(p){
+return p.status==="Pending";
+}
+).length;
+
+
+document.getElementById(
+"sdPublished"
+).textContent=
+mine.filter(
+function(p){
+return p.status==="Published";
+}
+).length;
+
+
+document.getElementById(
+"sdStock"
+).textContent=
+mine.reduce(
+function(a,p){
+
+return a+
+Number(p.stock||0);
+
+},
+0
+);
+
+
+const el=
+document.getElementById(
+"sellerTable"
+);
+
+
+if(!mine.length){
+
+el.innerHTML=
+'<div class="empty">'+
+'<h3>No products yet</h3>'+
+'<p>Use Add Product to list your first product.</p>'+
+'</div>';
+
+return;
+
+}
+
+
+el.innerHTML=
+
+'<div class="tablewrap">'+
+
+'<table class="table">'+
+
+'<tr>'+
+'<th>Product</th>'+
+'<th>Category</th>'+
+'<th>Price</th>'+
+'<th>Stock</th>'+
+'<th>Status</th>'+
+'<th>Action</th>'+
+'</tr>'+
+
+mine.map(
+function(p){
+
+return
+
+'<tr>'+
+
+'<td>'+
+esc(p.name)+
+'</td>'+
+
+'<td>'+
+esc(p.category)+
+'</td>'+
+
+'<td>'+
+money(p.price)+
+'</td>'+
+
+'<td>'+
+p.stock+
+'</td>'+
+
+'<td>'+
+esc(p.status)+
+'</td>'+
+
+'<td>'+
+
+'<button class="btn small secondary" data-edit="'+
+esc(p.id)+
+'">Edit</button> '+
+
+'<button class="btn small danger" data-delete="'+
+esc(p.id)+
+'">Delete</button>'+
+
+'</td>'+
+
+'</tr>';
+
+}
+).join("")+
+
+'</table>'+
+
+'</div>';
+
+}
+
+
+document
+.getElementById("sellerTable")
+.addEventListener(
+"click",
+function(e){
+
+const edit=
+e.target.closest("[data-edit]");
+
+const del=
+e.target.closest("[data-delete]");
+
+
+if(edit)
+openProductForm(
+"seller",
+edit.getAttribute("data-edit")
+);
+
+
+if(del)
+deleteProduct(
+del.getAttribute("data-delete")
+);
+
+}
+);
+
+
+/* =====================================
+   PRODUCT FORM
+===================================== */
+
+function clearProductForm(){
+
+editId="";
+
+
+[
+"pName",
+"pDescription",
+"pMrp",
+"pPrice",
+"pStock",
+"pSku"
+].forEach(
+function(id){
+
+document.getElementById(
+id
+).value="";
+
+}
+);
+
+
+document.getElementById(
+"pUnit"
+).value="piece";
+
+
+document.getElementById(
+"pIcon"
+).value="🛍️";
+
+
+document.getElementById(
+"pCategory"
+).value="Groceries";
+
+}
+
+
+function fillProduct(p){
+
+document.getElementById(
+"pName"
+).value=p.name;
+
+document.getElementById(
+"pCategory"
+).value=p.category;
+
+document.getElementById(
+"pDescription"
+).value=p.description||"";
+
+document.getElementById(
+"pMrp"
+).value=p.mrp;
+
+document.getElementById(
+"pPrice"
+).value=p.price;
+
+document.getElementById(
+"pStock"
+).value=p.stock;
+
+document.getElementById(
+"pUnit"
+).value=p.unit||"piece";
+
+document.getElementById(
+"pSku"
+).value=p.sku||"";
+
+document.getElementById(
+"pIcon"
+).value=p.icon||"🛍️";
+
+}
+
+
+function openProductForm(mode,id){
+
+formMode=mode;
+
+clearProductForm();
+
+
+if(id){
+
+const p=
+products.find(
+function(x){
+return x.id===id;
+}
+);
+
+if(!p)
+return;
+
+editId=id;
+
+fillProduct(p);
+
+document.getElementById(
+"productTitle"
+).textContent=
+"✏️ Edit Product";
+
+}else{
+
+document.getElementById(
+"productTitle"
+).textContent=
+mode==="admin"
+?
+"➕ Add JANA BAZAR Product"
+:
+"➕ Add Seller Product";
+
+}
+
+
+hide(
+mode==="admin"
+?
+"adminModal"
+:
+"sellerDashModal"
+);
+
+
+show("productModal");
+
+}
+
+
+/* SAVE PRODUCT */
+
+document
+.getElementById("saveProductBtn")
+.addEventListener(
+"click",
+function(){
+
+const name=
+document.getElementById(
+"pName"
+).value.trim();
+
+const category=
+document.getElementById(
+"pCategory"
+).value;
+
+const description=
+document.getElementById(
+"pDescription"
+).value.trim();
+
+const mrp=
+Number(
+document.getElementById(
+"pMrp"
+).value
+);
+
+const price=
+Number(
+document.getElementById(
+"pPrice"
+).value
+);
+
+const stock=
+Number(
+document.getElementById(
+"pStock"
+).value
+);
+
+const unit=
+document.getElementById(
+"pUnit"
+).value.trim()||
+"piece";
+
+const sku=
+document.getElementById(
+"pSku"
+).value.trim();
+
+const icon=
+document.getElementById(
+"pIcon"
+).value.trim()||
+"🛍️";
+
+
+if(
+!name||
+!mrp||
+!price
+)
+return toast(
+"Product name, MRP and selling price required"
+);
+
+
+if(price>mrp)
+return toast(
+"Selling price cannot exceed MRP"
+);
+
+
+if(stock<0)
+return toast(
+"Stock cannot be negative"
+);
+
+
+/* EDIT */
+
+if(editId){
+
+const p=
+products.find(
+function(x){
+return x.id===editId;
+}
+);
+
+if(!p)
+return;
+
+
+p.name=name;
+
+p.category=category;
+
+p.description=description;
+
+p.mrp=mrp;
+
+p.price=price;
+
+p.stock=stock;
+
+p.unit=unit;
+
+p.sku=sku;
+
+p.icon=icon;
+
+
+save();
+
+hide("productModal");
+
+renderProducts();
+
+
+if(formMode==="admin"){
+
+renderAdmin();
+
+show("adminModal");
+
+}else{
+
+renderSeller();
+
+show("sellerDashModal");
+
+}
+
+
+toast(
+"Product updated"
+);
+
+return;
+
+}
+
+
+/* ADMIN PRODUCT */
+
+if(formMode==="admin"){
+
+products.push({
+
+id:"A"+Date.now(),
+
+name:name,
+
+category:category,
+
+description:description,
+
+mrp:mrp,
+
+price:price,
+
+stock:stock,
+
+unit:unit,
+
+sku:sku,
+
+icon:icon,
+
+sellerType:"admin",
+
+sellerId:"JANA_BAZAR",
+
+sellerName:"JANA BAZAR",
+
+status:"Published"
+
+});
+
+
+save();
+
+hide("productModal");
+
+renderProducts();
+
+renderAdmin();
+
+show("adminModal");
+
+toast(
+"JANA BAZAR product added"
+);
+
+return;
+
+}
+
+
+/* SELLER PRODUCT */
+
+const s=
+currentSeller();
+
+
+if(!s)
+return toast(
+"Register seller first"
+);
+
+
+products.push({
+
+id:"P"+Date.now(),
+
+name:name,
+
+category:category,
+
+description:description,
+
+mrp:mrp,
+
+price:price,
+
+stock:stock,
+
+unit:unit,
+
+sku:sku,
+
+icon:icon,
+
+sellerType:"seller",
+
+sellerId:s.id,
+
+sellerName:s.shopName,
+
+status:"Pending"
+
+});
+
+
+save();
+
+hide("productModal");
+
+renderSeller();
+
+show("sellerDashModal");
+
+toast(
+"Product submitted for admin approval"
+);
+
+}
+);
+
+
+/* =====================================
+   ADMIN
+===================================== */
+
+document
+.getElementById("adminAddBtn")
+.addEventListener(
+"click",
+function(){
+
+openProductForm("admin");
+
+}
+);
+
+
+function openAdmin(){
+
+renderAdmin();
+
+show("adminModal");
+
+}
+
+
+function renderAdmin(){
+
+const sellerProducts=
+products.filter(
+function(p){
+return p.sellerType==="seller";
+}
+);
+
+
+document.getElementById(
+"adProducts"
+).textContent=
+products.length;
+
+
+document.getElementById(
+"adSeller"
+).textContent=
+sellerProducts.length;
+
+
+document.getElementById(
+"adPending"
+).textContent=
+sellerProducts.filter(
+function(p){
+return p.status==="Pending";
+}
+).length;
+
+
+document.getElementById(
+"adOrders"
+).textContent=
+orders.length;
+
+
+const el=
+document.getElementById(
+"adminTable"
+);
+
+
+el.innerHTML=
+
+'<div class="tablewrap">'+
+
+'<table class="table">'+
+
+'<tr>'+
+'<th>Product</th>'+
+'<th>Seller</th>'+
+'<th>Type</th>'+
+'<th>Price</th>'+
+'<th>Stock</th>'+
+'<th>Status</th>'+
+'<th>Action</th>'+
+'</tr>'+
+
+products.map(
+function(p){
+
+let actions="";
+
+
+if(
+p.sellerType==="seller" &&
+p.status==="Pending"
+){
+
+actions+=
+
+'<button class="btn small" data-approve="'+
+esc(p.id)+
+'">Approve</button> ';
+
+actions+=
+
+'<button class="btn small danger" data-reject="'+
+esc(p.id)+
+'">Reject</button> ';
+
+}
+
+
+actions+=
+
+'<button class="btn small secondary" data-admin-edit="'+
+esc(p.id)+
+'">Edit</button> ';
+
+
+actions+=
+
+'<button class="btn small danger" data-admin-delete="'+
+esc(p.id)+
+'">Delete</button>';
+
+
+return
+
+'<tr>'+
+
+'<td>'+
+esc(p.name)+
+'</td>'+
+
+'<td>'+
+esc(p.sellerName)+
+'</td>'+
+
+'<td>'+
+esc(p.sellerType)+
+'</td>'+
+
+'<td>'+
+money(p.price)+
+'</td>'+
+
+'<td>'+
+p.stock+
+'</td>'+
+
+'<td>'+
+esc(p.status)+
+'</td>'+
+
+'<td>'+
+actions+
+'</td>'+
+
+'</tr>';
+
+}
+).join("")+
+
+'</table>'+
+
+'</div>';
+
+}
+
+
+document
+.getElementById("adminTable")
+.addEventListener(
+"click",
+function(e){
+
+const a=
+e.target.closest("[data-approve]");
+
+const r=
+e.target.closest("[data-reject]");
+
+const ed=
+e.target.closest("[data-admin-edit]");
+
+const d=
+e.target.closest("[data-admin-delete]");
+
+
+if(a)
+approve(
+a.getAttribute("data-approve")
+);
+
+
+if(r)
+reject(
+r.getAttribute("data-reject")
+);
+
+
+if(ed)
+openProductForm(
+"admin",
+ed.getAttribute("data-admin-edit")
+);
+
+
+if(d)
+deleteProduct(
+d.getAttribute("data-admin-delete")
+);
+
+}
+);
+
+
+function approve(id){
+
+const p=
+products.find(
+function(x){
+return x.id===id;
+}
+);
+
+if(!p)
+return;
+
+
+p.status="Published";
+
+save();
+
+renderAdmin();
+
+renderProducts();
+
+toast(
+"Seller product approved"
+);
+
+}
+
+
+function reject(id){
+
+const p=
+products.find(
+function(x){
+return x.id===id;
+}
+);
+
+if(!p)
+return;
+
+
+p.status="Rejected";
+
+save();
+
+renderAdmin();
+
+renderProducts();
+
+toast(
+"Seller product rejected"
+);
+
+}
+
+
+/* =====================================
+   DELETE
+===================================== */
+
+function deleteProduct(id){
+
+const p=
+products.find(
+function(x){
+return x.id===id;
+}
+);
+
+if(!p)
+return;
+
+
+if(
+!window.confirm(
+"Delete this product?"
+)
+)
+return;
+
+
+products=
+products.filter(
+function(x){
+return x.id!==id;
+}
+);
+
+
+cart=
+cart.filter(
+function(x){
+return x.productId!==id;
+}
+);
+
+
+save();
+
+renderProducts();
+
+renderAdmin();
+
+renderSeller();
+
+toast(
+"Product deleted"
+);
+
+}
+
+
+/* =====================================
+   CLOSE BUTTONS
+===================================== */
+
+document
+.querySelectorAll("[data-close]")
+.forEach(
+function(btn){
+
+btn.addEventListener(
+"click",
+function(){
+
+hide(
+btn.getAttribute(
+"data-close"
+)
+);
+
+}
+);
+
+}
+);
+
+
+/* =====================================
+   SELLER + ADMIN NAV
+===================================== */
+
+document
+.getElementById("nav")
+.addEventListener(
+"click",
+function(e){
+
+if(
+e.target.textContent==="Seller"
+){
+
+show("sellerModal");
+
+}
+
+if(
+e.target.textContent==="Admin"
+){
+
+openAdmin();
+
+}
+
+}
+);
+
+
+/* =====================================
+   START APPLICATION
+===================================== */
+
+save();
+
+renderProducts();
+
+updateCartCount();
+
+})();
+
+</script>
+
+</body>
+</html>
