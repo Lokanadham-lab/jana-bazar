@@ -1,10 +1,1415 @@
-let products=JSON.parse(localStorage.getItem(KEY)||'null');
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b7a4b">
+<title>JANA BAZAR | Local Multi-Vendor Marketplace</title>
+
+<style>
+*{box-sizing:border-box}
+
+html,body{
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f5f7fb;
+color:#172033;
+}
+
+body{
+min-height:100vh;
+}
+
+button,input,select,textarea{
+font:inherit;
+}
+
+button{
+cursor:pointer;
+border:0;
+}
+
+header{
+position:sticky;
+top:0;
+z-index:100;
+background:#fff;
+box-shadow:0 2px 14px rgba(0,0,0,.08);
+}
+
+.topbar{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px 4%;
+flex-wrap:wrap;
+}
+
+.logo{
+font-size:24px;
+font-weight:800;
+color:#087a4b;
+white-space:nowrap;
+}
+
+.logo span{
+color:#f59e0b;
+}
+
+.search{
+flex:1;
+min-width:180px;
+height:42px;
+padding:0 16px;
+border:1px solid #dce2ea;
+border-radius:25px;
+outline:none;
+background:#fafbfd;
+}
+
+.search:focus{
+border-color:#0b7a4b;
+}
+
+.btn{
+padding:10px 15px;
+border-radius:10px;
+background:#0b7a4b;
+color:#fff;
+font-weight:600;
+}
+
+.btn:hover{
+opacity:.9;
+}
+
+.btn.secondary{
+background:#edf2f7;
+color:#172033;
+}
+
+.btn.orange{
+background:#f59e0b;
+color:#111;
+}
+
+.btn.red{
+background:#d93636;
+color:#fff;
+}
+
+.btn.small{
+padding:7px 10px;
+font-size:12px;
+}
+
+.nav{
+display:flex;
+gap:7px;
+padding:8px 4%;
+overflow-x:auto;
+background:#fff;
+}
+
+.nav button{
+padding:9px 14px;
+border-radius:20px;
+background:#eef3f7;
+white-space:nowrap;
+}
+
+.nav button:hover{
+background:#dfeae5;
+}
+
+.hero{
+margin:18px 4%;
+padding:30px;
+border-radius:20px;
+background:linear-gradient(135deg,#087a4b,#18ad70);
+color:#fff;
+}
+
+.hero h1{
+margin:0 0 8px;
+font-size:30px;
+}
+
+.hero p{
+margin:0;
+opacity:.95;
+}
+
+.container{
+padding:0 4% 50px;
+}
+
+.section-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:15px;
+}
+
+.section-head h2{
+margin:0;
+}
+
+.muted{
+color:#697386;
+font-size:13px;
+}
+
+.product-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(185px,1fr));
+gap:15px;
+}
+
+.product-card{
+background:#fff;
+border-radius:16px;
+padding:14px;
+box-shadow:0 2px 12px rgba(0,0,0,.06);
+transition:.2s;
+}
+
+.product-card:hover{
+transform:translateY(-2px);
+box-shadow:0 5px 18px rgba(0,0,0,.1);
+}
+
+.product-image{
+height:135px;
+border-radius:13px;
+background:#f0f4f7;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:58px;
+margin-bottom:10px;
+}
+
+.product-card h3{
+margin:7px 0;
+font-size:17px;
+}
+
+.seller-badge{
+display:inline-block;
+padding:4px 7px;
+border-radius:7px;
+background:#e7f7ef;
+color:#087443;
+font-size:11px;
+font-weight:700;
+}
+
+.price{
+font-size:20px;
+font-weight:800;
+margin-top:8px;
+}
+
+.mrp{
+font-size:13px;
+color:#8a93a1;
+text-decoration:line-through;
+font-weight:400;
+margin-left:5px;
+}
+
+.product-card .btn{
+width:100%;
+margin-top:10px;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+z-index:500;
+background:rgba(0,0,0,.65);
+padding:18px;
+overflow:auto;
+}
+
+.modal.show{
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.modal-box{
+background:#fff;
+border-radius:18px;
+width:min(720px,100%);
+max-height:94vh;
+overflow:auto;
+padding:20px;
+position:relative;
+}
+
+.modal-box.wide{
+width:min(1050px,100%);
+}
+
+.close{
+position:absolute;
+right:15px;
+top:15px;
+width:34px;
+height:34px;
+border-radius:50%;
+background:#eef1f4;
+font-size:20px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.full{
+grid-column:1/-1;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+gap:5px;
+}
+
+.field label{
+font-size:13px;
+font-weight:700;
+}
+
+.field input,
+.field select,
+.field textarea{
+width:100%;
+padding:11px;
+border:1px solid #d8dee7;
+border-radius:9px;
+outline:none;
+background:#fff;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+border-color:#0b7a4b;
+}
+
+.tabs{
+display:flex;
+gap:8px;
+margin:15px 0;
+}
+
+.tabs button{
+padding:9px 15px;
+border-radius:9px;
+background:#edf1f5;
+}
+
+.tabs button.active{
+background:#0b7a4b;
+color:#fff;
+}
+
+.row{
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.between{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin:15px 0;
+}
+
+.stat{
+background:#f3f6f8;
+padding:14px;
+border-radius:12px;
+}
+
+.stat small{
+color:#697386;
+}
+
+.stat strong{
+display:block;
+font-size:25px;
+margin-top:5px;
+}
+
+.table-wrap{
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+min-width:700px;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #e6e9ee;
+text-align:left;
+font-size:13px;
+}
+
+th{
+background:#f6f8fa;
+}
+
+.empty{
+padding:30px;
+text-align:center;
+color:#697386;
+background:#fff;
+border-radius:15px;
+}
+
+.toast{
+position:fixed;
+right:15px;
+bottom:15px;
+z-index:1000;
+background:#172033;
+color:#fff;
+padding:13px 17px;
+border-radius:10px;
+display:none;
+box-shadow:0 4px 20px rgba(0,0,0,.2);
+}
+
+footer{
+text-align:center;
+padding:25px;
+color:#777;
+}
+
+hr{
+border:0;
+border-top:1px solid #e8ebef;
+margin:18px 0;
+}
+
+@media(max-width:650px){
+
+.topbar{
+padding:10px 3%;
+}
+
+.logo{
+font-size:21px;
+}
+
+.search{
+order:3;
+flex-basis:100%;
+}
+
+.hero{
+margin:12px 3%;
+padding:23px;
+}
+
+.hero h1{
+font-size:25px;
+}
+
+.container{
+padding:0 3% 40px;
+}
+
+.product-grid{
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+.product-image{
+height:105px;
+font-size:45px;
+}
+
+.product-card{
+padding:10px;
+}
+
+.product-card h3{
+font-size:15px;
+}
+
+.price{
+font-size:17px;
+}
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+.full{
+grid-column:auto;
+}
+
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+
+.nav{
+padding:7px 3%;
+}
+
+}
+
+@media(max-width:380px){
+
+.product-grid{
+grid-template-columns:1fr;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="topbar">
+
+<div class="logo">
+JANA <span>BAZAR</span>
+</div>
+
+<input
+id="searchInput"
+class="search"
+type="search"
+placeholder="🔎 Search products..."
+>
+
+<button class="btn secondary" onclick="openCart()">
+🛒 Cart <span id="cartCount">0</span>
+</button>
+
+<button class="btn secondary" onclick="openCustomerAccount()">
+👤 Account
+</button>
+
+</div>
+
+<div class="nav">
+
+<button onclick="setCategory('All')">All</button>
+<button onclick="setCategory('Groceries')">Groceries</button>
+<button onclick="setCategory('Fruits')">Fruits</button>
+<button onclick="setCategory('Vegetables')">Vegetables</button>
+<button onclick="setCategory('Personal Care')">Personal Care</button>
+<button onclick="setCategory('Fashion')">Fashion</button>
+<button onclick="setCategory('Electronics')">Electronics</button>
+<button onclick="setCategory('Home')">Home</button>
+
+<button onclick="openSellerRegistration()">🏪 Seller</button>
+
+<button onclick="openAdmin()">👑 Admin</button>
+
+</div>
+
+</header>
+
+<section class="hero">
+
+<h1>JANA BAZAR 🛍️</h1>
+
+<p>
+Local Multi-Vendor E-Commerce Marketplace —
+JANA BAZAR + Local Sellers
+</p>
+
+</section>
+
+<main class="container">
+
+<div class="section-head">
+
+<h2>🛒 Products</h2>
+
+<span id="categoryLabel" class="muted">
+All Products
+</span>
+
+</div>
+
+<div id="productGrid" class="product-grid"></div>
+
+</main>
+
+<footer>
+© 2026 JANA BAZAR • Local Sellers • Local Products
+</footer>
+
+
+<!-- CUSTOMER ACCOUNT -->
+
+<div id="customerModal" class="modal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal('customerModal')">×</button>
+
+<h2>👤 Customer Account</h2>
+
+<div class="tabs">
+
+<button id="loginTab"
+class="active"
+onclick="switchAccount('login')">
+Login
+</button>
+
+<button id="registerTab"
+onclick="switchAccount('register')">
+Register
+</button>
+
+</div>
+
+<div id="loginSection">
+
+<div class="field">
+<label>Mobile / Email</label>
+<input id="loginId">
+</div>
+
+<br>
+
+<div class="field">
+<label>Password</label>
+<input id="loginPassword" type="password">
+</div>
+
+<br>
+
+<button class="btn" onclick="loginCustomer()">
+Login
+</button>
+
+</div>
+
+
+<div id="registerSection" style="display:none">
+
+<div class="form-grid">
+
+<div class="field">
+<label>Name</label>
+<input id="registerName">
+</div>
+
+<div class="field">
+<label>Mobile</label>
+<input id="registerMobile">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="registerEmail">
+</div>
+
+<div class="field">
+<label>Password</label>
+<input id="registerPassword" type="password">
+</div>
+
+</div>
+
+<br>
+
+<button class="btn" onclick="registerCustomer()">
+Create Account
+</button>
+
+</div>
+
+<hr>
+
+<div id="customerStatus" class="muted">
+Not logged in.
+</div>
+
+</div>
+</div>
+
+
+<!-- CART -->
+
+<div id="cartModal" class="modal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal('cartModal')">×</button>
+
+<h2>🛒 Shopping Cart</h2>
+
+<div id="cartItems"></div>
+
+<hr>
+
+<div class="between">
+
+<strong>Total</strong>
+
+<strong id="cartTotal">₹0</strong>
+
+</div>
+
+<br>
+
+<button class="btn" onclick="openCheckout()">
+Proceed to Checkout
+</button>
+
+</div>
+</div>
+
+
+<!-- CHECKOUT -->
+
+<div id="checkoutModal" class="modal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal('checkoutModal')">×</button>
+
+<h2>📦 Checkout</h2>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Customer Name</label>
+<input id="checkoutName">
+</div>
+
+<div class="field">
+<label>Mobile</label>
+<input id="checkoutMobile">
+</div>
+
+<div class="field full">
+<label>Delivery Address</label>
+<textarea id="checkoutAddress" rows="4"></textarea>
+</div>
+
+<div class="field full">
+<label>Payment Method</label>
+
+<select id="paymentMethod">
+
+<option>Cash on Delivery</option>
+
+<option>UPI — Gateway to be connected</option>
+
+<option>Debit/Credit Card — Gateway to be connected</option>
+
+</select>
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn" onclick="placeOrder()">
+Place Order
+</button>
+
+</div>
+</div>
+
+
+<!-- ORDER CONFIRMATION -->
+
+<div id="orderModal" class="modal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeModal('orderModal')">×</button>
+
+<h2>🎉 Order Confirmed</h2>
+
+<div id="orderMessage"></div>
+
+<br>
+
+<button class="btn"
+onclick="closeModal('orderModal')">
+Continue Shopping
+</button>
+
+</div>
+</div>
+
+
+<!-- SELLER REGISTRATION -->
+
+<div id="sellerModal" class="modal">
+
+<div class="modal-box wide">
+
+<button class="close"
+onclick="closeModal('sellerModal')">
+×
+</button>
+
+<h2>🏪 Seller Registration</h2>
+
+<p class="muted">
+Seller registration prototype.
+Real business documents and bank information
+should later be stored securely in Supabase.
+</p>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Business / Shop Name *</label>
+<input id="sellerShop">
+</div>
+
+<div class="field">
+<label>Owner Name *</label>
+<input id="sellerOwner">
+</div>
+
+<div class="field">
+<label>Mobile *</label>
+<input id="sellerMobile">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="sellerEmail">
+</div>
+
+<div class="field">
+<label>Business Category</label>
+
+<select id="sellerCategory">
+
+<option>Grocery</option>
+<option>Fruits & Vegetables</option>
+<option>Fashion</option>
+<option>Electronics</option>
+<option>Personal Care</option>
+<option>Home</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="field">
+<label>PIN Code</label>
+<input id="sellerPin">
+</div>
+
+<div class="field full">
+<label>Business Address</label>
+<textarea id="sellerAddress"></textarea>
+</div>
+
+<div class="field">
+<label>PAN</label>
+<input id="sellerPan">
+</div>
+
+<div class="field">
+<label>GSTIN</label>
+<input id="sellerGst">
+</div>
+
+<div class="field">
+<label>Udyam</label>
+<input id="sellerUdyam">
+</div>
+
+<div class="field">
+<label>FSSAI</label>
+<input id="sellerFssai">
+</div>
+
+<div class="field">
+<label>Bank Holder Name</label>
+<input id="sellerBankHolder">
+</div>
+
+<div class="field">
+<label>Bank Account</label>
+<input id="sellerBankAccount">
+</div>
+
+<div class="field">
+<label>IFSC</label>
+<input id="sellerIfsc">
+</div>
+
+<div class="field">
+<label>UPI ID</label>
+<input id="sellerUpi">
+</div>
+
+<div class="field full">
+<label>Store Description</label>
+<textarea id="sellerDescription"></textarea>
+</div>
+
+</div>
+
+<br>
+
+<button class="btn"
+onclick="registerSeller()">
+Submit Seller Application
+</button>
+
+<button class="btn secondary"
+onclick="openSellerDashboard()">
+Seller Dashboard
+</button>
+
+</div>
+</div>
+
+
+<!-- SELLER DASHBOARD -->
+
+<div id="sellerDashboardModal" class="modal">
+
+<div class="modal-box wide">
+
+<button class="close"
+onclick="closeModal('sellerDashboardModal')">
+×
+</button>
+
+<div class="between">
+
+<h2>🏪 Seller Dashboard</h2>
+
+<button class="btn"
+onclick="openSellerProductForm()">
+➕ Add Product
+</button>
+
+</div>
+
+<div id="sellerInfo"></div>
+
+<div class="stats">
+
+<div class="stat">
+<small>My Products</small>
+<strong id="sellerProductCount">0</strong>
+</div>
+
+<div class="stat">
+<small>Pending</small>
+<strong id="sellerPendingCount">0</strong>
+</div>
+
+<div class="stat">
+<small>Published</small>
+<strong id="sellerPublishedCount">0</strong>
+</div>
+
+<div class="stat">
+<small>Total Stock</small>
+<strong id="sellerStockCount">0</strong>
+</div>
+
+</div>
+
+<div id="sellerProducts"></div>
+
+</div>
+</div>
+
+
+<!-- PRODUCT FORM -->
+
+<div id="productFormModal" class="modal">
+
+<div class="modal-box wide">
+
+<button class="close"
+onclick="closeModal('productFormModal')">
+×
+</button>
+
+<h2 id="productFormTitle">
+➕ Add Product
+</h2>
+
+<input type="hidden" id="editingProductId">
+
+<div class="form-grid">
+
+<div class="field">
+<label>Product Name *</label>
+<input id="productName">
+</div>
+
+<div class="field">
+<label>Category *</label>
+
+<select id="productCategory">
+
+<option>Groceries</option>
+<option>Fruits</option>
+<option>Vegetables</option>
+<option>Personal Care</option>
+<option>Fashion</option>
+<option>Electronics</option>
+<option>Home</option>
+
+</select>
+
+</div>
+
+<div class="field full">
+<label>Description</label>
+<textarea id="productDescription" rows="3"></textarea>
+</div>
+
+<div class="field">
+<label>MRP *</label>
+<input id="productMrp" type="number">
+</div>
+
+<div class="field">
+<label>Selling Price *</label>
+<input id="productPrice" type="number">
+</div>
+
+<div class="field">
+<label>Stock *</label>
+<input id="productStock" type="number">
+</div>
+
+<div class="field">
+<label>Unit</label>
+<input id="productUnit" value="piece">
+</div>
+
+<div class="field">
+<label>SKU</label>
+<input id="productSku">
+</div>
+
+<div class="field">
+<label>Product Icon</label>
+<input id="productIcon" value="🛍️">
+</div>
+
+</div>
+
+<br>
+
+<button class="btn"
+onclick="saveProduct()">
+Save Product
+</button>
+
+</div>
+</div>
+
+
+<!-- ADMIN DASHBOARD -->
+
+<div id="adminModal" class="modal">
+
+<div class="modal-box wide">
+
+<button class="close"
+onclick="closeModal('adminModal')">
+×
+</button>
+
+<div class="between">
+
+<h2>👑 JANA BAZAR Admin</h2>
+
+<button class="btn"
+onclick="openAdminProductForm()">
+➕ Add JANA BAZAR Product
+</button>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<small>Total Products</small>
+<strong id="adminProductCount">0</strong>
+</div>
+
+<div class="stat">
+<small>Seller Products</small>
+<strong id="adminSellerProductCount">0</strong>
+</div>
+
+<div class="stat">
+<small>Pending Approval</small>
+<strong id="adminPendingCount">0</strong>
+</div>
+
+<div class="stat">
+<small>Total Orders</small>
+<strong id="adminOrderCount">0</strong>
+</div>
+
+</div>
+
+<div id="adminProducts"></div>
+
+</div>
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   JANA BAZAR V5
+   Local Prototype Storage
+========================================================= */
+
+const PRODUCTS_KEY="JANA_BAZAR_V5_PRODUCTS";
+const CART_KEY="JANA_BAZAR_V5_CART";
+const USERS_KEY="JANA_BAZAR_V5_USERS";
+const SELLERS_KEY="JANA_BAZAR_V5_SELLERS";
+const ORDERS_KEY="JANA_BAZAR_V5_ORDERS";
+const CURRENT_SELLER_KEY="JANA_BAZAR_CURRENT_SELLER";
+
+let selectedCategory="All";
+let editingMode="seller";
+
+
+/* =========================================================
+   DEFAULT PRODUCTS
+========================================================= */
+
+const DEFAULT_PRODUCTS=[
+
+{
+id:"JB001",
+name:"Premium Rice",
+category:"Groceries",
+description:"Premium quality rice",
+mrp:650,
+price:599,
+stock:100,
+unit:"5 kg",
+sku:"JB-RICE-001",
+icon:"🍚",
+sellerType:"admin",
+sellerId:"JANA_BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB002",
+name:"Fresh Milk",
+category:"Groceries",
+description:"Fresh quality milk",
+mrp:65,
+price:60,
+stock:80,
+unit:"1 L",
+sku:"JB-MILK-001",
+icon:"🥛",
+sellerType:"admin",
+sellerId:"JANA_BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB003",
+name:"Fresh Apples",
+category:"Fruits",
+description:"Fresh apples",
+mrp:210,
+price:180,
+stock:50,
+unit:"1 kg",
+sku:"JB-APPLE-001",
+icon:"🍎",
+sellerType:"admin",
+sellerId:"JANA_BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB004",
+name:"Body Care",
+category:"Personal Care",
+description:"Daily body care product",
+mrp:240,
+price:199,
+stock:40,
+unit:"piece",
+sku:"JB-BODY-001",
+icon:"🧴",
+sellerType:"admin",
+sellerId:"JANA_BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB005",
+name:"Fresh Tomatoes",
+category:"Vegetables",
+description:"Fresh tomatoes",
+mrp:70,
+price:55,
+stock:100,
+unit:"1 kg",
+sku:"JB-TOMATO-001",
+icon:"🍅",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB006",
+name:"Bananas",
+category:"Fruits",
+description:"Fresh bananas",
+mrp:90,
+price:70,
+stock:70,
+unit:"1 dozen",
+sku:"JB-BANANA-001",
+icon:"🍌",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB007",
+name:"Cotton T-Shirt",
+category:"Fashion",
+description:"Comfortable cotton T-shirt",
+mrp:499,
+price:399,
+stock:35,
+unit:"piece",
+sku:"JB-TSHIRT-001",
+icon:"👕",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB008",
+name:"Smart Phone",
+category:"Electronics",
+description:"Smart phone",
+mrp:9999,
+price:8999,
+stock:15,
+unit:"piece",
+sku:"JB-PHONE-001",
+icon:"📱",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB009",
+name:"Kitchen Set",
+category:"Home",
+description:"Useful kitchen set",
+mrp:999,
+price:799,
+stock:25,
+unit:"set",
+sku:"JB-KITCHEN-001",
+icon:"🍳",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB010",
+name:"Potatoes",
+category:"Vegetables",
+description:"Fresh potatoes",
+mrp:60,
+price:45,
+stock:100,
+unit:"1 kg",
+sku:"JB-POTATO-001",
+icon:"🥔",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB011",
+name:"Shampoo",
+category:"Personal Care",
+description:"Hair care shampoo",
+mrp:299,
+price:249,
+stock:40,
+unit:"piece",
+sku:"JB-SHAMPOO-001",
+icon:"🧴",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+},
+
+{
+id:"JB012",
+name:"LED Bulb",
+category:"Home",
+description:"Energy efficient LED bulb",
+mrp:169,
+price:129,
+stock:60,
+unit:"piece",
+sku:"JB-LED-001",
+icon:"💡",
+sellerType:"admin",
+sellerId:"JANA BAZAR",
+sellerName:"JANA BAZAR",
+status:"Published"
+}
+
+];
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function loadJSON(key,fallback){
+
+try{
+
+const data=JSON.parse(
+localStorage.getItem(key)
+);
+
+return data===null?fallback:data;
+
+}catch(e){
+
+return fallback;
+
+}
+
+}
+
+let products=loadJSON(
+PRODUCTS_KEY,
+DEFAULT_PRODUCTS
+);
 
 if(
 !Array.isArray(products) ||
-products.length===0 ||
-!products.some(p=>p.status==='Published' && Number(p.stock)>0)
+products.length===0
 ){
-products=seed;
-localStorage.setItem(KEY,JSON.stringify(products));
+
+products=DEFAULT_PRODUCTS;
+
 }
+
+let cart=loadJSON(CART_KEY,[]);
+let users=loadJSON(USERS_KEY,[]);
+let sellers=loadJSON(SELLERS_KEY,[]);
+let orders=loadJSON(ORDERS_KEY,[]);
+
+
+/* =========================================================
+   IMPORTANT PRODUCT RECOVERY
+========================================================= */
+
+const hasPublishedProduct=
+products.some(
+p=>p &&
+p.status==="Published" &&
+Number(p.stock)>0
+);
+
+if(!hasPublishedProduct){
+
+products=DEFAULT_PRODUCTS;
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveAll(){
+
+localStorage.setItem(
+PRODUCTS_KEY,
+JSON.stringify(products)
+);
+
+localStorage.setItem(
+CART_KEY,
+JSON.stringify(cart)
+);
+
+localStorage.setItem(
+USERS_KEY,
+JSON.stringify(users)
+);
+
+l
