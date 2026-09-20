@@ -2,242 +2,181 @@
 <html lang="te">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>JANA BAZAR</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f6f7f9;color:#222}
-header{background:#fff;padding:18px;text-align:center;border-bottom:1px solid #ddd}
-.logo{font-size:30px;font-weight:bold;color:#087f3d}
-.tagline{color:#666;margin-top:5px}
-.topbar{display:flex;gap:10px;padding:15px;background:#fff;position:sticky;top:0;z-index:10}
-.search{flex:1;padding:13px;border:1px solid #ddd;border-radius:10px;font-size:16px}
-.cart-open{border:0;background:#087f3d;color:white;padding:0 18px;border-radius:10px;font-size:16px;font-weight:bold}
-.hero{margin:18px;padding:28px 20px;border-radius:18px;background:#087f3d;color:white}
-.hero h1{font-size:30px;margin-bottom:10px}
-.hero p{font-size:16px;line-height:1.6}
-.section{padding:18px 15px}
-.section h2{margin-bottom:15px;font-size:28px}
-.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.category{background:#fff;padding:15px 5px;border-radius:14px;text-align:center;box-shadow:0 2px 8px #00000012}
-.category span{font-size:30px;display:block;margin-bottom:8px}
-.category p{font-size:12px}
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.product{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px #00000012}
-.product-image{height:135px;background:#eef3f0;display:flex;align-items:center;justify-content:center;font-size:60px}
-.product-info{padding:13px}
-.product-info h3{font-size:16px;margin-bottom:8px}
-.price{color:#087f3d;font-size:20px;font-weight:bold;margin-bottom:10px}
-.cart-btn{width:100%;border:0;background:#087f3d;color:white;padding:11px;border-radius:9px;font-weight:bold;font-size:15px}
-.cart-btn:active{transform:scale(.97)}
-.empty{text-align:center;color:#777;padding:30px}
-.cart-panel{display:none;position:fixed;inset:0;background:#0008;z-index:100}
-.cart-box{position:absolute;right:0;top:0;height:100%;width:min(420px,92%);background:white;padding:20px;overflow:auto}
-.cart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.close{border:0;background:#eee;border-radius:50%;width:38px;height:38px;font-size:20px}
-.cart-item{display:flex;gap:12px;border-bottom:1px solid #ddd;padding:14px 0}
-.cart-item-icon{font-size:35px}
-.cart-item-info{flex:1}
-.cart-item-info h4{margin-bottom:6px}
-.qty{display:flex;align-items:center;gap:10px;margin-top:8px}
-.qty button{width:30px;height:30px;border:0;border-radius:7px;background:#087f3d;color:white;font-size:18px}
-.remove{border:0;background:none;color:#d00;margin-top:7px}
-.cart-total{border-top:2px solid #ddd;margin-top:20px;padding-top:15px;font-size:21px;font-weight:bold}
-.checkout{width:100%;margin-top:15px;padding:14px;border:0;border-radius:10px;background:#ff9800;color:white;font-size:17px;font-weight:bold}
-footer{margin-top:25px;background:#222;color:white;text-align:center;padding:25px}
-
-@media(min-width:700px){
-.products{grid-template-columns:repeat(4,1fr)}
-.categories{grid-template-columns:repeat(8,1fr)}
-.section{max-width:1100px;margin:auto}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#f6f7f9;
+color:#222;
 }
-</style>
-</head>
-
-<body>
-
-<header>
-<div class="logo">🛒 JANA BAZAR</div>
-<div class="tagline">Your Local Multi-Vendor Shopping Platform</div>
-</header>
-
-<div class="topbar">
-<input id="search" class="search" type="search" placeholder="🔎 Search products...">
-<button class="cart-open" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
-</div>
-
-<section class="hero">
-<h1>JANA BAZAR</h1>
-<p>మీ స్థానిక మార్కెట్... మీ చేతిలో!</p>
-<p>Local products • Local sellers • Local delivery</p>
-</section>
-
-<section class="section">
-<h2>Categories</h2>
-<div class="categories">
-<div class="category"><span>🥦</span><p>Groceries</p></div>
-<div class="category"><span>🍎</span><p>Fruits</p></div>
-<div class="category"><span>🥕</span><p>Vegetables</p></div>
-<div class="category"><span>🧴</span><p>Personal Care</p></div>
-<div class="category"><span>👕</span><p>Fashion</p></div>
-<div class="category"><span>📱</span><p>Electronics</p></div>
-<div class="category"><span>🏠</span><p>Home</p></div>
-<div class="category"><span>🛍️</span><p>More</p></div>
-</div>
-</section>
-
-<section class="section">
-<h2>Popular Products</h2>
-
-<div class="products" id="products">
-
-<div class="product" data-name="Premium Rice">
-<div class="product-image">🍚</div>
-<div class="product-info">
-<h3>Premium Rice</h3>
-<div class="price">₹599</div>
-<button class="cart-btn" onclick="addToCart('Premium Rice',599,'🍚')">Add to Cart</button>
-</div>
-</div>
-
-<div class="product" data-name="Fresh Milk">
-<div class="product-image">🥛</div>
-<div class="product-info">
-<h3>Fresh Milk</h3>
-<div class="price">₹60</div>
-<button class="cart-btn" onclick="addToCart('Fresh Milk',60,'🥛')">Add to Cart</button>
-</div>
-</div>
-
-<div class="product" data-name="Fresh Apples">
-<div class="product-image">🍎</div>
-<div class="product-info">
-<h3>Fresh Apples</h3>
-<div class="price">₹180</div>
-<button class="cart-btn" onclick="addToCart('Fresh Apples',180,'🍎')">Add to Cart</button>
-</div>
-</div>
-
-<div class="product" data-name="Body Care">
-<div class="product-image">🧴</div>
-<div class="product-info">
-<h3>Body Care</h3>
-<div class="price">₹199</div>
-<button class="cart-btn" onclick="addToCart('Body Care',199,'🧴')">Add to Cart</button>
-</div>
-</div>
-
-</div>
-</section>
-
-<div id="cartPanel" class="cart-panel" onclick="closeCart(event)">
-<div class="cart-box" onclick="event.stopPropagation()">
-<div class="cart-head">
-<h2>🛒 My Cart</h2>
-<button class="close" onclick="closeCart()">×</button>
-</div>
-
-<div id="cartItems"></div>
-
-<div class="cart-total">
-Total: ₹<span id="cartTotal">0</span>
-</div>
-
-<button class="checkout" onclick="checkout()">Proceed to Checkout</button>
-</div>
-</div>
-
-<footer>
-<h3>JANA BAZAR</h3>
-<p>Local Multi-Vendor E-Commerce Platform</p>
-<p>© 2026 JANA BAZAR</p>
-</footer>
-
-<script>
-let cart=[];
-
-function addToCart(name,price,icon){
-let item=cart.find(x=>x.name===name);
-if(item){
-item.qty++;
-}else{
-cart.push({name,price,icon,qty:1});
+header{
+background:#fff;
+padding:18px;
+text-align:center;
+border-bottom:1px solid #ddd;
 }
-updateCart();
-openCart();
+.logo{
+font-size:30px;
+font-weight:800;
+color:#087f3d;
 }
-
-function updateCart(){
-let count=cart.reduce((sum,item)=>sum+item.qty,0);
-document.getElementById("cartCount").textContent=count;
-
-let box=document.getElementById("cartItems");
-
-if(cart.length===0){
-box.innerHTML='<div class="empty">Your cart is empty 🛒</div>';
-}else{
-box.innerHTML=cart.map((item,index)=>`
-<div class="cart-item">
-<div class="cart-item-icon">${item.icon}</div>
-<div class="cart-item-info">
-<h4>${item.name}</h4>
-<div>₹${item.price} × ${item.qty}</div>
-<div class="qty">
-<button onclick="changeQty(${index},-1)">−</button>
-<span>${item.qty}</span>
-<button onclick="changeQty(${index},1)">+</button>
-</div>
-<button class="remove" onclick="removeItem(${index})">Remove</button>
-</div>
-</div>
-`).join("");
+.tagline{
+color:#666;
+margin-top:6px;
+font-size:16px;
 }
-
-let total=cart.reduce((sum,item)=>sum+(item.price*item.qty),0);
-document.getElementById("cartTotal").textContent=total;
+.topbar{
+display:flex;
+gap:10px;
+padding:18px;
+background:#fff;
 }
-
-function changeQty(index,value){
-cart[index].qty+=value;
-if(cart[index].qty<=0) cart.splice(index,1);
-updateCart();
+.search{
+flex:1;
+padding:15px;
+font-size:18px;
+border:1px solid #ddd;
+border-radius:14px;
 }
-
-function removeItem(index){
-cart.splice(index,1);
-updateCart();
+.cart-btn{
+background:#087f3d;
+color:white;
+border:0;
+border-radius:14px;
+padding:0 22px;
+font-size:18px;
+font-weight:bold;
 }
-
-function openCart(){
-document.getElementById("cartPanel").style.display="block";
-updateCart();
+.hero{
+margin:25px;
+padding:35px;
+background:#087f3d;
+color:white;
+border-radius:25px;
 }
-
-function closeCart(event){
-if(!event || event.target.id==="cartPanel"){
-document.getElementById("cartPanel").style.display="none";
+.hero h1{font-size:32px;margin-bottom:12px}
+.hero p{font-size:18px;line-height:1.6}
+.container{padding:0 25px 40px}
+h2{font-size:30px;margin:25px 0}
+.categories{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
 }
+.category{
+background:white;
+padding:22px 8px;
+border-radius:18px;
+text-align:center;
+font-size:16px;
+box-shadow:0 3px 12px #ddd;
 }
-
-function checkout(){
-if(cart.length===0){
-alert("Your cart is empty!");
-return;
+.category div{font-size:38px;margin-bottom:10px}
+.products{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
 }
-alert("Checkout will be connected to Supabase and payment in the next version.");
+.product{
+background:white;
+border-radius:22px;
+overflow:hidden;
+box-shadow:0 3px 12px #ddd;
 }
-
-document.getElementById("search").addEventListener("input",function(){
-let query=this.value.toLowerCase();
-document.querySelectorAll(".product").forEach(product=>{
-let name=product.dataset.name.toLowerCase();
-product.style.display=name.includes(query)?"block":"none";
-});
-});
-
-updateCart();
-</script>
-
-</body>
-</html>
+.product-image{
+height:190px;
+background:#eef4f0;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:85px;
+}
+.product-info{padding:18px}
+.product h3{font-size:22px;margin-bottom:10px}
+.price{
+font-size:25px;
+font-weight:bold;
+color:#087f3d;
+margin-bottom:15px;
+}
+.add{
+width:100%;
+padding:14px;
+border:0;
+border-radius:14px;
+background:#087f3d;
+color:white;
+font-size:18px;
+font-weight:bold;
+}
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+z-index:10;
+}
+.panel{
+position:absolute;
+right:0;
+top:0;
+height:100%;
+width:min(520px,94%);
+background:white;
+padding:28px;
+overflow:auto;
+}
+.close{
+float:right;
+border:0;
+background:#eee;
+border-radius:50%;
+width:45px;
+height:45px;
+font-size:25px;
+}
+.panel h2{margin-top:10px}
+.cart-item{
+display:flex;
+gap:15px;
+align-items:center;
+padding:18px 0;
+border-bottom:1px solid #ddd;
+}
+.cart-icon{font-size:50px}
+.qty{
+display:flex;
+gap:10px;
+align-items:center;
+margin-top:12px;
+}
+.qty button{
+background:#087f3d;
+color:white;
+border:0;
+width:42px;
+height:42px;
+border-radius:10px;
+font-size:22px;
+}
+.remove{
+color:#d22;
+border:0;
+background:none;
+font-size:16px;
+margin-top:8px;
+}
+.total{
+font-size:27px;
+font-weight:bold;
+margin:25px 0;
+}
+.checkout-btn{
+width:100%;
+padding:17px;
+background:#ff9d00;
+border:0;
+border-radius:15
