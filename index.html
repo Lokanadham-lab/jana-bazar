@@ -1,1415 +1,655 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="te">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b7a4b">
-<title>JANA BAZAR | Local Multi-Vendor Marketplace</title>
-
+<title>JANA BAZAR — Local Multi-Vendor Marketplace</title>
 <style>
-*{box-sizing:border-box}
-
-html,body{
-margin:0;
-padding:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#f5f7fb;
-color:#172033;
-}
-
-body{
-min-height:100vh;
-}
-
-button,input,select,textarea{
-font:inherit;
-}
-
-button{
-cursor:pointer;
-border:0;
-}
-
-header{
-position:sticky;
-top:0;
-z-index:100;
-background:#fff;
-box-shadow:0 2px 14px rgba(0,0,0,.08);
-}
-
-.topbar{
-display:flex;
-align-items:center;
-gap:10px;
-padding:12px 4%;
-flex-wrap:wrap;
-}
-
-.logo{
-font-size:24px;
-font-weight:800;
-color:#087a4b;
-white-space:nowrap;
-}
-
-.logo span{
-color:#f59e0b;
-}
-
-.search{
-flex:1;
-min-width:180px;
-height:42px;
-padding:0 16px;
-border:1px solid #dce2ea;
-border-radius:25px;
-outline:none;
-background:#fafbfd;
-}
-
-.search:focus{
-border-color:#0b7a4b;
-}
-
-.btn{
-padding:10px 15px;
-border-radius:10px;
-background:#0b7a4b;
-color:#fff;
-font-weight:600;
-}
-
-.btn:hover{
-opacity:.9;
-}
-
-.btn.secondary{
-background:#edf2f7;
-color:#172033;
-}
-
-.btn.orange{
-background:#f59e0b;
-color:#111;
-}
-
-.btn.red{
-background:#d93636;
-color:#fff;
-}
-
-.btn.small{
-padding:7px 10px;
-font-size:12px;
-}
-
-.nav{
-display:flex;
-gap:7px;
-padding:8px 4%;
-overflow-x:auto;
-background:#fff;
-}
-
-.nav button{
-padding:9px 14px;
-border-radius:20px;
-background:#eef3f7;
-white-space:nowrap;
-}
-
-.nav button:hover{
-background:#dfeae5;
-}
-
-.hero{
-margin:18px 4%;
-padding:30px;
-border-radius:20px;
-background:linear-gradient(135deg,#087a4b,#18ad70);
-color:#fff;
-}
-
-.hero h1{
-margin:0 0 8px;
-font-size:30px;
-}
-
-.hero p{
-margin:0;
-opacity:.95;
-}
-
-.container{
-padding:0 4% 50px;
-}
-
-.section-head{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-margin-bottom:15px;
-}
-
-.section-head h2{
-margin:0;
-}
-
-.muted{
-color:#697386;
-font-size:13px;
-}
-
-.product-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(185px,1fr));
-gap:15px;
-}
-
-.product-card{
-background:#fff;
-border-radius:16px;
-padding:14px;
-box-shadow:0 2px 12px rgba(0,0,0,.06);
-transition:.2s;
-}
-
-.product-card:hover{
-transform:translateY(-2px);
-box-shadow:0 5px 18px rgba(0,0,0,.1);
-}
-
-.product-image{
-height:135px;
-border-radius:13px;
-background:#f0f4f7;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:58px;
-margin-bottom:10px;
-}
-
-.product-card h3{
-margin:7px 0;
-font-size:17px;
-}
-
-.seller-badge{
-display:inline-block;
-padding:4px 7px;
-border-radius:7px;
-background:#e7f7ef;
-color:#087443;
-font-size:11px;
-font-weight:700;
-}
-
-.price{
-font-size:20px;
-font-weight:800;
-margin-top:8px;
-}
-
-.mrp{
-font-size:13px;
-color:#8a93a1;
-text-decoration:line-through;
-font-weight:400;
-margin-left:5px;
-}
-
-.product-card .btn{
-width:100%;
-margin-top:10px;
-}
-
-.modal{
-display:none;
-position:fixed;
-inset:0;
-z-index:500;
-background:rgba(0,0,0,.65);
-padding:18px;
-overflow:auto;
-}
-
-.modal.show{
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.modal-box{
-background:#fff;
-border-radius:18px;
-width:min(720px,100%);
-max-height:94vh;
-overflow:auto;
-padding:20px;
-position:relative;
-}
-
-.modal-box.wide{
-width:min(1050px,100%);
-}
-
-.close{
-position:absolute;
-right:15px;
-top:15px;
-width:34px;
-height:34px;
-border-radius:50%;
-background:#eef1f4;
-font-size:20px;
-}
-
-.form-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-}
-
-.full{
-grid-column:1/-1;
-}
-
-.field{
-display:flex;
-flex-direction:column;
-gap:5px;
-}
-
-.field label{
-font-size:13px;
-font-weight:700;
-}
-
-.field input,
-.field select,
-.field textarea{
-width:100%;
-padding:11px;
-border:1px solid #d8dee7;
-border-radius:9px;
-outline:none;
-background:#fff;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-border-color:#0b7a4b;
-}
-
-.tabs{
-display:flex;
-gap:8px;
-margin:15px 0;
-}
-
-.tabs button{
-padding:9px 15px;
-border-radius:9px;
-background:#edf1f5;
-}
-
-.tabs button.active{
-background:#0b7a4b;
-color:#fff;
-}
-
-.row{
-display:flex;
-align-items:center;
-gap:8px;
-flex-wrap:wrap;
-}
-
-.between{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-margin:15px 0;
-}
-
-.stat{
-background:#f3f6f8;
-padding:14px;
-border-radius:12px;
-}
-
-.stat small{
-color:#697386;
-}
-
-.stat strong{
-display:block;
-font-size:25px;
-margin-top:5px;
-}
-
-.table-wrap{
-overflow-x:auto;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-min-width:700px;
-}
-
-th,td{
-padding:10px;
-border-bottom:1px solid #e6e9ee;
-text-align:left;
-font-size:13px;
-}
-
-th{
-background:#f6f8fa;
-}
-
-.empty{
-padding:30px;
-text-align:center;
-color:#697386;
-background:#fff;
-border-radius:15px;
-}
-
-.toast{
-position:fixed;
-right:15px;
-bottom:15px;
-z-index:1000;
-background:#172033;
-color:#fff;
-padding:13px 17px;
-border-radius:10px;
-display:none;
-box-shadow:0 4px 20px rgba(0,0,0,.2);
-}
-
-footer{
-text-align:center;
-padding:25px;
-color:#777;
-}
-
-hr{
-border:0;
-border-top:1px solid #e8ebef;
-margin:18px 0;
-}
-
-@media(max-width:650px){
-
-.topbar{
-padding:10px 3%;
-}
-
-.logo{
-font-size:21px;
-}
-
-.search{
-order:3;
-flex-basis:100%;
-}
-
-.hero{
-margin:12px 3%;
-padding:23px;
-}
-
-.hero h1{
-font-size:25px;
-}
-
-.container{
-padding:0 3% 40px;
-}
-
-.product-grid{
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-}
-
-.product-image{
-height:105px;
-font-size:45px;
-}
-
-.product-card{
-padding:10px;
-}
-
-.product-card h3{
-font-size:15px;
-}
-
-.price{
-font-size:17px;
-}
-
-.form-grid{
-grid-template-columns:1fr;
-}
-
-.full{
-grid-column:auto;
-}
-
-.stats{
-grid-template-columns:repeat(2,1fr);
-}
-
-.nav{
-padding:7px 3%;
-}
-
-}
-
-@media(max-width:380px){
-
-.product-grid{
-grid-template-columns:1fr;
-}
-
-}
+:root{--green:#087a4b;--green2:#13a66a;--orange:#f59e0b;--bg:#f5f7fb;--text:#172033;--muted:#667085;--line:#e5e7eb;--white:#fff;--danger:#dc3545}
+*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.header{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 14px #00000012}
+.top{display:flex;align-items:center;gap:10px;padding:11px 4%;flex-wrap:wrap}.brand{font-weight:900;font-size:23px;color:var(--green);white-space:nowrap}.brand span{color:var(--orange)}
+.search{flex:1;min-width:190px;height:42px;border:1px solid #d9dee7;border-radius:24px;padding:0 16px;outline:none;background:#fafbfd}.search:focus{border-color:var(--green)}
+.nav{display:flex;gap:7px;padding:8px 4%;overflow:auto;white-space:nowrap}.nav button{padding:9px 13px;border-radius:20px;background:#eef3f7;color:#263142}.nav button.active{background:var(--green);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--green);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700}.btn.secondary{background:#edf1f5;color:var(--text)}.btn.orange{background:var(--orange);color:#111}.btn.danger{background:var(--danger)}.btn.small{padding:7px 10px;font-size:12px}
+.hero{margin:18px 4%;padding:30px;border-radius:20px;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}.hero h1{margin:0 0 8px;font-size:30px}.hero p{margin:0;opacity:.96}
+.wrap{padding:0 4% 45px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:22px 0 14px}.head h2{margin:0}.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}.card{background:#fff;border-radius:16px;padding:13px;box-shadow:0 2px 12px #0000000b}.pic{height:125px;border-radius:12px;background:#f0f4f7;display:grid;place-items:center;font-size:54px}.card h3{font-size:16px;margin:10px 0 5px}.badge{display:inline-block;padding:4px 7px;border-radius:7px;background:#e7f7ef;color:var(--green);font-size:11px;font-weight:700}.price{font-size:19px;font-weight:900;margin-top:8px}.mrp{text-decoration:line-through;color:#8b93a1;font-size:12px;font-weight:400;margin-left:5px}
+.card .btn{width:100%;margin-top:10px}.empty{background:#fff;border-radius:16px;padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}
+footer{text-align:center;color:#7a8492;padding:25px}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:500;padding:16px;overflow:auto}.modal.show{display:flex;align-items:center;justify-content:center}.box{width:min(720px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:18px;padding:20px;position:relative}.box.wide{width:min(1050px,100%)}.close{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;background:#edf1f5;font-size:20px}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:700}.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid #d8dee7;border-radius:9px;outline:none;background:#fff}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green)}
+.tabs{display:flex;gap:8px;margin:15px 0}.tabs button{padding:9px 14px;border-radius:9px;background:#edf1f5}.tabs button.active{background:var(--green);color:#fff}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.between{display:flex;align-items:center;justify-content:space-between;gap:10px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}.stat{background:#f2f5f7;border-radius:12px;padding:13px}.stat b{display:block;font-size:24px;margin-top:4px}
+.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:720px;margin-top:12px}.table th,.table td{padding:9px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.table th{background:#f7f8fa}.notice{background:#fff8e6;border:1px solid #ffe2a8;padding:10px;border-radius:10px;font-size:13px}
+.toast{display:none;position:fixed;right:14px;bottom:14px;z-index:1000;background:#172033;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 5px 20px #0003}
+@media(max-width:650px){.top{padding:10px 3%}.search{order:3;flex-basis:100%}.hero{margin:12px 3%;padding:23px}.hero h1{font-size:25px}.wrap{padding:0 3% 35px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pic{height:105px;font-size:45px}.card{padding:10px}.card h3{font-size:14px}.price{font-size:17px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.stats{grid-template-columns:repeat(2,1fr)}.nav{padding:7px 3%}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 
-<header>
-
-<div class="topbar">
-
-<div class="logo">
-JANA <span>BAZAR</span>
-</div>
-
-<input
-id="searchInput"
-class="search"
-type="search"
-placeholder="🔎 Search products..."
->
-
-<button class="btn secondary" onclick="openCart()">
-🛒 Cart <span id="cartCount">0</span>
-</button>
-
-<button class="btn secondary" onclick="openCustomerAccount()">
-👤 Account
-</button>
-
-</div>
-
-<div class="nav">
-
-<button onclick="setCategory('All')">All</button>
-<button onclick="setCategory('Groceries')">Groceries</button>
-<button onclick="setCategory('Fruits')">Fruits</button>
-<button onclick="setCategory('Vegetables')">Vegetables</button>
-<button onclick="setCategory('Personal Care')">Personal Care</button>
-<button onclick="setCategory('Fashion')">Fashion</button>
-<button onclick="setCategory('Electronics')">Electronics</button>
-<button onclick="setCategory('Home')">Home</button>
-
-<button onclick="openSellerRegistration()">🏪 Seller</button>
-
-<button onclick="openAdmin()">👑 Admin</button>
-
-</div>
-
+<header class="header">
+  <div class="top">
+    <div class="brand">JANA <span>BAZAR</span></div>
+    <input id="search" class="search" placeholder="🔎 Search products..." autocomplete="off">
+    <button class="btn secondary" id="cartBtn">🛒 Cart <b id="cartCount">0</b></button>
+    <button class="btn secondary" id="accountBtn">👤 Account</button>
+  </div>
+  <nav class="nav" id="nav"></nav>
 </header>
 
 <section class="hero">
-
-<h1>JANA BAZAR 🛍️</h1>
-
-<p>
-Local Multi-Vendor E-Commerce Marketplace —
-JANA BAZAR + Local Sellers
-</p>
-
+  <h1>JANA BAZAR 🛍️</h1>
+  <p>Local Multi-Vendor E-Commerce Marketplace — JANA BAZAR + Local Sellers</p>
 </section>
 
-<main class="container">
-
-<div class="section-head">
-
-<h2>🛒 Products</h2>
-
-<span id="categoryLabel" class="muted">
-All Products
-</span>
-
-</div>
-
-<div id="productGrid" class="product-grid"></div>
-
+<main class="wrap">
+  <div class="head"><h2>🛒 Products</h2><span class="muted" id="resultInfo"></span></div>
+  <div id="products" class="grid"></div>
 </main>
 
-<footer>
-© 2026 JANA BAZAR • Local Sellers • Local Products
-</footer>
+<footer>© 2026 JANA BAZAR • Local Sellers • Local Products</footer>
 
-
-<!-- CUSTOMER ACCOUNT -->
-
-<div id="customerModal" class="modal">
-
-<div class="modal-box">
-
-<button class="close" onclick="closeModal('customerModal')">×</button>
-
+<!-- CUSTOMER -->
+<div class="modal" id="customerModal"><div class="box">
+<button class="close" data-close="customerModal">×</button>
 <h2>👤 Customer Account</h2>
-
-<div class="tabs">
-
-<button id="loginTab"
-class="active"
-onclick="switchAccount('login')">
-Login
-</button>
-
-<button id="registerTab"
-onclick="switchAccount('register')">
-Register
-</button>
-
-</div>
-
-<div id="loginSection">
-
-<div class="field">
-<label>Mobile / Email</label>
-<input id="loginId">
-</div>
-
-<br>
-
-<div class="field">
-<label>Password</label>
-<input id="loginPassword" type="password">
-</div>
-
-<br>
-
-<button class="btn" onclick="loginCustomer()">
-Login
-</button>
-
-</div>
-
-
-<div id="registerSection" style="display:none">
-
-<div class="form-grid">
-
-<div class="field">
-<label>Name</label>
-<input id="registerName">
-</div>
-
-<div class="field">
-<label>Mobile</label>
-<input id="registerMobile">
-</div>
-
-<div class="field">
-<label>Email</label>
-<input id="registerEmail">
-</div>
-
-<div class="field">
-<label>Password</label>
-<input id="registerPassword" type="password">
-</div>
-
-</div>
-
-<br>
-
-<button class="btn" onclick="registerCustomer()">
-Create Account
-</button>
-
-</div>
-
-<hr>
-
-<div id="customerStatus" class="muted">
-Not logged in.
-</div>
-
-</div>
-</div>
-
+<div class="tabs"><button id="tabLogin" class="active">Login</button><button id="tabRegister">Register</button></div>
+<section id="loginPane">
+<div class="field"><label>Mobile / Email</label><input id="loginId"></div><br>
+<div class="field"><label>Password</label><input id="loginPassword" type="password"></div><br>
+<button class="btn" id="loginBtn">Login</button>
+</section>
+<section id="registerPane" style="display:none">
+<div class="form">
+<div class="field"><label>Name *</label><input id="regName"></div>
+<div class="field"><label>Mobile *</label><input id="regMobile" inputmode="tel"></div>
+<div class="field"><label>Email</label><input id="regEmail" type="email"></div>
+<div class="field"><label>Password *</label><input id="regPassword" type="password"></div>
+</div><br><button class="btn" id="registerBtn">Create Account</button>
+</section>
+<hr><div id="accountStatus" class="muted">Not logged in.</div>
+</div></div>
 
 <!-- CART -->
-
-<div id="cartModal" class="modal">
-
-<div class="modal-box">
-
-<button class="close" onclick="closeModal('cartModal')">×</button>
-
-<h2>🛒 Shopping Cart</h2>
-
-<div id="cartItems"></div>
-
-<hr>
-
-<div class="between">
-
-<strong>Total</strong>
-
-<strong id="cartTotal">₹0</strong>
-
-</div>
-
-<br>
-
-<button class="btn" onclick="openCheckout()">
-Proceed to Checkout
-</button>
-
-</div>
-</div>
-
+<div class="modal" id="cartModal"><div class="box">
+<button class="close" data-close="cartModal">×</button><h2>🛒 Shopping Cart</h2>
+<div id="cartItems"></div><hr>
+<div class="between"><b>Total</b><b id="cartTotal">₹0</b></div><br>
+<button class="btn" id="checkoutBtn">Proceed to Checkout</button>
+</div></div>
 
 <!-- CHECKOUT -->
+<div class="modal" id="checkoutModal"><div class="box">
+<button class="close" data-close="checkoutModal">×</button><h2>📦 Checkout</h2>
+<div class="form">
+<div class="field"><label>Name *</label><input id="coName"></div>
+<div class="field"><label>Mobile *</label><input id="coMobile" inputmode="tel"></div>
+<div class="field full"><label>Delivery Address *</label><textarea id="coAddress" rows="4"></textarea></div>
+<div class="field full"><label>Payment</label><select id="coPayment"><option>Cash on Delivery</option><option>UPI — Gateway to be connected</option><option>Debit/Credit Card — Gateway to be connected</option></select></div>
+</div><br><button class="btn" id="placeOrderBtn">Place Order</button>
+</div></div>
 
-<div id="checkoutModal" class="modal">
+<!-- ORDER SUCCESS -->
+<div class="modal" id="orderModal"><div class="box">
+<button class="close" data-close="orderModal">×</button><h2>🎉 Order Confirmed</h2><div id="orderResult"></div><br><button class="btn" data-close="orderModal">Continue Shopping</button>
+</div></div>
 
-<div class="modal-box">
-
-<button class="close" onclick="closeModal('checkoutModal')">×</button>
-
-<h2>📦 Checkout</h2>
-
-<div class="form-grid">
-
-<div class="field">
-<label>Customer Name</label>
-<input id="checkoutName">
-</div>
-
-<div class="field">
-<label>Mobile</label>
-<input id="checkoutMobile">
-</div>
-
-<div class="field full">
-<label>Delivery Address</label>
-<textarea id="checkoutAddress" rows="4"></textarea>
-</div>
-
-<div class="field full">
-<label>Payment Method</label>
-
-<select id="paymentMethod">
-
-<option>Cash on Delivery</option>
-
-<option>UPI — Gateway to be connected</option>
-
-<option>Debit/Credit Card — Gateway to be connected</option>
-
-</select>
-
-</div>
-
-</div>
-
-<br>
-
-<button class="btn" onclick="placeOrder()">
-Place Order
-</button>
-
-</div>
-</div>
-
-
-<!-- ORDER CONFIRMATION -->
-
-<div id="orderModal" class="modal">
-
-<div class="modal-box">
-
-<button class="close" onclick="closeModal('orderModal')">×</button>
-
-<h2>🎉 Order Confirmed</h2>
-
-<div id="orderMessage"></div>
-
-<br>
-
-<button class="btn"
-onclick="closeModal('orderModal')">
-Continue Shopping
-</button>
-
-</div>
-</div>
-
-
-<!-- SELLER REGISTRATION -->
-
-<div id="sellerModal" class="modal">
-
-<div class="modal-box wide">
-
-<button class="close"
-onclick="closeModal('sellerModal')">
-×
-</button>
-
-<h2>🏪 Seller Registration</h2>
-
-<p class="muted">
-Seller registration prototype.
-Real business documents and bank information
-should later be stored securely in Supabase.
-</p>
-
-<div class="form-grid">
-
-<div class="field">
-<label>Business / Shop Name *</label>
-<input id="sellerShop">
-</div>
-
-<div class="field">
-<label>Owner Name *</label>
-<input id="sellerOwner">
-</div>
-
-<div class="field">
-<label>Mobile *</label>
-<input id="sellerMobile">
-</div>
-
-<div class="field">
-<label>Email</label>
-<input id="sellerEmail">
-</div>
-
-<div class="field">
-<label>Business Category</label>
-
-<select id="sellerCategory">
-
-<option>Grocery</option>
-<option>Fruits & Vegetables</option>
-<option>Fashion</option>
-<option>Electronics</option>
-<option>Personal Care</option>
-<option>Home</option>
-<option>Other</option>
-
-</select>
-
-</div>
-
-<div class="field">
-<label>PIN Code</label>
-<input id="sellerPin">
-</div>
-
-<div class="field full">
-<label>Business Address</label>
-<textarea id="sellerAddress"></textarea>
-</div>
-
-<div class="field">
-<label>PAN</label>
-<input id="sellerPan">
-</div>
-
-<div class="field">
-<label>GSTIN</label>
-<input id="sellerGst">
-</div>
-
-<div class="field">
-<label>Udyam</label>
-<input id="sellerUdyam">
-</div>
-
-<div class="field">
-<label>FSSAI</label>
-<input id="sellerFssai">
-</div>
-
-<div class="field">
-<label>Bank Holder Name</label>
-<input id="sellerBankHolder">
-</div>
-
-<div class="field">
-<label>Bank Account</label>
-<input id="sellerBankAccount">
-</div>
-
-<div class="field">
-<label>IFSC</label>
-<input id="sellerIfsc">
-</div>
-
-<div class="field">
-<label>UPI ID</label>
-<input id="sellerUpi">
-</div>
-
-<div class="field full">
-<label>Store Description</label>
-<textarea id="sellerDescription"></textarea>
-</div>
-
-</div>
-
-<br>
-
-<button class="btn"
-onclick="registerSeller()">
-Submit Seller Application
-</button>
-
-<button class="btn secondary"
-onclick="openSellerDashboard()">
-Seller Dashboard
-</button>
-
-</div>
-</div>
-
+<!-- SELLER -->
+<div class="modal" id="sellerModal"><div class="box wide">
+<button class="close" data-close="sellerModal">×</button><h2>🏪 Seller Registration</h2>
+<div class="notice">Prototype mode: sensitive business/bank information will later move to secure Supabase storage.</div><br>
+<div class="form">
+<div class="field"><label>Business / Shop Name *</label><input id="sShop"></div>
+<div class="field"><label>Owner Name *</label><input id="sOwner"></div>
+<div class="field"><label>Mobile *</label><input id="sMobile" inputmode="tel"></div>
+<div class="field"><label>Email</label><input id="sEmail"></div>
+<div class="field"><label>Business Category</label><select id="sCategory"><option>Grocery</option><option>Fruits & Vegetables</option><option>Fashion</option><option>Electronics</option><option>Personal Care</option><option>Home</option><option>Other</option></select></div>
+<div class="field"><label>PIN</label><input id="sPin"></div>
+<div class="field full"><label>Business Address</label><textarea id="sAddress"></textarea></div>
+<div class="field"><label>PAN</label><input id="sPan"></div>
+<div class="field"><label>GSTIN</label><input id="sGst"></div>
+<div class="field"><label>Udyam</label><input id="sUdyam"></div>
+<div class="field"><label>FSSAI</label><input id="sFssai"></div>
+<div class="field"><label>Bank Holder</label><input id="sBankHolder"></div>
+<div class="field"><label>Bank Account</label><input id="sBank"></div>
+<div class="field"><label>IFSC</label><input id="sIfsc"></div>
+<div class="field"><label>UPI ID</label><input id="sUpi"></div>
+<div class="field full"><label>Store Description</label><textarea id="sDescription"></textarea></div>
+</div><br>
+<div class="row"><button class="btn" id="sellerRegisterBtn">Submit Application</button><button class="btn secondary" id="sellerDashBtn">Seller Dashboard</button></div>
+</div></div>
 
 <!-- SELLER DASHBOARD -->
-
-<div id="sellerDashboardModal" class="modal">
-
-<div class="modal-box wide">
-
-<button class="close"
-onclick="closeModal('sellerDashboardModal')">
-×
-</button>
-
-<div class="between">
-
-<h2>🏪 Seller Dashboard</h2>
-
-<button class="btn"
-onclick="openSellerProductForm()">
-➕ Add Product
-</button>
-
-</div>
-
-<div id="sellerInfo"></div>
-
+<div class="modal" id="sellerDashModal"><div class="box wide">
+<button class="close" data-close="sellerDashModal">×</button>
+<div class="between"><h2>🏪 Seller Dashboard</h2><button class="btn" id="sellerAddBtn">➕ Add Product</button></div>
+<div id="sellerHeader"></div>
 <div class="stats">
-
-<div class="stat">
-<small>My Products</small>
-<strong id="sellerProductCount">0</strong>
+<div class="stat"><small>My Products</small><b id="sdTotal">0</b></div>
+<div class="stat"><small>Pending</small><b id="sdPending">0</b></div>
+<div class="stat"><small>Published</small><b id="sdPublished">0</b></div>
+<div class="stat"><small>Total Stock</small><b id="sdStock">0</b></div>
 </div>
-
-<div class="stat">
-<small>Pending</small>
-<strong id="sellerPendingCount">0</strong>
-</div>
-
-<div class="stat">
-<small>Published</small>
-<strong id="sellerPublishedCount">0</strong>
-</div>
-
-<div class="stat">
-<small>Total Stock</small>
-<strong id="sellerStockCount">0</strong>
-</div>
-
-</div>
-
-<div id="sellerProducts"></div>
-
-</div>
-</div>
-
+<div id="sellerTable"></div>
+</div></div>
 
 <!-- PRODUCT FORM -->
+<div class="modal" id="productModal"><div class="box wide">
+<button class="close" data-close="productModal">×</button>
+<h2 id="productTitle">➕ Add Product</h2>
+<div class="form">
+<div class="field"><label>Product Name *</label><input id="pName"></div>
+<div class="field"><label>Category *</label><select id="pCategory"><option>Groceries</option><option>Fruits</option><option>Vegetables</option><option>Personal Care</option><option>Fashion</option><option>Electronics</option><option>Home</option></select></div>
+<div class="field full"><label>Description</label><textarea id="pDescription" rows="3"></textarea></div>
+<div class="field"><label>MRP *</label><input id="pMrp" type="number" min="0"></div>
+<div class="field"><label>Selling Price *</label><input id="pPrice" type="number" min="0"></div>
+<div class="field"><label>Stock *</label><input id="pStock" type="number" min="0"></div>
+<div class="field"><label>Unit</label><input id="pUnit" value="piece"></div>
+<div class="field"><label>SKU</label><input id="pSku"></div>
+<div class="field"><label>Product Icon / Emoji</label><input id="pIcon" value="🛍️"></div>
+</div><br>
+<button class="btn" id="saveProductBtn">Save Product</button>
+</div></div>
 
-<div id="productFormModal" class="modal">
-
-<div class="modal-box wide">
-
-<button class="close"
-onclick="closeModal('productFormModal')">
-×
-</button>
-
-<h2 id="productFormTitle">
-➕ Add Product
-</h2>
-
-<input type="hidden" id="editingProductId">
-
-<div class="form-grid">
-
-<div class="field">
-<label>Product Name *</label>
-<input id="productName">
-</div>
-
-<div class="field">
-<label>Category *</label>
-
-<select id="productCategory">
-
-<option>Groceries</option>
-<option>Fruits</option>
-<option>Vegetables</option>
-<option>Personal Care</option>
-<option>Fashion</option>
-<option>Electronics</option>
-<option>Home</option>
-
-</select>
-
-</div>
-
-<div class="field full">
-<label>Description</label>
-<textarea id="productDescription" rows="3"></textarea>
-</div>
-
-<div class="field">
-<label>MRP *</label>
-<input id="productMrp" type="number">
-</div>
-
-<div class="field">
-<label>Selling Price *</label>
-<input id="productPrice" type="number">
-</div>
-
-<div class="field">
-<label>Stock *</label>
-<input id="productStock" type="number">
-</div>
-
-<div class="field">
-<label>Unit</label>
-<input id="productUnit" value="piece">
-</div>
-
-<div class="field">
-<label>SKU</label>
-<input id="productSku">
-</div>
-
-<div class="field">
-<label>Product Icon</label>
-<input id="productIcon" value="🛍️">
-</div>
-
-</div>
-
-<br>
-
-<button class="btn"
-onclick="saveProduct()">
-Save Product
-</button>
-
-</div>
-</div>
-
-
-<!-- ADMIN DASHBOARD -->
-
-<div id="adminModal" class="modal">
-
-<div class="modal-box wide">
-
-<button class="close"
-onclick="closeModal('adminModal')">
-×
-</button>
-
-<div class="between">
-
-<h2>👑 JANA BAZAR Admin</h2>
-
-<button class="btn"
-onclick="openAdminProductForm()">
-➕ Add JANA BAZAR Product
-</button>
-
-</div>
-
+<!-- ADMIN -->
+<div class="modal" id="adminModal"><div class="box wide">
+<button class="close" data-close="adminModal">×</button>
+<div class="between"><h2>👑 JANA BAZAR Admin</h2><button class="btn" id="adminAddBtn">➕ Add JANA BAZAR Product</button></div>
 <div class="stats">
-
-<div class="stat">
-<small>Total Products</small>
-<strong id="adminProductCount">0</strong>
+<div class="stat"><small>Total Products</small><b id="adProducts">0</b></div>
+<div class="stat"><small>Seller Products</small><b id="adSeller">0</b></div>
+<div class="stat"><small>Pending Approval</small><b id="adPending">0</b></div>
+<div class="stat"><small>Orders</small><b id="adOrders">0</b></div>
 </div>
+<div id="adminTable"></div>
+</div></div>
 
-<div class="stat">
-<small>Seller Products</small>
-<strong id="adminSellerProductCount">0</strong>
-</div>
-
-<div class="stat">
-<small>Pending Approval</small>
-<strong id="adminPendingCount">0</strong>
-</div>
-
-<div class="stat">
-<small>Total Orders</small>
-<strong id="adminOrderCount">0</strong>
-</div>
-
-</div>
-
-<div id="adminProducts"></div>
-
-</div>
-</div>
-
-
-<div id="toast" class="toast"></div>
-
+<div class="toast" id="toast"></div>
 
 <script>
+(function(){
+"use strict";
 
-/* =========================================================
-   JANA BAZAR V5
-   Local Prototype Storage
-========================================================= */
+/* =========================
+   JANA BAZAR V6-STABLE CORE
+   Fresh storage key prevents
+   old broken V4/V5 data from
+   hiding the seed products.
+========================= */
 
-const PRODUCTS_KEY="JANA_BAZAR_V5_PRODUCTS";
-const CART_KEY="JANA_BAZAR_V5_CART";
-const USERS_KEY="JANA_BAZAR_V5_USERS";
-const SELLERS_KEY="JANA_BAZAR_V5_SELLERS";
-const ORDERS_KEY="JANA_BAZAR_V5_ORDERS";
-const CURRENT_SELLER_KEY="JANA_BAZAR_CURRENT_SELLER";
+const DBKEY="JANA_BAZAR_STABLE_2026";
+const CARTKEY="JANA_BAZAR_STABLE_CART";
+const USERKEY="JANA_BAZAR_STABLE_USERS";
+const SELLERKEY="JANA_BAZAR_STABLE_SELLERS";
+const ORDERKEY="JANA_BAZAR_STABLE_ORDERS";
+const CURRENT_SELLER="JANA_BAZAR_STABLE_CURRENT_SELLER";
+const CURRENT_USER="JANA_BAZAR_STABLE_CURRENT_USER";
 
-let selectedCategory="All";
-let editingMode="seller";
+const CATEGORIES=["All","Groceries","Fruits","Vegetables","Personal Care","Fashion","Electronics","Home"];
 
-
-/* =========================================================
-   DEFAULT PRODUCTS
-========================================================= */
-
-const DEFAULT_PRODUCTS=[
-
-{
-id:"JB001",
-name:"Premium Rice",
-category:"Groceries",
-description:"Premium quality rice",
-mrp:650,
-price:599,
-stock:100,
-unit:"5 kg",
-sku:"JB-RICE-001",
-icon:"🍚",
-sellerType:"admin",
-sellerId:"JANA_BAZAR",
-sellerName:"JANA BAZAR",
+const SEED=[
+["JB001","Premium Rice","Groceries","Premium quality rice",650,599,100,"5 kg","JB-RICE-001","🍚"],
+["JB002","Fresh Milk","Groceries","Fresh quality milk",65,60,80,"1 L","JB-MILK-001","🥛"],
+["JB003","Fresh Apples","Fruits","Fresh apples",210,180,50,"1 kg","JB-APPLE-001","🍎"],
+["JB004","Body Care","Personal Care","Daily body care product",240,199,40,"piece","JB-BODY-001","🧴"],
+["JB005","Fresh Tomatoes","Vegetables","Fresh tomatoes",70,55,100,"1 kg","JB-TOMATO-001","🍅"],
+["JB006","Bananas","Fruits","Fresh bananas",90,70,70,"1 dozen","JB-BANANA-001","🍌"],
+["JB007","Cotton T-Shirt","Fashion","Comfortable cotton T-shirt",499,399,35,"piece","JB-TSHIRT-001","👕"],
+["JB008","Smart Phone","Electronics","Smart phone",9999,8999,15,"piece","JB-PHONE-001","📱"],
+["JB009","Kitchen Set","Home","Useful kitchen set",999,799,25,"set","JB-KITCHEN-001","🍳"],
+["JB010","Potatoes","Vegetables","Fresh potatoes",60,45,100,"1 kg","JB-POTATO-001","🥔"],
+["JB011","Shampoo","Personal Care","Hair care shampoo",299,249,40,"piece","JB-SHAMPOO-001","🧴"],
+["JB012","LED Bulb","Home","Energy efficient LED bulb",169,129,60,"piece","JB-LED-001","💡"]
+].map(function(x){
+return {
+id:x[0],name:x[1],category:x[2],description:x[3],mrp:x[4],price:x[5],
+stock:x[6],unit:x[7],sku:x[8],icon:x[9],
+sellerType:"admin",sellerId:"JANA_BAZAR",sellerName:"JANA BAZAR",
 status:"Published"
-},
+};
+});
 
-{
-id:"JB002",
-name:"Fresh Milk",
-category:"Groceries",
-description:"Fresh quality milk",
-mrp:65,
-price:60,
-stock:80,
-unit:"1 L",
-sku:"JB-MILK-001",
-icon:"🥛",
-sellerType:"admin",
-sellerId:"JANA_BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
+let products=readArray(DBKEY,SEED);
+let cart=readArray(CARTKEY,[]);
+let users=readArray(USERKEY,[]);
+let sellers=readArray(SELLERKEY,[]);
+let orders=readArray(ORDERKEY,[]);
 
-{
-id:"JB003",
-name:"Fresh Apples",
-category:"Fruits",
-description:"Fresh apples",
-mrp:210,
-price:180,
-stock:50,
-unit:"1 kg",
-sku:"JB-APPLE-001",
-icon:"🍎",
-sellerType:"admin",
-sellerId:"JANA_BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
+let activeCategory="All";
+let editId="";
+let formMode="seller";
 
-{
-id:"JB004",
-name:"Body Care",
-category:"Personal Care",
-description:"Daily body care product",
-mrp:240,
-price:199,
-stock:40,
-unit:"piece",
-sku:"JB-BODY-001",
-icon:"🧴",
-sellerType:"admin",
-sellerId:"JANA_BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB005",
-name:"Fresh Tomatoes",
-category:"Vegetables",
-description:"Fresh tomatoes",
-mrp:70,
-price:55,
-stock:100,
-unit:"1 kg",
-sku:"JB-TOMATO-001",
-icon:"🍅",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB006",
-name:"Bananas",
-category:"Fruits",
-description:"Fresh bananas",
-mrp:90,
-price:70,
-stock:70,
-unit:"1 dozen",
-sku:"JB-BANANA-001",
-icon:"🍌",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB007",
-name:"Cotton T-Shirt",
-category:"Fashion",
-description:"Comfortable cotton T-shirt",
-mrp:499,
-price:399,
-stock:35,
-unit:"piece",
-sku:"JB-TSHIRT-001",
-icon:"👕",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB008",
-name:"Smart Phone",
-category:"Electronics",
-description:"Smart phone",
-mrp:9999,
-price:8999,
-stock:15,
-unit:"piece",
-sku:"JB-PHONE-001",
-icon:"📱",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB009",
-name:"Kitchen Set",
-category:"Home",
-description:"Useful kitchen set",
-mrp:999,
-price:799,
-stock:25,
-unit:"set",
-sku:"JB-KITCHEN-001",
-icon:"🍳",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB010",
-name:"Potatoes",
-category:"Vegetables",
-description:"Fresh potatoes",
-mrp:60,
-price:45,
-stock:100,
-unit:"1 kg",
-sku:"JB-POTATO-001",
-icon:"🥔",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB011",
-name:"Shampoo",
-category:"Personal Care",
-description:"Hair care shampoo",
-mrp:299,
-price:249,
-stock:40,
-unit:"piece",
-sku:"JB-SHAMPOO-001",
-icon:"🧴",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-},
-
-{
-id:"JB012",
-name:"LED Bulb",
-category:"Home",
-description:"Energy efficient LED bulb",
-mrp:169,
-price:129,
-stock:60,
-unit:"piece",
-sku:"JB-LED-001",
-icon:"💡",
-sellerType:"admin",
-sellerId:"JANA BAZAR",
-sellerName:"JANA BAZAR",
-status:"Published"
-}
-
-];
-
-
-/* =========================================================
-   STORAGE
-========================================================= */
-
-function loadJSON(key,fallback){
-
+function readArray(key,fallback){
 try{
-
-const data=JSON.parse(
-localStorage.getItem(key)
-);
-
-return data===null?fallback:data;
-
+const raw=localStorage.getItem(key);
+if(!raw)return fallback.slice ? fallback.slice() : fallback;
+const parsed=JSON.parse(raw);
+return Array.isArray(parsed)?parsed:(fallback.slice?fallback.slice():fallback);
 }catch(e){
-
-return fallback;
-
+return fallback.slice?fallback.slice():fallback;
+}
 }
 
+function save(){
+try{
+localStorage.setItem(DBKEY,JSON.stringify(products));
+localStorage.setItem(CARTKEY,JSON.stringify(cart));
+localStorage.setItem(USERKEY,JSON.stringify(users));
+localStorage.setItem(SELLERKEY,JSON.stringify(sellers));
+localStorage.setItem(ORDERKEY,JSON.stringify(orders));
+}catch(e){
+console.warn("Storage unavailable",e);
+}
 }
 
-let products=loadJSON(
-PRODUCTS_KEY,
-DEFAULT_PRODUCTS
-);
-
-if(
-!Array.isArray(products) ||
-products.length===0
-){
-
-products=DEFAULT_PRODUCTS;
-
+function esc(v){
+return String(v==null?"":v)
+.replace(/&/g,"&amp;").replace(/</g,"&lt;")
+.replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 }
 
-let cart=loadJSON(CART_KEY,[]);
-let users=loadJSON(USERS_KEY,[]);
-let sellers=loadJSON(SELLERS_KEY,[]);
-let orders=loadJSON(ORDERS_KEY,[]);
-
-
-/* =========================================================
-   IMPORTANT PRODUCT RECOVERY
-========================================================= */
-
-const hasPublishedProduct=
-products.some(
-p=>p &&
-p.status==="Published" &&
-Number(p.stock)>0
-);
-
-if(!hasPublishedProduct){
-
-products=DEFAULT_PRODUCTS;
-
+function money(v){
+return "₹"+Number(v||0).toLocaleString("en-IN");
 }
 
+function toast(msg){
+const el=document.getElementById("toast");
+el.textContent=msg;
+el.style.display="block";
+clearTimeout(window.__jbToast);
+window.__jbToast=setTimeout(function(){el.style.display="none"},2200);
+}
 
-/* =========================================================
-   SAVE
-========================================================= */
+function show(id){
+const el=document.getElementById(id);
+if(el)el.classList.add("show");
+}
 
-function saveAll(){
+function hide(id){
+const el=document.getElementById(id);
+if(el)el.classList.remove("show");
+}
 
-localStorage.setItem(
-PRODUCTS_KEY,
-JSON.stringify(products)
-);
+function currentUser(){
+const id=localStorage.getItem(CURRENT_USER);
+return users.find(function(u){return u.id===id;})||null;
+}
 
-localStorage.setItem(
-CART_KEY,
-JSON.stringify(cart)
-);
+function currentSeller(){
+const id=localStorage.getItem(CURRENT_SELLER);
+return sellers.find(function(s){return s.id===id;})||sellers[sellers.length-1]||null;
+}
 
-localStorage.setItem(
-USERS_KEY,
-JSON.stringify(users)
-);
+/* NAV */
+const nav=document.getElementById("nav");
+CATEGORIES.forEach(function(cat){
+const b=document.createElement("button");
+b.textContent=cat;
+b.addEventListener("click",function(){
+activeCategory=cat;
+Array.from(nav.querySelectorAll("button")).forEach(function(x){x.classList.remove("active")});
+b.classList.add("active");
+renderProducts();
+});
+nav.appendChild(b);
+});
+nav.querySelector("button").classList.add("active");
 
-l
+function renderProducts(){
+const q=document.getElementById("search").value.trim().toLowerCase();
+const list=products.filter(function(p){
+if(!p || p.status!=="Published" || Number(p.stock)<=0)return false;
+if(activeCategory!=="All" && p.category!==activeCategory)return false;
+if(q){
+const text=(p.name+" "+p.category+" "+p.sellerName).toLowerCase();
+if(text.indexOf(q)===-1)return false;
+}
+return true;
+});
+document.getElementById("resultInfo").textContent=list.length+" products";
+const grid=document.getElementById("products");
+if(!list.length){
+grid.innerHTML='<div class="empty"><h3>No products found</h3><p>Try another category or search.</p></div>';
+}else{
+grid.innerHTML=list.map(function(p){
+return '<article class="card">'+
+'<div class="pic">'+esc(p.icon||"🛍️")+'</div>'+
+'<span class="badge">'+esc(p.sellerType==="admin"?"JANA BAZAR":"Seller: "+p.sellerName)+'</span>'+
+'<h3>'+esc(p.name)+'</h3>'+
+'<div class="muted">'+esc(p.category)+" • "+esc(p.unit||"piece")+'</div>'+
+'<p class="muted">'+esc(p.description||"")+'</p>'+
+'<div class="price">'+money(p.price)+' <span class="mrp">'+money(p.mrp)+'</span></div>'+
+'<button class="btn" data-add="'+esc(p.id)+'">🛒 Add to Cart</button>'+
+'</article>';
+}).join("");
+}
+updateCartCount();
+}
+
+document.getElementById("products").addEventListener("click",function(e){
+const btn=e.target.closest("[data-add]");
+if(btn)addToCart(btn.getAttribute("data-add"));
+});
+document.getElementById("search").addEventListener("input",renderProducts);
+
+function addToCart(id){
+const p=products.find(function(x){return x.id===id;});
+if(!p)return;
+const item=cart.find(function(x){return x.productId===id;});
+if(item){
+if(item.quantity>=Number(p.stock))return toast("Available stock limit reached");
+item.quantity++;
+}else cart.push({productId:id,quantity:1});
+save();updateCartCount();toast("Added to cart");
+}
+
+function updateCartCount(){
+document.getElementById("cartCount").textContent=cart.reduce(function(a,x){return a+Number(x.quantity||0)},0);
+}
+
+function renderCart(){
+const el=document.getElementById("cartItems");
+if(!cart.length){
+el.innerHTML='<div class="empty"><h3>🛒 Cart is empty</h3><p>Add products to continue.</p></div>';
+document.getElementById("cartTotal").textContent="₹0";
+return;
+}
+let total=0;
+el.innerHTML=cart.map(function(item){
+const p=products.find(function(x){return x.id===item.productId;});
+if(!p)return "";
+const qty=Number(item.quantity||1);
+total+=p.price*qty;
+return '<div class="between" style="padding:12px 0;border-bottom:1px solid #eee">'+
+'<div><strong>'+esc(p.name)+'</strong><div class="muted">'+money(p.price)+' × '+qty+'</div></div>'+
+'<div class="row">'+
+'<button class="btn small secondary" data-minus="'+esc(p.id)+'">−</button>'+
+'<b>'+qty+'</b>'+
+'<button class="btn small secondary" data-plus="'+esc(p.id)+'">+</button>'+
+'<button class="btn small danger" data-remove="'+esc(p.id)+'">×</button>'+
+'</div></div>';
+}).join("");
+document.getElementById("cartTotal").textContent=money(total);
+}
+
+document.getElementById("cartItems").addEventListener("click",function(e){
+const minus=e.target.closest("[data-minus]");
+const plus=e.target.closest("[data-plus]");
+const remove=e.target.closest("[data-remove]");
+if(minus)changeQty(minus.getAttribute("data-minus"),-1);
+if(plus)changeQty(plus.getAttribute("data-plus"),1);
+if(remove)removeCart(remove.getAttribute("data-remove"));
+});
+
+function changeQty(id,d){
+const item=cart.find(function(x){return x.productId===id;});
+const p=products.find(function(x){return x.id===id;});
+if(!item||!p)return;
+item.quantity+=d;
+if(item.quantity<=0)cart=cart.filter(function(x){return x.productId!==id;});
+if(item.quantity>p.stock)item.quantity=p.stock;
+save();renderCart();updateCartCount();
+}
+
+function removeCart(id){
+cart=cart.filter(function(x){return x.productId!==id;});
+save();renderCart();updateCartCount();
+}
+
+/* ACCOUNT */
+function openAccount(){
+updateAccount();
+show("customerModal");
+}
+function updateAccount(){
+const u=currentUser();
+const el=document.getElementById("accountStatus");
+if(!u){el.textContent="Not logged in.";return;}
+el.innerHTML='<strong>'+esc(u.name)+'</strong> • '+esc(u.mobile)+
+'<br><br><button class="btn small danger" id="logoutBtn">Logout</button>';
+document.getElementById("logoutBtn").addEventListener("click",function(){
+localStorage.removeItem(CURRENT_USER);updateAccount();toast("Logged out");
+});
+}
+document.getElementById("accountBtn").addEventListener("click",openAccount);
+document.getElementById("tabLogin").addEventListener("click",function(){
+document.getElementById("loginPane").style.display="block";
+document.getElementById("registerPane").style.display="none";
+document.getElementById("tabLogin").classList.add("active");
+document.getElementById("tabRegister").classList.remove("active");
+});
+document.getElementById("tabRegister").addEventListener("click",function(){
+document.getElementById("loginPane").style.display="none";
+document.getElementById("registerPane").style.display="block";
+document.getElementById("tabLogin").classList.remove("active");
+document.getElementById("tabRegister").classList.add("active");
+});
+document.getElementById("registerBtn").addEventListener("click",function(){
+const name=document.getElementById("regName").value.trim();
+const mobile=document.getElementById("regMobile").value.trim();
+const email=document.getElementById("regEmail").value.trim();
+const password=document.getElementById("regPassword").value;
+if(!name||!mobile||!password)return toast("Name, mobile and password required");
+if(users.some(function(u){return u.mobile===mobile;}))return toast("Mobile already registered");
+const u={id:"U"+Date.now(),name:name,mobile:mobile,email:email,password:password};
+users.push(u);localStorage.setItem(CURRENT_USER,u.id);save();updateAccount();toast("Registration successful");
+});
+document.getElementById("loginBtn").addEventListener("click",function(){
+const id=document.getElementById("loginId").value.trim();
+const pass=document.getElementById("loginPassword").value;
+const u=users.find(function(x){return (x.mobile===id||x.email===id)&&x.password===pass;});
+if(!u)return toast("Invalid login details");
+localStorage.setItem(CURRENT_USER,u.id);updateAccount();toast("Login successful");
+});
+
+/* CHECKOUT */
+document.getElementById("cartBtn").addEventListener("click",function(){renderCart();show("cartModal");});
+document.getElementById("checkoutBtn").addEventListener("click",function(){
+if(!cart.length)return toast("Cart is empty");
+const u=currentUser();
+if(u){
+document.getElementById("coName").value=u.name;
+document.getElementById("coMobile").value=u.mobile;
+}
+hide("cartModal");show("checkoutModal");
+});
+document.getElementById("placeOrderBtn").addEventListener("click",function(){
+if(!cart.length)return toast("Cart is empty");
+const name=document.getElementById("coName").value.trim();
+const mobile=document.getElementById("coMobile").value.trim();
+const address=document.getElementById("coAddress").value.trim();
+const payment=document.getElementById("coPayment").value;
+if(!name||!mobile||!address)return toast("Please fill all delivery details");
+const items=[];
+for(const item of cart){
+const p=products.find(function(x){return x.id===item.productId;});
+if(!p||item.quantity>p.stock)return toast("Stock unavailable for one or more products");
+items.push({productId:p.id,name:p.name,quantity:item.quantity,price:p.price,seller:p.sellerName});
+}
+const total=items.reduce(function(a,x){return a+x.price*x.quantity;},0);
+const order={id:"JB"+Date.now(),date:new Date().toLocaleString("en-IN"),customer:name,mobile:mobile,address:address,payment:payment,total:total,items:items,status:"Placed"};
+orders.push(order);
+items.forEach(function(i){const p=products.find(function(x){return x.id===i.productId;});if(p)p.stock-=i.quantity;});
+cart=[];save();renderProducts();updateCartCount();hide("checkoutModal");
+document.getElementById("orderResult").innerHTML="<p>Order placed successfully.</p><p><b>Order ID:</b> "+esc(order.id)+"</p><p><b>Total:</b> "+money(order.total)+"</p><p><b>Status:</b> Placed</p>";
+show("orderModal");
+});
+
+/* SELLER */
+document.getElementById("sellerRegisterBtn").addEventListener("click",function(){
+const shop=document.getElementById("sShop").value.trim();
+const owner=document.getElementById("sOwner").value.trim();
+const mobile=document.getElementById("sMobile").value.trim();
+if(!shop||!owner||!mobile)return toast("Shop, owner and mobile required");
+const seller={
+id:"S"+Date.now(),shopName:shop,ownerName:owner,mobile:mobile,
+email:document.getElementById("sEmail").value.trim(),
+category:document.getElementById("sCategory").value,
+pin:document.getElementById("sPin").value.trim(),
+address:document.getElementById("sAddress").value.trim(),
+pan:document.getElementById("sPan").value.trim(),
+gst:document.getElementById("sGst").value.trim(),
+udyam:document.getElementById("sUdyam").value.trim(),
+fssai:document.getElementById("sFssai").value.trim(),
+bankHolder:document.getElementById("sBankHolder").value.trim(),
+bankAccount:document.getElementById("sBank").value.trim(),
+ifsc:document.getElementById("sIfsc").value.trim(),
+upi:document.getElementById("sUpi").value.trim(),
+description:document.getElementById("sDescription").value.trim(),
+status:"Pending"
+};
+sellers.push(seller);localStorage.setItem(CURRENT_SELLER,seller.id);save();hide("sellerModal");renderSeller();show("sellerDashModal");toast("Seller application submitted");
+});
+document.getElementById("sellerDashBtn").addEventListener("click",function(){openSellerDashboard();});
+function openSellerDashboard(){
+if(!currentSeller()){hide("sellerModal");return toast("Please register as seller first");}
+hide("sellerModal");renderSeller();show("sellerDashModal");
+}
+document.getElementById("sellerAddBtn").addEventListener("click",function(){openProductForm("seller");});
+
+function renderSeller(){
+const s=currentSeller();if(!s)return;
+const mine=products.filter(function(p){return p.sellerType==="seller"&&p.sellerId===s.id;});
+document.getElementById("sellerHeader").innerHTML='<p><b>Shop:</b> '+esc(s.shopName)+' &nbsp; <b>Owner:</b> '+esc(s.ownerName)+' &nbsp; <b>Application:</b> '+esc(s.status)+'</p>';
+document.getElementById("sdTotal").textContent=mine.length;
+document.getElementById("sdPending").textContent=mine.filter(function(p){return p.status==="Pending";}).length;
+document.getElementById("sdPublished").textContent=mine.filter(function(p){return p.status==="Published";}).length;
+document.getElementById("sdStock").textContent=mine.reduce(function(a,p){return a+Number(p.stock||0);},0);
+const el=document.getElementById("sellerTable");
+if(!mine.length){el.innerHTML='<div class="empty"><h3>No products yet</h3><p>Use Add Product to list your first product.</p></div>';return;}
+el.innerHTML='<div class="tablewrap"><table class="table"><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr>'+
+mine.map(function(p){return '<tr><td>'+esc(p.name)+'</td><td>'+esc(p.category)+'</td><td>'+money(p.price)+'</td><td>'+p.stock+'</td><td>'+esc(p.status)+'</td><td><button class="btn small secondary" data-edit="'+esc(p.id)+'">Edit</button> <button class="btn small danger" data-delete="'+esc(p.id)+'">Delete</button></td></tr>';}).join("")+
+'</table></div>';
+}
+document.getElementById("sellerTable").addEventListener("click",function(e){
+const edit=e.target.closest("[data-edit]");const del=e.target.closest("[data-delete]");
+if(edit)openProductForm("seller",edit.getAttribute("data-edit"));
+if(del)deleteProduct(del.getAttribute("data-delete"));
+});
+
+/* PRODUCT FORM */
+function clearProductForm(){
+editId="";
+["pName","pDescription","pMrp","pPrice","pStock","pSku"].forEach(function(id){document.getElementById(id).value="";});
+document.getElementById("pUnit").value="piece";
+document.getElementById("pIcon").value="🛍️";
+document.getElementById("pCategory").value="Groceries";
+}
+function fillProduct(p){
+document.getElementById("pName").value=p.name;
+document.getElementById("pCategory").value=p.category;
+document.getElementById("pDescription").value=p.description||"";
+document.getElementById("pMrp").value=p.mrp;
+document.getElementById("pPrice").value=p.price;
+document.getElementById("pStock").value=p.stock;
+document.getElementById("pUnit").value=p.unit||"piece";
+document.getElementById("pSku").value=p.sku||"";
+document.getElementById("pIcon").value=p.icon||"🛍️";
+}
+function openProductForm(mode,id){
+formMode=mode;clearProductForm();
+if(id){
+const p=products.find(function(x){return x.id===id;});if(!p)return;
+editId=id;fillProduct(p);
+document.getElementById("productTitle").textContent="✏️ Edit Product";
+}else{
+document.getElementById("productTitle").textContent=mode==="admin"?"➕ Add JANA BAZAR Product":"➕ Add Seller Product";
+}
+hide(mode==="admin"?"adminModal":"sellerDashModal");show("productModal");
+}
+document.getElementById("saveProductBtn").addEventListener("click",function(){
+const name=document.getElementById("pName").value.trim();
+const category=document.getElementById("pCategory").value;
+const description=document.getElementById("pDescription").value.trim();
+const mrp=Number(document.getElementById("pMrp").value);
+const price=Number(document.getElementById("pPrice").value);
+const stock=Number(document.getElementById("pStock").value);
+const unit=document.getElementById("pUnit").value.trim()||"piece";
+const sku=document.getElementById("pSku").value.trim();
+const icon=document.getElementById("pIcon").value.trim()||"🛍️";
+if(!name||!mrp||!price)return toast("Product name, MRP and selling price required");
+if(price>mrp)return toast("Selling price cannot exceed MRP");
+if(stock<0)return toast("Stock cannot be negative");
+if(editId){
+const p=products.find(function(x){return x.id===editId;});if(!p)return;
+p.name=name;p.category=category;p.description=description;p.mrp=mrp;p.price=price;p.stock=stock;p.unit=unit;p.sku=sku;p.icon=icon;
+save();hide("productModal");renderProducts();if(formMode==="admin"){renderAdmin();show("adminModal");}else{renderSeller();show("sellerDashModal");}toast("Product updated");return;
+}
+if(formMode==="admin"){
+products.push({id:"A"+Date.now(),name,category,description,mrp,price,stock,unit,sku,icon,sellerType:"admin",sellerId:"JANA_BAZAR",sellerName:"JANA BAZAR",status:"Published"});
+save();hide("productModal");renderProducts();renderAdmin();show("adminModal");toast("JANA BAZAR product added");return;
+}
+const s=currentSeller();if(!s)return toast("Register seller first");
+products.push({id:"P"+Date.now(),name,category,description,mrp,price,stock,unit,sku,icon,sellerType:"seller",sellerId:s.id,sellerName:s.shopName,status:"Pending"});
+save();hide("productModal");renderSeller();show("sellerDashModal");toast("Product submitted for admin approval");
+});
+
+/* ADMIN */
+document.getElementById("adminAddBtn").addEventListener("click",function(){openProductForm("admin");});
+function openAdmin(){renderAdmin();show("adminModal");}
+function renderAdmin(){
+const sellerProducts=products.filter(function(p){return p.sellerType==="seller";});
+document.getElementById("adProducts").textContent=products.length;
+document.getElementById("adSeller").textContent=sellerProducts.length;
+document.getElementById("adPending").textContent=sellerProducts.filter(function(p){return p.status==="Pending";}).length;
+document.getElementById("adOrders").textContent=orders.length;
+const el=document.getElementById("adminTable");
+el.innerHTML='<div class="tablewrap"><table class="table"><tr><th>Product</th><th>Seller</th><th>Type</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr>'+
+products.map(function(p){
+let actions="";
+if(p.sellerType==="seller"&&p.status==="Pending"){
+actions+='<button class="btn small" data-approve="'+esc(p.id)+'">Approve</button> ';
+actions+='<button class="btn small danger" data-reject="'+esc(p.id)+'">Reject</button> ';
+}
+actions+='<button class="btn small secondary" data-admin-edit="'+esc(p.id)+'">Edit</button> ';
+actions+='<button class="btn small danger" data-admin-delete="'+esc(p.id)+'">Delete</button>';
+return '<tr><td>'+esc(p.name)+'</td><td>'+esc(p.sellerName)+'</td><td>'+esc(p.sellerType)+'</td><td>'+money(p.price)+'</td><td>'+p.stock+'</td><td>'+esc(p.status)+'</td><td>'+actions+'</td></tr>';
+}).join("")+
+'</table></div>';
+}
+document.getElementById("adminTable").addEventListener("click",function(e){
+const a=e.target.closest("[data-approve]");const r=e.target.closest("[data-reject]");const ed=e.target.closest("[data-admin-edit]");const d=e.target.closest("[data-admin-delete]");
+if(a)approve(a.getAttribute("data-approve"));
+if(r)reject(r.getAttribute("data-reject"));
+if(ed)openProductForm("admin",ed.getAttribute("data-admin-edit"));
+if(d)deleteProduct(d.getAttribute("data-admin-delete"));
+});
+function approve(id){const p=products.find(function(x){return x.id===id;});if(!p)return;p.status="Published";save();renderAdmin();renderProducts();toast("Seller product approved");}
+function reject(id){const p=products.find(function(x){return x.id===id;});if(!p)return;p.status="Rejected";save();renderAdmin();renderProducts();toast("Seller product rejected");}
+function deleteProduct(id){
+const p=products.find(function(x){return x.id===id;});if(!p)return;
+if(!window.confirm("Delete this product?"))return;
+products=products.filter(function(x){return x.id!==id;});
+cart=cart.filter(function(x){return x.productId!==id;});
+save();renderProducts();renderAdmin();renderSeller();toast("Product deleted");
+}
+
+/* OPEN SELLER */
+document.querySelectorAll("[data-close]").forEach(function(btn){
+btn.addEventListener("click",function(){hide(btn.getAttribute("data-close"));});
+});
+document.getElementById("nav").addEventListener("click",function(e){
+if(e.target.textContent==="Seller"){
+show("sellerModal");
+}
+if(e.target.textContent==="Admin"){
+openAdmin();
+}
+});
+
+/* expose only needed UI functions */
+window.openSellerDashboard=openSellerDashboard;
+
+/* START */
+save();
+renderProducts();
+updateCartCount();
+
+})();
+</script>
+</body>
+</html>
