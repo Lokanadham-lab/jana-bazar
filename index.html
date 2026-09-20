@@ -7,372 +7,550 @@
 <title>JANA BAZAR</title>
 
 <style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f5f7f6;
-color:#222
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial, sans-serif;
 }
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
+
+body{
+  background:#f4f7f6;
+  color:#222;
+}
+
+button{
+  cursor:pointer;
+  border:0;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+/* HEADER */
 
 header{
-background:#fff;
-padding:15px;
-border-bottom:1px solid #ddd;
-position:sticky;
-top:0;
-z-index:20
+  background:#ffffff;
+  border-bottom:1px solid #ddd;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
-.header-row{
-max-width:1200px;
-margin:auto;
-display:flex;
-align-items:center;
-gap:15px
+.header-main{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .logo{
-font-size:26px;
-font-weight:800;
-color:#087f3d;
-white-space:nowrap
+  font-size:25px;
+  font-weight:800;
+  color:#087f3d;
+  white-space:nowrap;
 }
 
-.search{
-flex:1;
-padding:12px 15px;
-border:1px solid #ddd;
-border-radius:10px
+.logo span{
+  font-size:25px;
 }
 
-.header-btn{
-border:0;
-background:#087f3d;
-color:white;
-padding:11px 15px;
-border-radius:10px
+.search-box{
+  flex:1;
+  display:flex;
+  gap:8px;
 }
 
-.menu{
-max-width:1200px;
-margin:12px auto 0;
-display:flex;
-gap:8px;
-overflow:auto
+.search-box input{
+  width:100%;
+  padding:12px 15px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:15px;
+  outline:none;
 }
 
-.menu button{
-border:0;
-background:#eef5f0;
-padding:9px 14px;
-border-radius:20px;
-white-space:nowrap
+.search-box input:focus{
+  border-color:#087f3d;
 }
+
+.cart-btn,
+.account-btn{
+  background:#087f3d;
+  color:white;
+  padding:12px 15px;
+  border-radius:10px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.cart-btn{
+  min-width:75px;
+}
+
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:0 12px 10px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+}
+
+.navbar button{
+  background:#edf3ef;
+  color:#333;
+  padding:8px 13px;
+  border-radius:20px;
+  white-space:nowrap;
+}
+
+.navbar button:hover{
+  background:#087f3d;
+  color:#fff;
+}
+
+/* HERO */
 
 .hero{
-max-width:1200px;
-margin:20px auto;
-padding:35px 25px;
-border-radius:22px;
-background:#087f3d;
-color:white
+  max-width:1200px;
+  margin:20px auto;
+  padding:30px 25px;
+  background:#087f3d;
+  color:white;
+  border-radius:18px;
 }
 
 .hero h1{
-font-size:34px;
-margin:0 0 10px
+  font-size:34px;
+  margin-bottom:12px;
 }
 
 .hero p{
-line-height:1.6
+  font-size:17px;
+  line-height:1.7;
 }
 
+.hero-buttons{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.primary-btn{
+  background:white;
+  color:#087f3d;
+  padding:12px 18px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.secondary-btn{
+  background:#ff9800;
+  color:white;
+  padding:12px 18px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+/* MAIN */
+
 .container{
-max-width:1200px;
-margin:auto;
-padding:0 15px 40px
+  max-width:1200px;
+  margin:auto;
+  padding:0 16px 40px;
 }
 
 .section-title{
-margin:30px 0 15px
+  font-size:25px;
+  margin:28px 0 15px;
 }
 
-.categories{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px
+/* CATEGORIES */
+
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
 }
 
-.category{
-background:white;
-border:0;
-padding:18px 5px;
-border-radius:15px;
-text-align:center;
-box-shadow:0 2px 8px #00000012
+.category-card{
+  background:white;
+  border-radius:14px;
+  padding:18px 10px;
+  text-align:center;
+  box-shadow:0 3px 12px rgba(0,0,0,.06);
+  transition:.2s;
+  cursor:pointer;
 }
 
-.category .icon{
-font-size:32px;
-display:block;
-margin-bottom:8px
+.category-card:hover{
+  transform:translateY(-3px);
 }
 
-.products{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px
+.category-icon{
+  font-size:35px;
+  margin-bottom:8px;
 }
 
-.product{
-background:white;
-border-radius:16px;
-overflow:hidden;
-box-shadow:0 2px 8px #00000012
+.category-card strong{
+  font-size:14px;
+}
+
+/* PRODUCTS */
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.product-card{
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 3px 14px rgba(0,0,0,.08);
 }
 
 .product-image{
-height:160px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:70px;
-background:#edf3ef
+  height:190px;
+  background:#eef5f1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
 }
 
-.product-body{
-padding:14px
+.product-info{
+  padding:15px;
 }
 
-.product-body h3{
-margin:0 0 8px
+.product-info h3{
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+.product-category{
+  color:#777;
+  font-size:13px;
+  margin-bottom:8px;
 }
 
 .price{
-color:#087f3d;
-font-size:20px;
-font-weight:bold;
-margin-bottom:12px
+  color:#087f3d;
+  font-size:21px;
+  font-weight:bold;
+  margin-bottom:12px;
 }
 
-.primary{
-width:100%;
-border:0;
-background:#087f3d;
-color:white;
-padding:12px;
-border-radius:9px;
-font-weight:bold
+.mrp{
+  color:#888;
+  text-decoration:line-through;
+  font-size:13px;
+  margin-left:6px;
 }
 
-.secondary{
-border:1px solid #087f3d;
-background:white;
-color:#087f3d;
-padding:10px 14px;
-border-radius:9px
+.add-cart{
+  width:100%;
+  background:#087f3d;
+  color:white;
+  padding:11px;
+  border-radius:8px;
+  font-weight:bold;
 }
 
-.wish{
-border:0;
-background:white;
-font-size:22px;
-float:right
+.add-cart:hover{
+  background:#05672f;
 }
 
-footer{
-background:#222;
-color:white;
-text-align:center;
-padding:30px;
-margin-top:30px
+/* MODAL */
+
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:3000;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
 }
 
-/* MODALS */
-.overlay{
-display:none;
-position:fixed;
-inset:0;
-background:#0008;
-z-index:100
+.modal{
+  width:100%;
+  max-width:600px;
+  max-height:90vh;
+  overflow-y:auto;
+  background:white;
+  border-radius:18px;
+  padding:24px;
+  position:relative;
 }
 
-.panel{
-background:white;
-width:min(650px,94%);
-max-height:94vh;
-overflow:auto;
-position:absolute;
-top:3%;
-left:50%;
-transform:translateX(-50%);
-border-radius:18px;
-padding:25px
+.close-btn{
+  position:absolute;
+  right:15px;
+  top:15px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#eee;
+  font-size:22px;
 }
 
-.close{
-float:right;
-border:0;
-background:#eee;
-border-radius:50%;
-width:38px;
-height:38px;
-font-size:22px
+.modal h2{
+  margin-bottom:20px;
+  color:#087f3d;
 }
 
 .form-group{
-margin:13px 0
+  margin-bottom:14px;
 }
 
 .form-group label{
-display:block;
-font-weight:bold;
-margin-bottom:6px
+  display:block;
+  font-weight:bold;
+  margin-bottom:6px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select{
-width:100%;
-padding:12px;
-border:1px solid #ccc;
-border-radius:9px
+  width:100%;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:9px;
+  font-size:15px;
+  outline:none;
 }
 
-.form-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px
+.form-group textarea{
+  min-height:90px;
+  resize:vertical;
 }
 
-.tabs{
-display:flex;
-gap:8px;
-margin:15px 0;
-flex-wrap:wrap
+.submit-btn{
+  width:100%;
+  background:#087f3d;
+  color:white;
+  padding:14px;
+  border-radius:9px;
+  font-size:16px;
+  font-weight:bold;
 }
 
-.tabs button{
-border:0;
-background:#eee;
-padding:10px 15px;
-border-radius:8px
-}
-
-.tabs button.active{
-background:#087f3d;
-color:white
-}
+/* CART */
 
 .cart-item{
-display:flex;
-gap:12px;
-padding:15px 0;
-border-bottom:1px solid #ddd
+  display:flex;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid #ddd;
+  align-items:center;
 }
 
-.cart-icon{
-font-size:42px
+.cart-item-icon{
+  width:65px;
+  height:65px;
+  background:#eef5f1;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
 }
 
-.cart-info{
-flex:1
+.cart-item-info{
+  flex:1;
 }
 
-.qty{
-display:flex;
-gap:10px;
-align-items:center;
-margin-top:8px
+.qty-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:7px;
 }
 
-.qty button{
-border:0;
-background:#087f3d;
-color:white;
-width:30px;
-height:30px;
-border-radius:6px
+.qty-btn{
+  width:30px;
+  height:30px;
+  border-radius:7px;
+  background:#087f3d;
+  color:white;
+  font-weight:bold;
 }
 
-.remove{
-border:0;
-background:none;
-color:#d00;
-margin-top:6px
+.remove-btn{
+  color:#d32f2f;
+  background:none;
+  margin-top:5px;
 }
 
-.total{
-font-size:22px;
-font-weight:bold;
-margin:20px 0
+.cart-total{
+  margin-top:20px;
+  padding-top:15px;
+  border-top:2px solid #ddd;
+  font-size:23px;
+  font-weight:bold;
 }
 
-.success{
-text-align:center;
-padding:20px
+.checkout-btn{
+  width:100%;
+  background:#ff9800;
+  color:white;
+  padding:15px;
+  margin-top:15px;
+  border-radius:9px;
+  font-size:17px;
+  font-weight:bold;
 }
 
-.success-icon{
-font-size:65px
+/* ACCOUNT */
+
+.account-tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
 }
 
-.card{
-background:#fff;
-padding:18px;
-border-radius:14px;
-box-shadow:0 2px 8px #00000010;
-margin:12px 0
+.account-tabs button{
+  flex:1;
+  padding:11px;
+  border-radius:8px;
+  background:#eee;
 }
 
-.dashboard{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px
+.account-tabs button.active{
+  background:#087f3d;
+  color:white;
 }
 
-.stat{
-background:white;
-padding:18px;
-border-radius:14px
+.tab-content{
+  display:none;
 }
 
-.stat strong{
-display:block;
-font-size:26px;
-color:#087f3d
+.tab-content.active{
+  display:block;
 }
 
-.status{
-display:inline-block;
-padding:5px 9px;
-border-radius:15px;
-background:#e8f5ec;
-color:#087f3d;
-font-size:13px
+/* SELLER */
+
+.business-box{
+  background:#f1f8f4;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
 }
 
-.hidden{
-display:none!important
+.business-box h3{
+  color:#087f3d;
+  margin-bottom:8px;
 }
+
+/* FOOTER */
+
+footer{
+  background:#222;
+  color:white;
+  text-align:center;
+  padding:30px 15px;
+  margin-top:40px;
+}
+
+footer h3{
+  color:#63d392;
+  margin-bottom:8px;
+}
+
+footer p{
+  margin:7px 0;
+  color:#ddd;
+  font-size:14px;
+}
+
+/* EMPTY */
+
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  color:#777;
+}
+
+/* MOBILE */
 
 @media(max-width:800px){
-.header-row{flex-wrap:wrap}
-.search{order:3;flex-basis:100%}
-.products{grid-template-columns:repeat(2,1fr)}
-.dashboard{grid-template-columns:repeat(2,1fr)}
+
+  .header-main{
+    flex-wrap:wrap;
+  }
+
+  .logo{
+    font-size:20px;
+  }
+
+  .search-box{
+    order:3;
+    flex-basis:100%;
+  }
+
+  .category-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .product-image{
+    height:150px;
+    font-size:55px;
+  }
+
+  .hero{
+    margin:12px;
+    padding:24px 18px;
+  }
+
+  .hero h1{
+    font-size:27px;
+  }
+
+  .container{
+    padding:0 12px 30px;
+  }
 }
 
-@media(max-width:500px){
-.categories{grid-template-columns:repeat(2,1fr)}
-.products{grid-template-columns:repeat(2,1fr)}
-.form-grid{grid-template-columns:1fr}
-.hero h1{font-size:28px}
-.panel{padding:18px}
+@media(max-width:420px){
+
+  .product-info{
+    padding:11px;
+  }
+
+  .product-info h3{
+    font-size:16px;
+  }
+
+  .price{
+    font-size:18px;
+  }
+
+  .add-cart{
+    font-size:13px;
+  }
+
+  .account-btn{
+    padding:10px;
+  }
+
+  .cart-btn{
+    padding:10px;
+  }
 }
 </style>
 </head>
@@ -381,312 +559,688 @@ display:none!important
 
 <header>
 
-<div class="header-row">
+  <div class="header-main">
 
-<div class="logo">🛒 JANA BAZAR</div>
+    <div class="logo">
+      🛒 JANA BAZAR
+    </div>
 
-<input
-id="searchBox"
-class="search"
-placeholder="🔎 Search products..."
->
+    <div class="search-box">
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="🔎 Search products..."
+        oninput="searchProducts()"
+      >
+    </div>
 
-<button class="header-btn" onclick="openCart()">
-🛒 <span id="cartCount">0</span>
-</button>
+    <button class="cart-btn" onclick="openCart()">
+      🛒 <span id="cartCount">0</span>
+    </button>
 
-<button class="header-btn" onclick="openCustomer()">
-👤 Account
-</button>
+    <button class="account-btn" onclick="openAccount()">
+      👤 Account
+    </button>
 
-</div>
+  </div>
 
-<div class="menu">
+  <div class="navbar">
 
-<button onclick="showHome()">Home</button>
-<button onclick="filterCategory('Groceries')">Groceries</button>
-<button onclick="filterCategory('Fruits')">Fruits</button>
-<button onclick="filterCategory('Vegetables')">Vegetables</button>
-<button onclick="filterCategory('Personal Care')">Personal Care</button>
-<button onclick="filterCategory('Fashion')">Fashion</button>
-<button onclick="filterCategory('Electronics')">Electronics</button>
-<button onclick="filterCategory('Home')">Home</button>
-<button onclick="openSeller()">🏪 Sell on JANA BAZAR</button>
+    <button onclick="filterCategory('All')">
+      Home
+    </button>
 
-</div>
+    <button onclick="filterCategory('Groceries')">
+      🥦 Groceries
+    </button>
+
+    <button onclick="filterCategory('Fruits')">
+      🍎 Fruits
+    </button>
+
+    <button onclick="filterCategory('Vegetables')">
+      🥕 Vegetables
+    </button>
+
+    <button onclick="filterCategory('Personal Care')">
+      🧴 Personal Care
+    </button>
+
+    <button onclick="filterCategory('Fashion')">
+      👕 Fashion
+    </button>
+
+    <button onclick="filterCategory('Electronics')">
+      📱 Electronics
+    </button>
+
+    <button onclick="filterCategory('Home')">
+      🏠 Home
+    </button>
+
+    <button onclick="showSellerRegistration()">
+      🏪 Sell on JANA BAZAR
+    </button>
+
+  </div>
 
 </header>
 
 
 <section class="hero">
 
-<h1>JANA BAZAR</h1>
+  <h1>JANA BAZAR</h1>
 
-<p>మీ స్థానిక మార్కెట్... మీ చేతిలో!</p>
+  <p>
+    మీ స్థానిక మార్కెట్... మీ చేతిలో!
+  </p>
 
-<p>Local Sellers • Local Products • Local Delivery</p>
+  <p>
+    Local Sellers • Local Products • Local Delivery
+  </p>
 
-<button
-class="secondary"
-onclick="openSeller()"
->
-🏪 Become a Seller
-</button>
+  <div class="hero-buttons">
+
+    <button
+      class="primary-btn"
+      onclick="showSellerRegistration()"
+    >
+      🏪 Become a Seller
+    </button>
+
+    <button
+      class="secondary-btn"
+      onclick="openAccount()"
+    >
+      👤 Customer Login / Register
+    </button>
+
+  </div>
 
 </section>
 
 
-<div class="container">
+<main class="container">
 
-<h2 class="section-title">📂 Categories</h2>
+  <h2 class="section-title">
+    📂 Categories
+  </h2>
 
-<div class="categories">
+  <div class="category-grid">
 
-<button class="category" onclick="filterCategory('Groceries')">
-<span class="icon">🥦</span>
-Groceries
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Groceries')"
+    >
+      <div class="category-icon">🥦</div>
+      <strong>Groceries</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('Fruits')">
-<span class="icon">🍎</span>
-Fruits
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Fruits')"
+    >
+      <div class="category-icon">🍎</div>
+      <strong>Fruits</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('Vegetables')">
-<span class="icon">🥕</span>
-Vegetables
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Vegetables')"
+    >
+      <div class="category-icon">🥕</div>
+      <strong>Vegetables</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('Personal Care')">
-<span class="icon">🧴</span>
-Personal Care
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Personal Care')"
+    >
+      <div class="category-icon">🧴</div>
+      <strong>Personal Care</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('Fashion')">
-<span class="icon">👕</span>
-Fashion
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Fashion')"
+    >
+      <div class="category-icon">👕</div>
+      <strong>Fashion</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('Electronics')">
-<span class="icon">📱</span>
-Electronics
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Electronics')"
+    >
+      <div class="category-icon">📱</div>
+      <strong>Electronics</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('Home')">
-<span class="icon">🏠</span>
-Home
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('Home')"
+    >
+      <div class="category-icon">🏠</div>
+      <strong>Home</strong>
+    </div>
 
-<button class="category" onclick="filterCategory('All')">
-<span class="icon">🛍️</span>
-All Products
-</button>
+    <div
+      class="category-card"
+      onclick="filterCategory('All')"
+    >
+      <div class="category-icon">🛍️</div>
+      <strong>All Products</strong>
+    </div>
+
+  </div>
+
+
+  <h2 class="section-title">
+    🛍️ Popular Products
+  </h2>
+
+  <div id="products" class="product-grid">
+    <!-- Products will load here -->
+  </div>
+
+</main>
+
+
+<!-- CART MODAL -->
+
+<div
+  id="cartModal"
+  class="modal-overlay"
+  onclick="closeModalOutside(event,'cartModal')"
+>
+
+  <div class="modal">
+
+    <button
+      class="close-btn"
+      onclick="closeModal('cartModal')"
+    >
+      ✕
+    </button>
+
+    <h2>🛒 My Cart</h2>
+
+    <div id="cartItems"></div>
+
+    <div id="cartTotal" class="cart-total">
+      Total: ₹0
+    </div>
+
+    <button
+      class="checkout-btn"
+      onclick="openCheckout()"
+    >
+      Proceed to Checkout
+    </button>
+
+  </div>
 
 </div>
 
 
-<h2 class="section-title">
-🛍️ Popular Products
-</h2>
+<!-- ACCOUNT MODAL -->
 
-<div id="products" class="products"></div>
+<div
+  id="accountModal"
+  class="modal-overlay"
+  onclick="closeModalOutside(event,'accountModal')"
+>
+
+  <div class="modal">
+
+    <button
+      class="close-btn"
+      onclick="closeModal('accountModal')"
+    >
+      ✕
+    </button>
+
+    <h2>👤 Customer Account</h2>
+
+    <div class="account-tabs">
+
+      <button
+        id="loginTab"
+        class="active"
+        onclick="showAccountTab('login')"
+      >
+        Login
+      </button>
+
+      <button
+        id="registerTab"
+        onclick="showAccountTab('register')"
+      >
+        Register
+      </button>
+
+    </div>
+
+    <div id="loginContent" class="tab-content active">
+
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input
+          id="loginMobile"
+          type="tel"
+          maxlength="10"
+          placeholder="10 digit mobile number"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Password"
+        >
+      </div>
+
+      <button
+        class="submit-btn"
+        onclick="customerLogin()"
+      >
+        Login
+      </button>
+
+    </div>
+
+
+    <div id="registerContent" class="tab-content">
+
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input
+          id="registerName"
+          type="text"
+          placeholder="మీ పేరు"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input
+          id="registerMobile"
+          type="tel"
+          maxlength="10"
+          placeholder="10 digit mobile number"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="Email address"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input
+          id="registerPassword"
+          type="password"
+          placeholder="Create password"
+        >
+      </div>
+
+      <button
+        class="submit-btn"
+        onclick="customerRegister()"
+      >
+        Create Account
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- CHECKOUT MODAL -->
+
+<div
+  id="checkoutModal"
+  class="modal-overlay"
+>
+
+  <div class="modal">
+
+    <button
+      class="close-btn"
+      onclick="closeModal('checkoutModal')"
+    >
+      ✕
+    </button>
+
+    <h2>🧾 Checkout</h2>
+
+    <div class="form-group">
+      <label>Customer Name</label>
+      <input
+        id="checkoutName"
+        type="text"
+        placeholder="మీ పేరు"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input
+        id="checkoutMobile"
+        type="tel"
+        maxlength="10"
+        placeholder="10 digit mobile number"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Delivery Address</label>
+      <textarea
+        id="checkoutAddress"
+        placeholder="House No, Street, Area, City, PIN Code"
+      ></textarea>
+    </div>
+
+    <div class="business-box">
+
+      <h3>💵 Payment Method</h3>
+
+      <label>
+        <input
+          type="radio"
+          name="paymentMethod"
+          value="COD"
+          checked
+        >
+        Cash on Delivery
+      </label>
+
+      <br><br>
+
+      <label>
+        <input
+          type="radio"
+          name="paymentMethod"
+          value="ONLINE"
+        >
+        Online Payment
+      </label>
+
+    </div>
+
+    <div
+      id="checkoutTotal"
+      class="cart-total"
+    >
+      Order Total: ₹0
+    </div>
+
+    <button
+      class="submit-btn"
+      onclick="placeOrder()"
+    >
+      ✅ Place Order
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- SELLER REGISTRATION MODAL -->
+
+<div
+  id="sellerModal"
+  class="modal-overlay"
+>
+
+  <div class="modal">
+
+    <button
+      class="close-btn"
+      onclick="closeModal('sellerModal')"
+    >
+      ✕
+    </button>
+
+    <h2>🏪 Seller Business Registration</h2>
+
+    <div class="business-box">
+
+      <h3>JANA BAZAR Seller</h3>
+
+      <p>
+        మీ business ను JANA BAZARలో నమోదు చేసి
+        local customersకి products అమ్మండి.
+      </p>
+
+    </div>
+
+    <div class="form-group">
+      <label>Business / Shop Name</label>
+      <input
+        id="sellerBusinessName"
+        type="text"
+        placeholder="Business Name"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Owner Name</label>
+      <input
+        id="sellerOwnerName"
+        type="text"
+        placeholder="Owner Name"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input
+        id="sellerMobile"
+        type="tel"
+        maxlength="10"
+        placeholder="10 digit mobile number"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input
+        id="sellerEmail"
+        type="email"
+        placeholder="Business email"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Business Category</label>
+
+      <select id="sellerCategory">
+
+        <option value="">
+          Select Category
+        </option>
+
+        <option>
+          Groceries
+        </option>
+
+        <option>
+          Fruits & Vegetables
+        </option>
+
+        <option>
+          Personal Care
+        </option>
+
+        <option>
+          Fashion
+        </option>
+
+        <option>
+          Electronics
+        </option>
+
+        <option>
+          Home
+        </option>
+
+        <option>
+          Other
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="form-group">
+      <label>Business Address</label>
+
+      <textarea
+        id="sellerAddress"
+        placeholder="Shop / Business Address"
+      ></textarea>
+
+    </div>
+
+    <div class="form-group">
+      <label>PIN Code</label>
+
+      <input
+        id="sellerPin"
+        type="text"
+        maxlength="6"
+        placeholder="6 digit PIN code"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>
+        GSTIN
+        <span style="font-weight:normal;color:#777">
+          (Optional)
+        </span>
+      </label>
+
+      <input
+        id="sellerGST"
+        type="text"
+        placeholder="GST Number"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>
+        UDYAM Registration
+        <span style="font-weight:normal;color:#777">
+          (Optional)
+        </span>
+      </label>
+
+      <input
+        id="sellerUdyam"
+        type="text"
+        placeholder="UDYAM Number"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Business Description</label>
+
+      <textarea
+        id="sellerDescription"
+        placeholder="మీ business గురించి..."
+      ></textarea>
+
+    </div>
+
+    <button
+      class="submit-btn"
+      onclick="registerSeller()"
+    >
+      🏪 Submit Seller Registration
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- ORDER SUCCESS MODAL -->
+
+<div
+  id="successModal"
+  class="modal-overlay"
+>
+
+  <div class="modal" style="text-align:center">
+
+    <button
+      class="close-btn"
+      onclick="closeModal('successModal')"
+    >
+      ✕
+    </button>
+
+    <div style="font-size:65px">
+      🎉
+    </div>
+
+    <h2>
+      Order Confirmed!
+    </h2>
+
+    <p id="orderSuccessText">
+      మీ order విజయవంతంగా నమోదు అయింది.
+    </p>
+
+    <br>
+
+    <button
+      class="submit-btn"
+      onclick="closeModal('successModal')"
+    >
+      Continue Shopping
+    </button>
+
+  </div>
 
 </div>
 
 
 <footer>
 
-<h3>JANA BAZAR</h3>
+  <h3>JANA BAZAR</h3>
 
-<p>Local Multi-Vendor E-Commerce Platform</p>
+  <p>
+    Local Multi-Vendor E-Commerce Platform
+  </p>
 
-<p>Customer • Seller • Delivery • Admin</p>
+  <p>
+    Customer • Seller • Delivery • Admin
+  </p>
 
-<p>© 2026 JANA BAZAR</p>
+  <p>
+    © 2026 JANA BAZAR
+  </p>
 
-</footer>
-
-
-<!-- CUSTOMER ACCOUNT -->
-
-<div id="customerOverlay" class="overlay">
-
-<div class="panel">
-
-<button class="close" onclick="closeModal('customerOverlay')">×</button>
-
-<h2>👤 Customer Account</h2>
-
-<div class="tabs">
-
-<button id="loginTab" onclick="customerTab('login')">
-Login
-</button>
-
-<button id="registerTab" onclick="customerTab('register')">
-Register
-</button>
-
-</div>
-
-
-<div id="loginBox">
-
-<div class="form-group">
-<label>Mobile / Email</label>
-<input id="loginUser">
-</div>
-
-<div class="form-group">
-<label>Password</label>
-<input id="loginPassword" type="password">
-</div>
-
-<button class="primary" onclick="customerLogin()">
-Login
-</button>
-
-</div>
-
-
-<div id="registerBox" class="hidden">
-
-<div class="form-group">
-<label>Full Name</label>
-<input id="regName">
-</div>
-
-<div class="form-group">
-<label>Mobile Number</label>
-<input id="regPhone">
-</div>
-
-<div class="form-group">
-<label>Email</label>
-<input id="regEmail">
-</div>
-
-<div class="form-group">
-<label>Password</label>
-<input id="regPassword" type="password">
-</div>
-
-<button class="primary" onclick="customerRegister()">
-Create Customer Account
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- SELLER -->
-
-<div id="sellerOverlay" class="overlay">
-
-<div class="panel">
-
-<button class="close" onclick="closeModal('sellerOverlay')">×</button>
-
-<h2>🏪 JANA BAZAR Seller Registration</h2>
-
-<p>
-Register your business and start selling on JANA BAZAR.
-</p>
-
-
-<h3>👤 Owner Details</h3>
-
-<div class="form-grid">
-
-<div class="form-group">
-<label>Owner Name *</label>
-<input id="sellerOwner">
-</div>
-
-<div class="form-group">
-<label>Mobile Number *</label>
-<input id="sellerPhone">
-</div>
-
-</div>
-
-
-<div class="form-group">
-<label>Email</label>
-<input id="sellerEmail">
-</div>
-
-
-<h3>🏪 Business Details</h3>
-
-<div class="form-group">
-<label>Business / Shop Name *</label>
-<input id="businessName">
-</div>
-
-<div class="form-grid">
-
-<div class="form-group">
-<label>Business Type</label>
-
-<select id="businessType">
-
-<option>Individual / Proprietorship</option>
-<option>Partnership</option>
-<option>Private Limited</option>
-<option>LLP</option>
-<option>Other</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-<label>Business Category</label>
-
-<select id="businessCategory">
-
-<option>Grocery</option>
-<option>Food</option>
-<option>Fashion</option>
-<option>Electronics</option>
-<option>Home</option>
-<option>Personal Care</option>
-<option>Other</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-<div class="form-group">
-<label>Business Description</label>
-<textarea id="businessDescription" rows="3"></textarea>
-</div>
-
-
-<h3>📍 Business Address</h3>
-
-<div class="form-group">
-<label>Address *</label>
-<textarea id="businessAddress" rows="3"></textarea>
-</div>
-
-<div class="form-grid">
-
-<div class="form-group">
-<label>City</label>
-<input id="businessCity">
-</div>
-
-<div class="form-group">
-<label>District</label>
-<input id="businessDistrict">
+</footer>ct">
 </div>
 
 <div class="form-group">
