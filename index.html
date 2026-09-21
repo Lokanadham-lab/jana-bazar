@@ -1279,6 +1279,74 @@ var localOnly = products.filter(function(localProduct){
 
   }
 
+}/* ADMIN LOGIN - SUPABASE */
+
+async function adminLogin(){
+
+  var email = document.getElementById("adminEmail").value.trim();
+  var password = document.getElementById("adminPassword").value;
+  var message = document.getElementById("adminLoginMessage");
+
+  if(!email || !password){
+    message.innerHTML = "⚠️ Email మరియు Password ఇవ్వండి.";
+    return;
+  }
+
+  message.innerHTML = "⏳ Login జరుగుతోంది...";
+
+  try{
+
+    var loginResult = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if(loginResult.error){
+      console.error(loginResult.error);
+      message.innerHTML = "❌ Login failed. Email లేదా Password సరిచూడండి.";
+      return;
+    }
+
+    var user = loginResult.data.user;
+
+    if(!user){
+      message.innerHTML = "❌ User session దొరకలేదు.";
+      return;
+    }
+
+    var profileResult = await supabaseClient
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if(profileResult.error){
+      console.error(profileResult.error);
+      await supabaseClient.auth.signOut();
+      message.innerHTML = "❌ Admin profile దొరకలేదు.";
+      return;
+    }
+
+    if(profileResult.data.role !== "admin"){
+      await supabaseClient.auth.signOut();
+      message.innerHTML = "❌ ఈ accountకి Admin access లేదు.";
+      return;
+    }
+
+    message.innerHTML = "✅ Admin Login successful!";
+
+    closeModal("adminLoginModal");
+
+    renderAdmin();
+    openModal("adminModal");
+
+  }catch(error){
+
+    console.error(error);
+    message.innerHTML = "❌ Something went wrong. మళ్లీ ప్రయత్నించండి.";
+
+  }
+
 }/* START */
 saveAll();
 renderProducts();
