@@ -1282,66 +1282,223 @@ async function loadSupabaseProducts(){
 
   try{
 
-    var result = await supabaseClient
+    /* ===============================
+       1. LOAD PRODUCTS
+    =============================== */
+
+    var productResult = await supabaseClient
       .from("products")
-      .select("id,name,description,sku,price,mrp,discount_percent,main_image_url,is_active,is_featured")
+      .select(
+        "id,category_id,name,description,sku,price,mrp,discount_percent,main_image_url,is_active,is_featured"
+      )
       .eq("is_active",true)
       .order("created_at",{ascending:false});
 
-    if(result.error){
-      console.error("Supabase Products Error:",result.error);
+    if(productResult.error){
+
+      console.error(
+        "Supabase Products Error:",
+        productResult.error
+      );
+
       return;
     }
 
-    var liveProducts = (result.data || []).map(function(product){
 
-      return {
-  id:product.id,
-  source:"supabase",
-  name:product.name,
-        category:"Groceries",
-        description:product.description || "",
-        mrp:Number(product.mrp || product.price || 0),
-        price:Number(product.price || 0),
-        stock:999,
-        unit:"piece",
-        icon:"🛍️",
-        image:product.main_image_url || "",
-        sellerType:"admin",
-        sellerId:"JANA",
-        sellerName:"JANA BAZAR",
-        status:"Published",
-        sku:product.sku || "",
-        discount_percent:Number(product.discount_percent || 0),
-        isFeatured:!!product.is_featured
+    /* ===============================
+       2. LOAD CATEGORIES
+    =============================== */
+
+    var categoryResult = await supabaseClient
+      .from("categories")
+      .select("id,name,slug")
+      .eq("is_active",true);
+
+    if(categoryResult.error){
+
+      console.error(
+        "Supabase Categories Error:",
+        categoryResult.error
+      );
+
+      return;
+    }
+
+
+    /* ===============================
+       3. CATEGORY MAP
+    =============================== */
+
+    var categoryMap = {};
+
+    (categoryResult.data || []).forEach(function(category){
+
+      categoryMap[String(category.id)] = {
+        name: category.name,
+        slug: category.slug
       };
 
     });
 
-    if(liveProducts.length){
 
-      var remoteIds = liveProducts.map(function(remoteProduct){
-  return String(remoteProduct.id);
-});
+    /* ===============================
+       4. CONVERT SUPABASE PRODUCTS
+    =============================== */
 
-var localOnly = products.filter(function(localProduct){
+    var liveProducts = (productResult.data || []).map(function(product){
 
-  return remoteIds.indexOf(String(localProduct.id)) === -1 &&
-         localProduct.source !== "supabase";
+      var categoryData =
+        categoryMap[String(product.category_id)] || null;
 
-});
+      return {
 
-      products = liveProducts.concat(localOnly);
+        id: product.id,
 
-      saveAll();
-      renderProducts();
+        source: "supabase",
 
-      console.log(
-        "JANA BAZAR: Supabase products loaded:",
-        liveProducts.length
-      );
+        name: product.name,
 
-    }
+        category:
+          categoryData
+            ? categoryData.name
+            : "Other",
+
+        description:
+          product.description || "",
+
+        mrp:
+          Number(
+            product.mrp ||
+            product.price ||
+            0
+          ),
+
+        price:
+          Number(
+            product.price || 0
+          ),
+
+        stock: 999,
+
+        unit: "piece",
+
+        icon: "🛍️",
+
+        image:
+          product.main_image_url || "",
+
+        sellerType: "admin",
+
+        sellerId: "JANA",
+
+        sellerName: "JANA BAZAR",
+
+        status: "Published",
+
+        sku:
+          product.sku || "",
+
+        discount_percent:
+          Number(
+            product.discount_percent || 0
+          ),
+
+        isFeatured:
+          !!product.is_featured
+
+      };
+
+    });
+
+
+    /* ===============================
+       5. REMOVE OLD LOCAL SEED DATA
+    =============================== */
+
+    var legacyIds = [
+
+      "JB001",
+      "JB002",
+      "JB003",
+      "JB004",
+      "JB005",
+      "JB006",
+      "JB007",
+      "JB008",
+      "JB009",
+      "JB010",
+      "JB011",
+      "JB012"
+
+    ];
+
+
+    var remoteIds =
+      liveProducts.map(function(remoteProduct){
+
+        return String(remoteProduct.id);
+
+      });
+
+
+    var localOnly =
+      products.filter(function(localProduct){
+
+        var localId =
+          String(localProduct.id);
+
+
+        if(
+          remoteIds.indexOf(localId) !== -1
+        ){
+
+          return false;
+
+        }
+
+
+        if(
+          legacyIds.indexOf(localId) !== -1
+        ){
+
+          return false;
+
+        }
+
+
+        if(
+          localProduct.name === "Test Rice" &&
+          localProduct.sellerId === "JANA"
+        ){
+
+          return false;
+
+        }
+
+
+        return localProduct.source !== "supabase";
+
+      });
+
+
+    /* ===============================
+       6. FINAL PRODUCT LIST
+    =============================== */
+
+    products =
+      liveProducts.concat(localOnly);
+
+
+    saveAll();
+
+    renderProducts();
+
+
+    console.log(
+      "JANA BAZAR: Supabase products loaded:",
+      liveProducts.length
+    );
+
 
   }catch(error){
 
@@ -1352,6 +1509,7 @@ var localOnly = products.filter(function(localProduct){
 
   }
 
+  }
 }/* ADMIN LOGIN - SUPABASE */
 
 async function adminLogin(){
