@@ -1339,8 +1339,11 @@ async function adminLogin(){
 
     setTimeout(function(){
 
+  document.getElementById("adminLoginModal").classList.remove("open");
+
   renderAdmin();
-  openModal("adminModal");
+
+  document.getElementById("adminModal").classList.add("open");
 
 }, 300);
 
