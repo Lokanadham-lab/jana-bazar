@@ -1337,8 +1337,12 @@ async function adminLogin(){
 
     closeModal("adminLoginModal");
 
-    renderAdmin();
-    openModal("adminModal");
+    setTimeout(function(){
+
+  renderAdmin();
+  openModal("adminModal");
+
+}, 300);
 
   }catch(error){
 
