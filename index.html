@@ -160,7 +160,52 @@ footer{text-align:center;color:#77808d;padding:25px}
 <button class="btn" id="saveProduct">Save Product</button>
 </div></div>
 
+<!-- ADMIN LOGIN -->
+<div class="modal" id="adminLoginModal">
+  <div class="modal-box">
+
+    <button class="modal-close" onclick="closeModal('adminLoginModal')">
+      ✕
+    </button>
+
+    <h2>🔐 JANA BAZAR Admin Login</h2>
+
+    <p style="color:#666;margin-bottom:16px;">
+      Admin accountతో login చేయండి
+    </p>
+
+    <input
+      type="email"
+      id="adminEmail"
+      placeholder="Admin Email"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="adminPassword"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
+
+    <button
+      class="btn"
+      style="width:100%;margin-top:12px;"
+      onclick="adminLogin()"
+    >
+      🔐 Login
+    </button>
+
+    <div
+      id="adminLoginMessage"
+      style="margin-top:12px;text-align:center;"
+    ></div>
+
+  </div>
+</div>
+
 <!-- ADMIN -->
+<div class="modal" id="adminModal"><!-- ADMIN -->
 <div class="modal" id="adminModal"><div class="box wide">
 <button class="close" data-close="adminModal">×</button>
 <div class="between"><h2>👑 JANA BAZAR Admin</h2><button class="btn" id="adminAddProduct">➕ Add JANA BAZAR Product</button></div>
