@@ -225,6 +225,11 @@ return Array.isArray(data)?data:fallback.slice();
 }
 
 var products=readArray(DB.products,seedProducts);
+/* First-load recovery: if an empty product array exists in this browser, restore the built-in JANA BAZAR catalog. */
+if(!products.length){
+products=seedProducts.slice();
+try{localStorage.setItem(DB.products,JSON.stringify(products));}catch(error){}
+}
 var cart=readArray(DB.cart,[]);
 var users=readArray(DB.users,[]);
 var sellers=readArray(DB.sellers,[]);
