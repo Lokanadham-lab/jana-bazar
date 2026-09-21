@@ -1149,7 +1149,86 @@ openAdmin();
 }
 });
 
-/* START */
+/* SUPABASE PRODUCTS - V6 */
+
+var SUPABASE_URL = "https://fuabetbxblqrbvsjbqpf.supabase.co";
+
+var SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+var supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+async function loadSupabaseProducts(){
+
+  try{
+
+    var result = await supabaseClient
+      .from("products")
+      .select("id,name,description,sku,price,mrp,discount_percent,main_image_url,is_active,is_featured")
+      .eq("is_active",true)
+      .order("created_at",{ascending:false});
+
+    if(result.error){
+      console.error("Supabase Products Error:",result.error);
+      return;
+    }
+
+    var liveProducts = (result.data || []).map(function(product){
+
+      return {
+        id:product.id,
+        name:product.name,
+        category:"Groceries",
+        description:product.description || "",
+        mrp:Number(product.mrp || product.price || 0),
+        price:Number(product.price || 0),
+        stock:999,
+        unit:"piece",
+        icon:"🛍️",
+        image:product.main_image_url || "",
+        sellerType:"admin",
+        sellerId:"JANA",
+        sellerName:"JANA BAZAR",
+        status:"Published",
+        sku:product.sku || "",
+        discount_percent:Number(product.discount_percent || 0),
+        isFeatured:!!product.is_featured
+      };
+
+    });
+
+    if(liveProducts.length){
+
+      var localOnly = products.filter(function(localProduct){
+
+        return String(localProduct.id).indexOf("JB") !== 0;
+
+      });
+
+      products = liveProducts.concat(localOnly);
+
+      saveAll();
+      renderProducts();
+
+      console.log(
+        "JANA BAZAR: Supabase products loaded:",
+        liveProducts.length
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Supabase connection error:",
+      error
+    );
+
+  }
+
+}/* START */
 saveAll();
 renderProducts();
 updateCartCount();
