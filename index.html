@@ -1178,8 +1178,9 @@ async function loadSupabaseProducts(){
     var liveProducts = (result.data || []).map(function(product){
 
       return {
-        id:product.id,
-        name:product.name,
+  id:product.id,
+  source:"supabase",
+  name:product.name,
         category:"Groceries",
         description:product.description || "",
         mrp:Number(product.mrp || product.price || 0),
@@ -1201,11 +1202,16 @@ async function loadSupabaseProducts(){
 
     if(liveProducts.length){
 
-      var localOnly = products.filter(function(localProduct){
+      var remoteIds = liveProducts.map(function(remoteProduct){
+  return String(remoteProduct.id);
+});
 
-        return String(localProduct.id).indexOf("JB") !== 0;
+var localOnly = products.filter(function(localProduct){
 
-      });
+  return remoteIds.indexOf(String(localProduct.id)) === -1 &&
+         localProduct.source !== "supabase";
+
+});
 
       products = liveProducts.concat(localOnly);
 
