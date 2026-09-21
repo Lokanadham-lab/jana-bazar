@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#087a4b">
+<title>JANA BAZAR | Local Marketplace</title>
+<style>
+:root{--g:#087a4b;--g2:#13a66a;--o:#f59e0b;--bg:#f5f7fb;--t:#172033;--m:#667085;--line:#e5e7eb;--red:#dc3545}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--t)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+header{position:sticky;top:0;z-index:20;background:#fff;box-shadow:0 2px 12px #0001}
+.top{display:flex;align-items:center;gap:9px;padding:10px 4%;flex-wrap:wrap}
+.logo{display:flex;align-items:center;min-width:180px}.logo img{display:block;width:185px;height:auto;max-height:58px;object-fit:contain}.sellerTop{white-space:nowrap}
+.search{flex:1;min-width:190px;height:40px;border:1px solid #d9dee7;border-radius:22px;padding:0 14px}
+.nav{display:flex;gap:7px;padding:7px 4%;overflow:auto}.nav button{background:#eef2f5;padding:8px 12px;border-radius:20px;white-space:nowrap}.nav button.active{background:var(--g);color:#fff}
+.btn{background:var(--g);color:#fff;padding:9px 13px;border-radius:9px;font-weight:700}.btn.gray{background:#edf1f5;color:var(--t)}.btn.red{background:var(--red)}.btn.sm{padding:6px 9px;font-size:12px}
+.hero{margin:18px 4%;padding:28px;border-radius:18px;background:linear-gradient(135deg,var(--g),var(--g2));color:#fff}.hero h1{margin:0 0 7px}
+main{padding:0 4% 40px}.head{display:flex;justify-content:space-between;align-items:center}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.card{background:#fff;border-radius:15px;padding:13px;box-shadow:0 2px 10px #0001}.pic{height:125px;background:#f0f3f5;border-radius:11px;display:grid;place-items:center;font-size:52px}.card h3{margin:9px 0 4px}.muted{font-size:12px;color:var(--m)}.tag{display:inline-block;background:#e6f7ee;color:var(--g);padding:4px 7px;border-radius:7px;font-size:11px;font-weight:bold}.price{font-size:19px;font-weight:900;margin-top:8px}.mrp{text-decoration:line-through;color:#888;font-size:12px;font-weight:400}.card .btn{width:100%;margin-top:9px}
+.empty{grid-column:1/-1;background:#fff;padding:35px;border-radius:15px;text-align:center;color:var(--m)}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:100;padding:15px;overflow:auto}.modal.open{display:flex;align-items:center;justify-content:center}.box{position:relative;background:#fff;width:min(720px,100%);max-height:94vh;overflow:auto;border-radius:17px;padding:20px}.wide{width:min(1050px,100%)}.close{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:#edf1f5;font-size:20px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:5px}.full{grid-column:1/-1}.field input,.field select,.field textarea{padding:10px;border:1px solid #d7dce3;border-radius:8px}
+.tabs{display:flex;gap:7px;margin:12px 0}.tabs button{padding:8px 12px;border-radius:8px;background:#edf1f5}.tabs .active{background:var(--g);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}.stat{background:#f1f4f6;padding:12px;border-radius:10px}.stat b{display:block;font-size:22px;margin-top:4px}
+.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;align-items:center;gap:8px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th,.table td{padding:9px;border-bottom:1px solid #eee;text-align:left;font-size:13px}.table th{background:#f7f8fa}
+.notice{padding:10px;background:#fff8e6;border:1px solid #ffe1a5;border-radius:9px;font-size:13px}.toast{display:none;position:fixed;right:12px;bottom:12px;background:#172033;color:#fff;padding:11px 15px;border-radius:9px;z-index:300}
+footer{text-align:center;color:#77808d;padding:25px}
+@media(max-width:650px){.top{padding:9px 3%}.search{order:3;flex-basis:100%}.hero,main{margin-left:3%;margin-right:3%}main{padding-left:0;padding-right:0}.grid{grid-template-columns:repeat(2,1fr);gap:9px}.pic{height:105px;font-size:43px}.form{grid-template-columns:1fr}.full{grid-column:auto}.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="top">
+<a class="logo" href="#" aria-label="JANA BAZAR Home"><img src="jana-bazar-website-header-logo.png" alt="JANA BAZAR - India’s People’s Marketplace"></a>
+<input id="search" class="search" placeholder="🔎 Search products, categories or shops...">
+<button class="btn gray" id="accountOpen">👤 Account</button>
+<button class="btn gray sellerTop" id="sellerOpen">🏪 Seller</button>
+<button class="btn gray" id="cartOpen">🛒 Cart <span id="cartCount">0</span></button>
+</div>
+<nav class="nav" id="nav"></nav>
+</header>
+
+<section class="hero">
+<h1>JANA BAZAR 🛍️</h1>
+<div>Local Multi-Vendor E-Commerce Marketplace</div>
+</section>
+
+<main>
+<div class="head"><h2>Products</h2><span class="muted" id="productCount"></span></div>
+<div id="productGrid" class="grid"></div>
+</main>
+
+<footer>© 2026 JANA BAZAR • Local Marketplace</footer>
+
+<!-- ACCOUNT -->
+<div class="modal" id="accountModal"><div class="box">
+<button class="close" data-close="accountModal">×</button>
+<h2>👤 Customer Account</h2>
+<div class="tabs"><button id="loginTab" class="active">Login</button><button id="registerTab">Register</button></div>
+<div id="loginPanel">
+<div class="field"><label>Mobile / Email</label><input id="loginId"></div><br>
+<div class="field"><label>Password</label><input id="loginPassword" type="password"></div><br>
+<button class="btn" id="loginBtn">Login</button>
+</div>
+<div id="registerPanel" style="display:none">
+<div class="form">
+<div class="field"><label>Name *</label><input id="registerName"></div>
+<div class="field"><label>Mobile *</label><input id="registerMobile"></div>
+<div class="field"><label>Email</label><input id="registerEmail"></div>
+<div class="field"><label>Password *</label><input id="registerPassword" type="password"></div>
+</div><br>
+<button class="btn" id="registerBtn">Create Account</button>
+</div>
+<hr><div id="accountStatus" class="muted">Not logged in.</div>
+</div></div>
+
+<!-- CART -->
+<div class="modal" id="cartModal"><div class="box">
+<button class="close" data-close="cartModal">×</button>
+<h2>🛒 Shopping Cart</h2>
+<div id="cartItems"></div><hr>
+<div class="between"><b>Total</b><b id="cartTotal">₹0</b></div><br>
+<button class="btn" id="checkoutOpen">Proceed to Checkout</button>
+</div></div>
+
+<!-- CHECKOUT -->
+<div class="modal" id="checkoutModal"><div class="box">
+<button class="close" data-close="checkoutModal">×</button>
+<h2>📦 Checkout</h2>
+<div class="form">
+<div class="field"><label>Name *</label><input id="checkoutName"></div>
+<div class="field"><label>Mobile *</label><input id="checkoutMobile"></div>
+<div class="field full"><label>Delivery Address *</label><textarea id="checkoutAddress" rows="4"></textarea></div>
+<div class="field full"><label>Payment</label><select id="checkoutPayment"><option>Cash on Delivery</option><option>UPI — Coming Soon</option><option>Debit/Credit Card — Coming Soon</option></select></div>
+</div><br>
+<button class="btn" id="placeOrder">Place Order</button>
+</div></div>
+
+<!-- ORDER -->
+<div class="modal" id="orderModal"><div class="box">
+<button class="close" data-close="orderModal">×</button>
+<h2>🎉 Order Confirmed</h2>
+<div id="orderDetails"></div>
+</div></div>
+
+<!-- SELLER -->
+<div class="modal" id="sellerModal"><div class="box wide">
+<button class="close" data-close="sellerModal">×</button>
+<h2>🏪 Seller Registration</h2>
+<div class="notice">Demo frontend: production seller documents and bank information will be stored securely in Supabase.</div><br>
+<div class="form">
+<div class="field"><label>Shop / Business Name *</label><input id="sellerShop"></div>
+<div class="field"><label>Owner Name *</label><input id="sellerOwner"></div>
+<div class="field"><label>Mobile *</label><input id="sellerMobile"></div>
+<div class="field"><label>Email</label><input id="sellerEmail"></div>
+<div class="field"><label>Business Category</label><select id="sellerCategory"><option>Grocery</option><option>Fruits & Vegetables</option><option>Fashion</option><option>Electronics</option><option>Personal Care</option><option>Home</option><option>Other</option></select></div>
+<div class="field"><label>PIN</label><input id="sellerPin"></div>
+<div class="field full"><label>Business Address</label><textarea id="sellerAddress"></textarea></div>
+<div class="field"><label>PAN</label><input id="sellerPan"></div>
+<div class="field"><label>GSTIN</label><input id="sellerGst"></div>
+<div class="field"><label>Udyam</label><input id="sellerUdyam"></div>
+<div class="field"><label>FSSAI</label><input id="sellerFssai"></div>
+<div class="field"><label>UPI ID</label><input id="sellerUpi"></div>
+<div class="field full"><label>Store Description</label><textarea id="sellerDescription"></textarea></div>
+</div><br>
+<div class="row"><button class="btn" id="saveSeller">Submit Application</button><button class="btn gray" id="openSellerDashboard">Seller Dashboard</button></div>
+</div></div>
+
+<!-- SELLER DASHBOARD -->
+<div class="modal" id="sellerDashboardModal"><div class="box wide">
+<button class="close" data-close="sellerDashboardModal">×</button>
+<div class="between"><h2>🏪 Seller Dashboard</h2><button class="btn" id="sellerAddProduct">➕ Add Product</button></div>
+<div id="sellerSummary"></div>
+<div class="stats">
+<div class="stat">Products<b id="sellerProductsCount">0</b></div>
+<div class="stat">Pending<b id="sellerPendingCount">0</b></div>
+<div class="stat">Published<b id="sellerPublishedCount">0</b></div>
+<div class="stat">Stock<b id="sellerStockCount">0</b></div>
+</div>
+<div id="sellerProductTable"></div>
+</div></div>
+
+<!-- PRODUCT FORM -->
+<div class="modal" id="productModal"><div class="box wide">
+<button class="close" data-close="productModal">×</button>
+<h2 id="productFormTitle">Add Product</h2>
+<div class="form">
+<div class="field"><label>Product Name *</label><input id="productName"></div>
+<div class="field"><label>Category *</label><select id="productCategory"><option>Groceries</option><option>Fruits</option><option>Vegetables</option><option>Personal Care</option><option>Fashion</option><option>Electronics</option><option>Home</option></select></div>
+<div class="field full"><label>Description</label><textarea id="productDescription"></textarea></div>
+<div class="field"><label>MRP *</label><input id="productMrp" type="number" min="0"></div>
+<div class="field"><label>Selling Price *</label><input id="productPrice" type="number" min="0"></div>
+<div class="field"><label>Stock *</label><input id="productStock" type="number" min="0"></div>
+<div class="field"><label>Unit</label><input id="productUnit" value="piece"></div>
+<div class="field"><label>SKU</label><input id="productSku"></div>
+<div class="field"><label>Icon / Emoji</label><input id="productIcon" value="🛍️"></div>
+</div><br>
+<button class="btn" id="saveProduct">Save Product</button>
+</div></div>
+
+<!-- ADMIN -->
+<div class="modal" id="adminModal"><div class="box wide">
+<button class="close" data-close="adminModal">×</button>
+<div class="between"><h2>👑 JANA BAZAR Admin</h2><button class="btn" id="adminAddProduct">➕ Add JANA BAZAR Product</button></div>
+<div class="stats">
+<div class="stat">Products<b id="adminProductsCount">0</b></div>
+<div class="stat">Seller Products<b id="adminSellerCount">0</b></div>
+<div class="stat">Pending<b id="adminPendingCount">0</b></div>
+<div class="stat">Orders<b id="adminOrdersCount">0</b></div>
+</div>
+<div id="adminProductTable"></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* =====================================================
+   JANA BAZAR FINAL PROTOTYPE ARCHITECTURE
+   Customer + Seller + Admin + Marketplace
+   Frontend prototype only.
+   Production backend = Supabase.
+===================================================== */
+
+var DB={
+products:"JANA_BAZAR_FINAL_PRODUCTS",
+cart:"JANA_BAZAR_FINAL_CART",
+users:"JANA_BAZAR_FINAL_USERS",
+sellers:"JANA_BAZAR_FINAL_SELLERS",
+orders:"JANA_BAZAR_FINAL_ORDERS",
+currentUser:"JANA_BAZAR_FINAL_CURRENT_USER",
+currentSeller:"JANA_BAZAR_FINAL_CURRENT_SELLER"
+};
+
+var categories=[
+"All","Groceries","Fruits","Vegetables",
+"Personal Care","Fashion","Electronics","Home"
+];
+
+var seedProducts=[
+{id:"JB001",name:"Premium Rice",category:"Groceries",description:"Premium quality rice",mrp:650,price:599,stock:100,unit:"5 kg",icon:"🍚",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB002",name:"Fresh Milk",category:"Groceries",description:"Fresh quality milk",mrp:65,price:60,stock:80,unit:"1 L",icon:"🥛",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB003",name:"Fresh Apples",category:"Fruits",description:"Fresh apples",mrp:210,price:180,stock:50,unit:"1 kg",icon:"🍎",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB004",name:"Body Care",category:"Personal Care",description:"Daily body care product",mrp:240,price:199,stock:40,unit:"piece",icon:"🧴",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB005",name:"Fresh Tomatoes",category:"Vegetables",description:"Fresh tomatoes",mrp:70,price:55,stock:100,unit:"1 kg",icon:"🍅",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB006",name:"Bananas",category:"Fruits",description:"Fresh bananas",mrp:90,price:70,stock:70,unit:"1 dozen",icon:"🍌",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB007",name:"Cotton T-Shirt",category:"Fashion",description:"Comfortable cotton T-shirt",mrp:499,price:399,stock:35,unit:"piece",icon:"👕",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB008",name:"Smart Phone",category:"Electronics",description:"Smart phone",mrp:9999,price:8999,stock:15,unit:"piece",icon:"📱",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB009",name:"Kitchen Set",category:"Home",description:"Useful kitchen set",mrp:999,price:799,stock:25,unit:"set",icon:"🍳",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB010",name:"Potatoes",category:"Vegetables",description:"Fresh potatoes",mrp:60,price:45,stock:100,unit:"1 kg",icon:"🥔",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB011",name:"Shampoo",category:"Personal Care",description:"Hair care shampoo",mrp:299,price:249,stock:40,unit:"piece",icon:"🧴",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"},
+{id:"JB012",name:"LED Bulb",category:"Home",description:"Energy efficient LED bulb",mrp:169,price:129,stock:60,unit:"piece",icon:"💡",sellerType:"admin",sellerId:"JANA",sellerName:"JANA BAZAR",status:"Published"}
+];
+
+function readArray(key,fallback){
+try{
+var value=localStorage.getItem(key);
+if(!value)return fallback.slice();
+var data=JSON.parse(value);
+return Array.isArray(data)?data:fallback.slice();
+}catch(error){return fallback.slice();}
+}
+
+var products=readArray(DB.products,seedProducts);
+var cart=readArray(DB.cart,[]);
+var users=readArray(DB.users,[]);
+var sellers=readArray(DB.sellers,[]);
+var orders=readArray(DB.orders,[]);
+
+var selectedCategory="All";
+var editingProductId=null;
+var productMode="seller";
+
+function saveAll(){
+try{
+localStorage.setItem(DB.products,JSON.stringify(products));
+localStorage.setItem(DB.cart,JSON.stringify(cart));
+localStorage.setItem(DB.users,JSON.stringify(users));
+localStorage.setItem(DB.sellers,JSON.stringify(sellers));
+localStorage.setItem(DB.orders,JSON.stringify(orders));
+}catch(error){console.log("Storage error",error);}
+}
+
+function money(value){
+return "₹"+Number(value||0).toLocaleString("en-IN");
+}
+
+function escapeHtml(value){
+return String(value==null?"":value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#39;");
+}
+
+function openModal(id){
+document.getElementById(id).classList.add("open");
+}
+
+function closeModal(id){
+document.getElementById(id).classList.remove("open");
+}
+
+function toast(message){
+var t=document.getElementById("toast");
+t.textContent=message;
+t.style.display="block";
+clearTimeout(window.jbToastTimer);
+window.jbToastTimer=setTimeout(function(){
+t.style.display="none";
+},2200);
+}
+
+function currentUser(){
+var id=localStorage.getItem(DB.currentUser);
+for(var i=0;i<users.length;i++){
+if(users[i].id===id)return users[i];
+}
+return null;
+}
+
+function currentSeller(){
+var id=localStorage.getItem(DB.currentSeller);
+for(var i=0;i<sellers.length;i++){
+if(sellers[i].id===id)return sellers[i];
+}
+return sellers.length?sellers[sellers.length-1]:null;
+}
+
+/* CATEGORY NAV */
+var nav=document.getElementById("nav");
+
+categories.forEach(function(category){
+var button=document.createElement("button");
+button.textContent=category;
+button.onclick=function(){
+selectedCategory=category;
+var buttons=nav.querySelectorAll("button");
+for(var i=0;i<buttons.length;i++)buttons[i].classList.remove("active");
+button.classList.add("active");
+renderProducts();
+};
+nav.appendChild(button);
+});
+
+nav.querySelector("button").classList.add("active");
+
+/* PRODUCTS */
+function renderProducts(){
+
+var search=document.getElementById("search").value.trim().toLowerCase();
+
+var visible=products.filter(function(product){
+
+if(product.status!=="Published")return false;
+if(Number(product.stock)<=0)return false;
+
+if(
+selectedCategory!=="All" &&
+product.category!==selectedCategory
+)return false;
+
+if(search){
+var text=(
+product.name+" "+
+product.category+" "+
+product.sellerName
+).toLowerCase();
+
+if(text.indexOf(search)===-1)return false;
+}
+
+return true;
+});
+
+document.getElementById("productCount").textContent=
+visible.length+" products";
+
+var grid=document.getElementById("productGrid");
+
+if(!visible.length){
+grid.innerHTML=
+'<div class="empty"><h3>No products found</h3><p>Try another category or search.</p></div>';
+return;
+}
+
+grid.innerHTML=visible.map(function(product){
+
+return '<article class="card">'+
+'<div class="pic">'+escapeHtml(product.icon)+'</div>'+
+'<span class="tag">'+
+escapeHtml(
+product.sellerType==="admin"
+?"JANA BAZAR"
+:"Seller: "+product.sellerName
+)+
+'</span>'+
+'<h3>'+escapeHtml(product.name)+'</h3>'+
+'<div class="muted">'+
+escapeHtml(product.category)+" • "+
+escapeHtml(product.unit)+
+'</div>'+
+'<p class="muted">'+
+escapeHtml(product.description)+
+'</p>'+
+'<div class="price">'+
+money(product.price)+
+' <span class="mrp">'+
+money(product.mrp)+
+'</span>'+
+'</div>'+
+'<button class="btn" data-add-product="'+
+escapeHtml(product.id)+
+'">🛒 Add to Cart</button>'+
+'</article>';
+
+}).join("");
+}
+
+document.getElementById("search").oninput=renderProducts;
+
+document.getElementById("productGrid").onclick=function(event){
+var button=event.target.closest("[data-add-product]");
+if(button)addToCart(button.getAttribute("data-add-product"));
+};
+
+function addToCart(productId){
+
+var product=products.find(function(p){
+return p.id===productId;
+});
+
+if(!product)return;
+
+var item=cart.find(function(i){
+return i.productId===productId;
+});
+
+if(item){
+if(item.quantity>=product.stock){
+toast("Available stock limit reached");
+return;
+}
+item.quantity++;
+}else{
+cart.push({
+productId:productId,
+quantity:1
+});
+}
+
+saveAll();
+updateCartCount();
+toast("Added to cart");
+}
+
+function updateCartCount(){
+var count=cart.reduce(function(total,item){
+return total+Number(item.quantity||0);
+},0);
+
+document.getElementById("cartCount").textContent=count;
+}
+
+/* CART */
+document.getElementById("cartOpen").onclick=function(){
+renderCart();
+openModal("cartModal");
+};
+
+function renderCart(){
+
+var box=document.getElementById("cartItems");
+
+if(!cart.length){
+box.innerHTML='<div class="empty"><h3>🛒 Cart is empty</h3><p>Add products to continue.</p></div>';
+document.getElementById("cartTotal").textContent="₹0";
+return;
+}
+
+var total=0;
+
+box.innerHTML=cart.map(function(item){
+
+var product=products.find(function(p){
+return p.id===item.productId;
+});
+
+if(!product)return"";
+
+var quantity=Number(item.quantity||1);
+total+=product.price*quantity;
+
+return '<div class="between" style="padding:11px 0;border-bottom:1px solid #eee">'+
+'<div><b>'+escapeHtml(product.name)+'</b>'+
+'<div class="muted">'+money(product.price)+" × "+quantity+'</div></div>'+
+'<div class="row">'+
+'<button class="btn sm gray" data-cart-minus="'+product.id+'">−</button>'+
+'<b>'+quantity+'</b>'+
+'<button class="btn sm gray" data-cart-plus="'+product.id+'">+</button>'+
+'<button class="btn sm red" data-cart-remove="'+product.id+'">×</button>'+
+'</div></div>';
+
+}).join("");
+
+document.getElementById("cartTotal").textContent=money(total);
+}
+
+document.getElementById("cartItems").onclick=function(event){
+
+var minus=event.target.closest("[data-cart-minus]");
+var plus=event.target.closest("[data-cart-plus]");
+var remove=event.target.closest("[data-cart-remove]");
+
+if(minus)changeCartQuantity(minus.getAttribute("data-cart-minus"),-1);
+if(plus)changeCartQuantity(plus.getAttribute("data-cart-plus"),1);
+
+if(remove){
+cart=cart.filter(function(item){
+return item.productId!==remove.getAttribute("data-cart-remove");
+});
+saveAll();
+renderCart();
+updateCartCount();
+}
+};
+
+function changeCartQuantity(productId,difference){
+
+var item=cart.find(function(i){
+return i.productId===productId;
+});
+
+var product=products.find(function(p){
+return p.id===productId;
+});
+
+if(!item||!product)return;
+
+item.quantity+=difference;
+
+if(item.quantity<=0){
+cart=cart.filter(function(i){
+return i.productId!==productId;
+});
+}
+
+if(item.quantity>product.stock)item.quantity=product.stock;
+
+saveAll();
+renderCart();
+updateCartCount();
+}
+
+/* ACCOUNT */
+document.getElementById("accountOpen").onclick=function(){
+updateAccount();
+openModal("accountModal");
+};
+
+document.getElementById("loginTab").onclick=function(){
+document.getElementById("loginPanel").style.display="block";
+document.getElementById("registerPanel").style.display="none";
+document.getElementById("loginTab").classList.add("active");
+document.getElementById("registerTab").classList.remove("active");
+};
+
+document.getElementById("registerTab").onclick=function(){
+document.getElementById("loginPanel").style.display="none";
+document.getElementById("registerPanel").style.display="block";
+document.getElementById("loginTab").classList.remove("active");
+document.getElementById("registerTab").classList.add("active");
+};
+
+document.getElementById("registerBtn").onclick=function(){
+
+var name=document.getElementById("registerName").value.trim();
+var mobile=document.getElementById("registerMobile").value.trim();
+var email=document.getElementById("registerEmail").value.trim();
+var password=document.getElementById("registerPassword").value;
+
+if(!name||!mobile||!password){
+toast("Name, mobile and password required");
+return;
+}
+
+if(users.some(function(u){return u.mobile===mobile;})){
+toast("Mobile already registered");
+return;
+}
+
+var account={
+id:"U"+Date.now(),
+name:name,
+mobile:mobile,
+email:email,
+password:password
+};
+
+users.push(account);
+localStorage.setItem(DB.currentUser,account.id);
+saveAll();
+updateAccount();
+toast("Registration successful");
+};
+
+document.getElementById("loginBtn").onclick=function(){
+
+var loginId=document.getElementById("loginId").value.trim();
+var password=document.getElementById("loginPassword").value;
+
+var account=users.find(function(u){
+return (u.mobile===loginId||u.email===loginId)&&u.password===password;
+});
+
+if(!account){
+toast("Invalid login details");
+return;
+}
+
+localStorage.setItem(DB.currentUser,account.id);
+updateAccount();
+toast("Login successful");
+};
+
+function updateAccount(){
+
+var account=currentUser();
+var status=document.getElementById("accountStatus");
+
+if(!account){
+status.textContent="Not logged in.";
+return;
+}
+
+status.innerHTML=
+"<b>"+escapeHtml(account.name)+"</b> • "+
+escapeHtml(account.mobile)+
+'<br><br><button class="btn sm red" id="logoutButton">Logout</button>';
+
+document.getElementById("logoutButton").onclick=function(){
+localStorage.removeItem(DB.currentUser);
+updateAccount();
+toast("Logged out");
+};
+}
+
+/* CHECKOUT */
+document.getElementById("checkoutOpen").onclick=function(){
+
+if(!cart.length){
+toast("Cart is empty");
+return;
+}
+
+var account=currentUser();
+
+if(account){
+document.getElementById("checkoutName").value=account.name;
+document.getElementById("checkoutMobile").value=account.mobile;
+}
+
+closeModal("cartModal");
+openModal("checkoutModal");
+};
+
+document.getElementById("placeOrder").onclick=function(){
+
+if(!cart.length){
+toast("Cart is empty");
+return;
+}
+
+var name=document.getElementById("checkoutName").value.trim();
+var mobile=document.getElementById("checkoutMobile").value.trim();
+var address=document.getElementById("checkoutAddress").value.trim();
+var payment=document.getElementById("checkoutPayment").value;
+
+if(!name||!mobile||!address){
+toast("Please fill delivery details");
+return;
+}
+
+var items=[];
+var total=0;
+
+for(var i=0;i<cart.length;i++){
+
+var cartItem=cart[i];
+
+var product=products.find(function(p){
+return p.id===cartItem.productId;
+});
+
+if(!product||cartItem.quantity>product.stock){
+toast("Stock unavailable");
+return;
+}
+
+items.push({
+productId:product.id,
+name:product.name,
+quantity:cartItem.quantity,
+price:product.price,
+seller:product.sellerName
+});
+
+total+=product.price*cartItem.quantity;
+product.stock-=cartItem.quantity;
+}
+
+var order={
+id:"JBORD"+Date.now(),
+date:new Date().toLocaleString("en-IN"),
+customer:name,
+mobile:mobile,
+address:address,
+payment:payment,
+items:items,
+total:total,
+status:"Placed"
+};
+
+orders.push(order);
+cart=[];
+saveAll();
+renderProducts();
+updateCartCount();
+closeModal("checkoutModal");
+
+document.getElementById("orderDetails").innerHTML=
+"<p><b>Order ID:</b> "+escapeHtml(order.id)+"</p>"+
+"<p><b>Total:</b> "+money(order.total)+"</p>"+
+"<p><b>Payment:</b> "+escapeHtml(order.payment)+"</p>"+
+"<p><b>Status:</b> Placed</p>";
+
+openModal("orderModal");
+};
+
+/* SELLER REGISTRATION */
+document.getElementById("saveSeller").onclick=function(){
+
+var shop=document.getElementById("sellerShop").value.trim();
+var owner=document.getElementById("sellerOwner").value.trim();
+var mobile=document.getElementById("sellerMobile").value.trim();
+
+if(!shop||!owner||!mobile){
+toast("Shop, owner and mobile required");
+return;
+}
+
+var sellerRecord={
+id:"S"+Date.now(),
+shopName:shop,
+ownerName:owner,
+mobile:mobile,
+email:document.getElementById("sellerEmail").value.trim(),
+category:document.getElementById("sellerCategory").value,
+pin:document.getElementById("sellerPin").value.trim(),
+address:document.getElementById("sellerAddress").value.trim(),
+pan:document.getElementById("sellerPan").value.trim(),
+gst:document.getElementById("sellerGst").value.trim(),
+udyam:document.getElementById("sellerUdyam").value.trim(),
+fssai:document.getElementById("sellerFssai").value.trim(),
+upi:document.getElementById("sellerUpi").value.trim(),
+description:document.getElementById("sellerDescription").value.trim(),
+status:"Pending"
+};
+
+sellers.push(sellerRecord);
+localStorage.setItem(DB.currentSeller,sellerRecord.id);
+saveAll();
+
+closeModal("sellerModal");
+renderSellerDashboard();
+openModal("sellerDashboardModal");
+
+toast("Seller application submitted");
+};
+
+document.getElementById("openSellerDashboard").onclick=function(){
+
+if(!currentSeller()){
+toast("Please register as seller first");
+return;
+}
+
+closeModal("sellerModal");
+renderSellerDashboard();
+openModal("sellerDashboardModal");
+};
+
+function renderSellerDashboard(){
+
+var sellerRecord=currentSeller();
+
+if(!sellerRecord)return;
+
+var mine=products.filter(function(product){
+return product.sellerType==="seller"&&product.sellerId===sellerRecord.id;
+});
+
+document.getElementById("sellerSummary").innerHTML=
+"<p><b>Shop:</b> "+escapeHtml(sellerRecord.shopName)+
+" &nbsp; <b>Owner:</b> "+escapeHtml(sellerRecord.ownerName)+
+" &nbsp; <b>Application:</b> "+escapeHtml(sellerRecord.status)+
+"</p>";
+
+document.getElementById("sellerProductsCount").textContent=mine.length;
+
+document.getElementById("sellerPendingCount").textContent=
+mine.filter(function(p){return p.status==="Pending";}).length;
+
+document.getElementById("sellerPublishedCount").textContent=
+mine.filter(function(p){return p.status==="Published";}).length;
+
+document.getElementById("sellerStockCount").textContent=
+mine.reduce(function(total,p){return total+Number(p.stock||0);},0);
+
+var box=document.getElementById("sellerProductTable");
+
+if(!mine.length){
+box.innerHTML='<div class="empty"><h3>No seller products</h3><p>Click Add Product to create your first listing.</p></div>';
+return;
+}
+
+box.innerHTML='<div class="tablewrap"><table class="table">'+
+'<tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr>'+
+mine.map(function(product){
+
+return "<tr>"+
+"<td>"+escapeHtml(product.name)+"</td>"+
+"<td>"+escapeHtml(product.category)+"</td>"+
+"<td>"+money(product.price)+"</td>"+
+"<td>"+product.stock+"</td>"+
+"<td>"+escapeHtml(product.status)+"</td>"+
+"<td>"+
+'<button class="btn sm gray" data-seller-edit="'+product.id+'">Edit</button> '+
+'<button class="btn sm red" data-seller-delete="'+product.id+'">Delete</button>'+
+"</td>"+
+"</tr>";
+
+}).join("")+
+"</table></div>";
+}
+
+document.getElementById("sellerProductTable").onclick=function(event){
+
+var edit=event.target.closest("[data-seller-edit]");
+var remove=event.target.closest("[data-seller-delete]");
+
+if(edit)openProductForm("seller",edit.getAttribute("data-seller-edit"));
+if(remove)deleteProduct(remove.getAttribute("data-seller-delete"));
+};
+
+document.getElementById("sellerAddProduct").onclick=function(){
+openProductForm("seller");
+};
+
+/* PRODUCT FORM */
+function resetProductForm(){
+
+editingProductId=null;
+
+document.getElementById("productName").value="";
+document.getElementById("productDescription").value="";
+document.getElementById("productMrp").value="";
+document.getElementById("productPrice").value="";
+document.getElementById("productStock").value="";
+document.getElementById("productUnit").value="piece";
+document.getElementById("productSku").value="";
+document.getElementById("productIcon").value="🛍️";
+document.getElementById("productCategory").value="Groceries";
+}
+
+function openProductForm(mode,id){
+
+productMode=mode;
+resetProductForm();
+
+if(id){
+
+var product=products.find(function(p){
+return p.id===id;
+});
+
+if(!product)return;
+
+editingProductId=id;
+
+document.getElementById("productName").value=product.name;
+document.getElementById("productCategory").value=product.category;
+document.getElementById("productDescription").value=product.description||"";
+document.getElementById("productMrp").value=product.mrp;
+document.getElementById("productPrice").value=product.price;
+document.getElementById("productStock").value=product.stock;
+document.getElementById("productUnit").value=product.unit||"piece";
+document.getElementById("productSku").value=product.sku||"";
+document.getElementById("productIcon").value=product.icon||"🛍️";
+
+document.getElementById("productFormTitle").textContent="✏️ Edit Product";
+
+}else{
+
+document.getElementById("productFormTitle").textContent=
+mode==="admin"
+?"➕ Add JANA BAZAR Product"
+:"➕ Add Seller Product";
+}
+
+if(mode==="admin")closeModal("adminModal");
+else closeModal("sellerDashboardModal");
+
+openModal("productModal");
+}
+
+document.getElementById("saveProduct").onclick=function(){
+
+var name=document.getElementById("productName").value.trim();
+var category=document.getElementById("productCategory").value;
+var description=document.getElementById("productDescription").value.trim();
+var mrp=Number(document.getElementById("productMrp").value);
+var price=Number(document.getElementById("productPrice").value);
+var stock=Number(document.getElementById("productStock").value);
+var unit=document.getElementById("productUnit").value.trim()||"piece";
+var sku=document.getElementById("productSku").value.trim();
+var icon=document.getElementById("productIcon").value.trim()||"🛍️";
+
+if(!name||!mrp||!price){
+toast("Product name, MRP and selling price required");
+return;
+}
+
+if(price>mrp){
+toast("Selling price cannot exceed MRP");
+return;
+}
+
+if(stock<0){
+toast("Stock cannot be negative");
+return;
+}
+
+/* EDIT */
+if(editingProductId){
+
+var existing=products.find(function(p){
+return p.id===editingProductId;
+});
+
+if(!existing)return;
+
+existing.name=name;
+existing.category=category;
+existing.description=description;
+existing.mrp=mrp;
+existing.price=price;
+existing.stock=stock;
+existing.unit=unit;
+existing.sku=sku;
+existing.icon=icon;
+
+saveAll();
+closeModal("productModal");
+renderProducts();
+
+if(productMode==="admin"){
+renderAdmin();
+openModal("adminModal");
+}else{
+renderSellerDashboard();
+openModal("sellerDashboardModal");
+}
+
+toast("Product updated");
+return;
+}
+
+/* ADMIN PRODUCT */
+if(productMode==="admin"){
+
+products.push({
+id:"ADMIN"+Date.now(),
+name:name,
+category:category,
+description:description,
+mrp:mrp,
+price:price,
+stock:stock,
+unit:unit,
+sku:sku,
+icon:icon,
+sellerType:"admin",
+sellerId:"JANA",
+sellerName:"JANA BAZAR",
+status:"Published"
+});
+
+saveAll();
+closeModal("productModal");
+renderProducts();
+renderAdmin();
+openModal("adminModal");
+toast("JANA BAZAR product added");
+return;
+}
+
+/* SELLER PRODUCT */
+var sellerRecord=currentSeller();
+
+if(!sellerRecord){
+toast("Please register as seller first");
+return;
+}
+
+products.push({
+id:"SELLER"+Date.now(),
+name:name,
+category:category,
+description:description,
+mrp:mrp,
+price:price,
+stock:stock,
+unit:unit,
+sku:sku,
+icon:icon,
+sellerType:"seller",
+sellerId:sellerRecord.id,
+sellerName:sellerRecord.shopName,
+status:"Pending"
+});
+
+saveAll();
+closeModal("productModal");
+renderSellerDashboard();
+openModal("sellerDashboardModal");
+toast("Product submitted for admin approval");
+};
+
+/* ADMIN */
+document.getElementById("adminAddProduct").onclick=function(){
+openProductForm("admin");
+};
+
+function openAdmin(){
+renderAdmin();
+openModal("adminModal");
+}
+
+function renderAdmin(){
+
+var sellerProducts=products.filter(function(p){
+return p.sellerType==="seller";
+});
+
+document.getElementById("adminProductsCount").textContent=products.length;
+
+document.getElementById("adminSellerCount").textContent=sellerProducts.length;
+
+document.getElementById("adminPendingCount").textContent=
+sellerProducts.filter(function(p){
+return p.status==="Pending";
+}).length;
+
+document.getElementById("adminOrdersCount").textContent=orders.length;
+
+var box=document.getElementById("adminProductTable");
+
+box.innerHTML='<div class="tablewrap"><table class="table">'+
+'<tr><th>Product</th><th>Seller</th><th>Type</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr>'+
+products.map(function(product){
+
+var actions="";
+
+if(product.sellerType==="seller"&&product.status==="Pending"){
+
+actions+=
+'<button class="btn sm" data-approve="'+product.id+'">Approve</button> '+
+'<button class="btn sm red" data-reject="'+product.id+'">Reject</button> ';
+
+}
+
+actions+=
+'<button class="btn sm gray" data-admin-edit="'+product.id+'">Edit</button> '+
+'<button class="btn sm red" data-admin-delete="'+product.id+'">Delete</button>';
+
+return "<tr>"+
+"<td>"+escapeHtml(product.name)+"</td>"+
+"<td>"+escapeHtml(product.sellerName)+"</td>"+
+"<td>"+escapeHtml(product.sellerType)+"</td>"+
+"<td>"+money(product.price)+"</td>"+
+"<td>"+product.stock+"</td>"+
+"<td>"+escapeHtml(product.status)+"</td>"+
+"<td>"+actions+"</td>"+
+"</tr>";
+
+}).join("")+
+"</table></div>";
+}
+
+document.getElementById("adminProductTable").onclick=function(event){
+
+var approve=event.target.closest("[data-approve]");
+var reject=event.target.closest("[data-reject]");
+var edit=event.target.closest("[data-admin-edit]");
+var remove=event.target.closest("[data-admin-delete]");
+
+if(approve){
+
+var product=products.find(function(p){
+return p.id===approve.getAttribute("data-approve");
+});
+
+if(product){
+product.status="Published";
+saveAll();
+renderAdmin();
+renderProducts();
+toast("Seller product approved");
+}
+}
+
+if(reject){
+
+var product=products.find(function(p){
+return p.id===reject.getAttribute("data-reject");
+});
+
+if(product){
+product.status="Rejected";
+saveAll();
+renderAdmin();
+renderProducts();
+toast("Seller product rejected");
+}
+}
+
+if(edit)openProductForm("admin",edit.getAttribute("data-admin-edit"));
+
+if(remove)deleteProduct(remove.getAttribute("data-admin-delete"));
+};
+
+function deleteProduct(id){
+
+if(!window.confirm("Delete this product?"))return;
+
+products=products.filter(function(p){
+return p.id!==id;
+});
+
+cart=cart.filter(function(item){
+return item.productId!==id;
+});
+
+saveAll();
+renderProducts();
+renderAdmin();
+renderSellerDashboard();
+toast("Product deleted");
+}
+
+/* CLOSE BUTTONS */
+document.querySelectorAll("[data-close]").forEach(function(button){
+button.onclick=function(){
+closeModal(button.getAttribute("data-close"));
+};
+});
+
+/* NAV SELLER / ADMIN */
+document.getElementById("sellerOpen").onclick=function(){openModal("sellerModal");};
+
+nav.addEventListener("click",function(event){
+
+if(event.target.textContent==="Seller"){
+openModal("sellerModal");
+}
+
+if(event.target.textContent==="Admin"){
+openAdmin();
+}
+});
+
+/* START */
+saveAll();
+renderProducts();
+updateCartCount();
+
+</script>
+</body>
+</html>
