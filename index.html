@@ -990,33 +990,106 @@ toast("Product updated");
 return;
 }
 
-/* ADMIN PRODUCT */
+//* ADMIN PRODUCT - SUPABASE */
+
 if(productMode==="admin"){
 
-products.push({
-id:"ADMIN"+Date.now(),
-name:name,
-category:category,
-description:description,
-mrp:mrp,
-price:price,
-stock:stock,
-unit:unit,
-sku:sku,
-icon:icon,
-sellerType:"admin",
-sellerId:"JANA",
-sellerName:"JANA BAZAR",
-status:"Published"
-});
+  var slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"")
+    + "-" + Date.now();
 
-saveAll();
-closeModal("productModal");
-renderProducts();
-renderAdmin();
-openModal("adminModal");
-toast("JANA BAZAR product added");
-return;
+  var supabaseProduct = {
+    name: name,
+    slug: slug,
+    description: description || "",
+    sku: sku || "",
+    price: price,
+    mrp: mrp,
+    discount_percent: mrp > 0
+      ? Math.round(((mrp - price) / mrp) * 100)
+      : 0,
+    main_image_url: "",
+    is_active: true,
+    is_featured: false
+  };
+
+  supabaseClient
+    .from("products")
+    .insert(supabaseProduct)
+    .select("id,name,description,sku,price,mrp,discount_percent,main_image_url,is_active,is_featured")
+    .single()
+    .then(function(result){
+
+      if(result.error){
+
+        console.error(
+          "Supabase Admin Product Error:",
+          result.error
+        );
+
+        toast(
+          "❌ Product save failed: " +
+          result.error.message
+        );
+
+        return;
+      }
+
+      var product = result.data;
+
+      products.push({
+        id: product.id,
+        source: "supabase",
+        name: product.name,
+        category: category,
+        description: product.description || "",
+        mrp: Number(product.mrp || 0),
+        price: Number(product.price || 0),
+        stock: stock,
+        unit: unit,
+        icon: icon,
+        sellerType: "admin",
+        sellerId: "JANA",
+        sellerName: "JANA BAZAR",
+        status: "Published",
+        sku: product.sku || "",
+        discount_percent: Number(
+          product.discount_percent || 0
+        ),
+        isFeatured: !!product.is_featured
+      });
+
+      saveAll();
+
+      closeModal("productModal");
+
+      renderProducts();
+
+      renderAdmin();
+
+      openModal("adminModal");
+
+      toast(
+        "✅ JANA BAZAR Product Supabaseలో save అయింది"
+      );
+
+    })
+    .catch(function(error){
+
+      console.error(
+        "Supabase connection error:",
+        error
+      );
+
+      toast(
+        "❌ Supabase connection error"
+      );
+
+    });
+
+  return;
 }
 
 /* SELLER PRODUCT */
