@@ -1144,37 +1144,81 @@ if(productMode==="admin"){
   return;
 }
 
-/* SELLER PRODUCT */
-var sellerRecord=currentSeller();
+/* SELLER PRODUCT - SUPABASE */
+var sellerRecord = currentSeller();
 
 if(!sellerRecord){
-toast("Please register as seller first");
-return;
+  toast("Please register as seller first");
+  return;
 }
 
-products.push({
-id:"SELLER"+Date.now(),
-name:name,
-category:category,
-description:description,
-mrp:mrp,
-price:price,
-stock:stock,
-unit:unit,
-sku:sku,
-icon:icon,
-sellerType:"seller",
-sellerId:sellerRecord.id,
-sellerName:sellerRecord.shopName,
-status:"Pending"
-});
+if(!sellerRecord.supabaseId){
+  toast("Seller profile is not connected to Supabase");
+  return;
+}
 
-saveAll();
-closeModal("productModal");
-renderSellerDashboard();
-openModal("sellerDashboardModal");
-toast("Product submitted for admin approval");
+var sellerProduct = {
+  name: name,
+  slug: name.toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"") + "-" + Date.now(),
+  description: description || "",
+  sku: sku || "",
+  price: price,
+  mrp: mrp,
+  discount_percent: mrp > 0
+    ? Math.round(((mrp-price)/mrp)*100)
+    : 0,
+  main_image_url: "",
+  is_active: false,
+  is_featured: false,
+  seller_id: sellerRecord.supabaseId
 };
+
+supabaseClient
+  .from("products")
+  .insert(sellerProduct)
+  .select()
+  .single()
+  .then(function(result){
+
+    if(result.error){
+      console.error("Supabase Seller Product Error:", result.error);
+      toast("❌ Seller product save failed: " + result.error.message);
+      return;
+    }
+
+    var product = result.data;
+
+    products.push({
+      id: product.id,
+      source: "supabase",
+      name: product.name,
+      category: category,
+      description: product.description || "",
+      mrp: Number(product.mrp || 0),
+      price: Number(product.price || 0),
+      stock: stock,
+      unit: unit,
+      sku: product.sku || "",
+      icon: icon,
+      sellerType: "seller",
+      sellerId: sellerRecord.id,
+      sellerName: sellerRecord.shopName,
+      status: "Pending"
+    });
+
+    saveAll();
+    closeModal("productModal");
+    renderSellerDashboard();
+    openModal("sellerDashboardModal");
+
+    toast("✅ Product submitted for admin approval");
+  })
+  .catch(function(error){
+    console.error("Supabase connection error:", error);
+    toast("❌ Supabase connection error");
+  });
 
 /* ADMIN */
 document.getElementById("adminAddProduct").onclick=function(){
