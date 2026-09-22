@@ -1296,10 +1296,22 @@ return p.id===approve.getAttribute("data-approve");
 
 if(product){
 product.status="Published";
-saveAll();
-renderAdmin();
-renderProducts();
-toast("Seller product approved");
+supabaseClient
+  .from("products")
+  .update({is_active:true})
+  .eq("id",product.id)
+  .then(function(result){
+    if(result.error){
+      console.error("Approve error:",result.error);
+      toast("❌ Approve failed: "+result.error.message);
+      return;
+    }
+
+    saveAll();
+    renderAdmin();
+    renderProducts();
+    toast("Seller product approved");
+});
 }
 }
 
