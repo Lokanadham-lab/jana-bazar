@@ -1178,8 +1178,7 @@ var sellerProduct = {
 supabaseClient
   .from("products")
   .insert(sellerProduct)
-  .select()
-  .single()
+
   .then(function(result){
 
     if(result.error){
