@@ -752,44 +752,96 @@ openModal("orderModal");
 };
 
 /* SELLER REGISTRATION */
-document.getElementById("saveSeller").onclick=function(){
+document.getElementById("saveSeller").onclick = async function(){
 
-var shop=document.getElementById("sellerShop").value.trim();
-var owner=document.getElementById("sellerOwner").value.trim();
-var mobile=document.getElementById("sellerMobile").value.trim();
+  var shop = document.getElementById("sellerShop").value.trim();
+  var owner = document.getElementById("sellerOwner").value.trim();
+  var mobile = document.getElementById("sellerMobile").value.trim();
 
-if(!shop||!owner||!mobile){
-toast("Shop, owner and mobile required");
-return;
-}
+  if(!shop || !owner || !mobile){
+    toast("Shop, owner and mobile required");
+    return;
+  }
 
-var sellerRecord={
-id:"S"+Date.now(),
-shopName:shop,
-ownerName:owner,
-mobile:mobile,
-email:document.getElementById("sellerEmail").value.trim(),
-category:document.getElementById("sellerCategory").value,
-pin:document.getElementById("sellerPin").value.trim(),
-address:document.getElementById("sellerAddress").value.trim(),
-pan:document.getElementById("sellerPan").value.trim(),
-gst:document.getElementById("sellerGst").value.trim(),
-udyam:document.getElementById("sellerUdyam").value.trim(),
-fssai:document.getElementById("sellerFssai").value.trim(),
-upi:document.getElementById("sellerUpi").value.trim(),
-description:document.getElementById("sellerDescription").value.trim(),
-status:"Pending"
-};
+  /* CHECK SUPABASE LOGIN */
+  var { data: authData, error: authError } =
+    await supabaseClient.auth.getUser();
 
-sellers.push(sellerRecord);
-localStorage.setItem(DB.currentSeller,sellerRecord.id);
-saveAll();
+  if(authError || !authData || !authData.user){
+    toast("Please login first to register as seller");
+    return;
+  }
 
-closeModal("sellerModal");
-renderSellerDashboard();
-openModal("sellerDashboardModal");
+  var userId = authData.user.id;
 
-toast("Seller application submitted");
+  /* SUPABASE SELLER PROFILE */
+  var sellerProfile = {
+    user_id: userId,
+    store_name: shop,
+    seller_type:
+      document.getElementById("sellerCategory").value || "Grocery",
+    logo_url: null,
+    description:
+      document.getElementById("sellerDescription").value.trim(),
+    village: "",
+    city: "",
+    district: "",
+    state: "",
+    pincode:
+      document.getElementById("sellerPin").value.trim(),
+    is_verified: false,
+    is_active: true
+  };
+
+  var { data: sellerData, error: sellerError } =
+    await supabaseClient
+      .from("seller_profiles")
+      .upsert(sellerProfile, {
+        onConflict: "user_id"
+      })
+      .select()
+      .single();
+
+  if(sellerError){
+    console.error("Seller registration error:", sellerError);
+    toast("Seller registration failed: " + sellerError.message);
+    return;
+  }
+
+  /* KEEP EXISTING LOCAL SELLER DATA */
+  var sellerRecord = {
+    id: "S" + Date.now(),
+    shopName: shop,
+    ownerName: owner,
+    mobile: mobile,
+    email: document.getElementById("sellerEmail").value.trim(),
+    category: document.getElementById("sellerCategory").value,
+    pin: document.getElementById("sellerPin").value.trim(),
+    address: document.getElementById("sellerAddress").value.trim(),
+    pan: document.getElementById("sellerPan").value.trim(),
+    gst: document.getElementById("sellerGst").value.trim(),
+    udyam: document.getElementById("sellerUdyam").value.trim(),
+    fssai: document.getElementById("sellerFssai").value.trim(),
+    upi: document.getElementById("sellerUpi").value.trim(),
+    description: document.getElementById("sellerDescription").value.trim(),
+    status: "Pending",
+    supabaseId: sellerData.id
+  };
+
+  sellers.push(sellerRecord);
+
+  localStorage.setItem(
+    DB.currentSeller,
+    sellerRecord.id
+  );
+
+  saveAll();
+
+  closeModal("sellerModal");
+  renderSellerDashboard();
+  openModal("sellerDashboardModal");
+
+  toast("Seller application submitted successfully!");
 };
 
 document.getElementById("openSellerDashboard").onclick=function(){
