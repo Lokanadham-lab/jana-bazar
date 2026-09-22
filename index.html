@@ -1163,7 +1163,7 @@ var sellerProduct = {
     .replace(/[^a-z0-9]+/g,"-")
     .replace(/^-+|-+$/g,"") + "-" + Date.now(),
   description: description || "",
-  sku: sku || "",
+  sku: sku || null,
   price: price,
   mrp: mrp,
   discount_percent: mrp > 0
