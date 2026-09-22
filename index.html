@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><head>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#087a4b">
@@ -38,7 +38,7 @@ footer{text-align:center;color:#77808d;padding:25px}
 <button class="btn gray" id="accountOpen">👤 Account</button>
 <button class="btn gray sellerTop" id="sellerOpen">🏪 Seller</button>
 <button class="btn gray" id="cartOpen">🛒 Cart <span id="cartCount">0</span></button>
-<button class="btn <button class="btn gray" id="adminOpen" onclick="openModal('adminLoginModal')"()">🔐 Admin</button>></div>
+</div>
 <nav class="nav" id="nav"></nav>
 </header>
 
@@ -160,52 +160,7 @@ footer{text-align:center;color:#77808d;padding:25px}
 <button class="btn" id="saveProduct">Save Product</button>
 </div></div>
 
-<!-- ADMIN LOGIN -->
-<div class="modal" id="adminLoginModal">
-  <div class="modal-box">
-
-    <button class="modal-close" onclick="closeModal('adminLoginModal')">
-      ✕
-    </button>
-
-    <h2>🔐 JANA BAZAR Admin Login</h2>
-
-    <p style="color:#666;margin-bottom:16px;">
-      Admin accountతో login చేయండి
-    </p>
-
-    <input
-      type="email"
-      id="adminEmail"
-      placeholder="Admin Email"
-      autocomplete="email"
-    >
-
-    <input
-      type="password"
-      id="adminPassword"
-      placeholder="Password"
-      autocomplete="current-password"
-    >
-
-    <button
-      class="btn"
-      style="width:100%;margin-top:12px;"
-      onclick="adminLogin()"
-    >
-      🔐 Login
-    </button>
-
-    <div
-      id="adminLoginMessage"
-      style="margin-top:12px;text-align:center;"
-    ></div>
-
-  </div>
-</div>
-
 <!-- ADMIN -->
-
 <div class="modal" id="adminModal"><div class="box wide">
 <button class="close" data-close="adminModal">×</button>
 <div class="between"><h2>👑 JANA BAZAR Admin</h2><button class="btn" id="adminAddProduct">➕ Add JANA BAZAR Product</button></div>
@@ -752,96 +707,44 @@ openModal("orderModal");
 };
 
 /* SELLER REGISTRATION */
-document.getElementById("saveSeller").onclick = async function(){
+document.getElementById("saveSeller").onclick=function(){
 
-  var shop = document.getElementById("sellerShop").value.trim();
-  var owner = document.getElementById("sellerOwner").value.trim();
-  var mobile = document.getElementById("sellerMobile").value.trim();
+var shop=document.getElementById("sellerShop").value.trim();
+var owner=document.getElementById("sellerOwner").value.trim();
+var mobile=document.getElementById("sellerMobile").value.trim();
 
-  if(!shop || !owner || !mobile){
-    toast("Shop, owner and mobile required");
-    return;
-  }
+if(!shop||!owner||!mobile){
+toast("Shop, owner and mobile required");
+return;
+}
 
-  /* CHECK SUPABASE LOGIN */
-  var { data: authData, error: authError } =
-    await supabaseClient.auth.getUser();
+var sellerRecord={
+id:"S"+Date.now(),
+shopName:shop,
+ownerName:owner,
+mobile:mobile,
+email:document.getElementById("sellerEmail").value.trim(),
+category:document.getElementById("sellerCategory").value,
+pin:document.getElementById("sellerPin").value.trim(),
+address:document.getElementById("sellerAddress").value.trim(),
+pan:document.getElementById("sellerPan").value.trim(),
+gst:document.getElementById("sellerGst").value.trim(),
+udyam:document.getElementById("sellerUdyam").value.trim(),
+fssai:document.getElementById("sellerFssai").value.trim(),
+upi:document.getElementById("sellerUpi").value.trim(),
+description:document.getElementById("sellerDescription").value.trim(),
+status:"Pending"
+};
 
-  if(authError || !authData || !authData.user){
-    toast("Please login first to register as seller");
-    return;
-  }
+sellers.push(sellerRecord);
+localStorage.setItem(DB.currentSeller,sellerRecord.id);
+saveAll();
 
-  var userId = authData.user.id;
+closeModal("sellerModal");
+renderSellerDashboard();
+openModal("sellerDashboardModal");
 
-  /* SUPABASE SELLER PROFILE */
-  var sellerProfile = {
-    user_id: userId,
-    store_name: shop,
-    seller_type:
-      document.getElementById("sellerCategory").value || "Grocery",
-    logo_url: null,
-    description:
-      document.getElementById("sellerDescription").value.trim(),
-    village: "",
-    city: "",
-    district: "",
-    state: "",
-    pincode:
-      document.getElementById("sellerPin").value.trim(),
-    is_verified: false,
-    is_active: true
-  };
-
-  var { data: sellerData, error: sellerError } =
-    await supabaseClient
-      .from("seller_profiles")
-      .upsert(sellerProfile, {
-        onConflict: "user_id"
-      })
-      .select()
-      .single();
-
-  if(sellerError){
-    console.error("Seller registration error:", sellerError);
-    toast("Seller registration failed: " + sellerError.message);
-    return;
-  }
-
-  /* KEEP EXISTING LOCAL SELLER DATA */
-  var sellerRecord = {
-    id: "S" + Date.now(),
-    shopName: shop,
-    ownerName: owner,
-    mobile: mobile,
-    email: document.getElementById("sellerEmail").value.trim(),
-    category: document.getElementById("sellerCategory").value,
-    pin: document.getElementById("sellerPin").value.trim(),
-    address: document.getElementById("sellerAddress").value.trim(),
-    pan: document.getElementById("sellerPan").value.trim(),
-    gst: document.getElementById("sellerGst").value.trim(),
-    udyam: document.getElementById("sellerUdyam").value.trim(),
-    fssai: document.getElementById("sellerFssai").value.trim(),
-    upi: document.getElementById("sellerUpi").value.trim(),
-    description: document.getElementById("sellerDescription").value.trim(),
-    status: "Pending",
-    supabaseId: sellerData.id
-  };
-
-  sellers.push(sellerRecord);
-
-  localStorage.setItem(
-    DB.currentSeller,
-    sellerRecord.id
-  );
-
-  saveAll();
-
-  closeModal("sellerModal");
-  renderSellerDashboard();
-  openModal("sellerDashboardModal");
-
-  toast("Seller application submitted successfully!");
+toast("Seller application submitted");
 };
 
 document.getElementById("openSellerDashboard").onclick=function(){
@@ -1042,183 +945,67 @@ toast("Product updated");
 return;
 }
 
-//* ADMIN PRODUCT - SUPABASE */
-
+/* ADMIN PRODUCT */
 if(productMode==="admin"){
 
-  var slug = name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-+|-+$/g,"")
-    + "-" + Date.now();
+products.push({
+id:"ADMIN"+Date.now(),
+name:name,
+category:category,
+description:description,
+mrp:mrp,
+price:price,
+stock:stock,
+unit:unit,
+sku:sku,
+icon:icon,
+sellerType:"admin",
+sellerId:"JANA",
+sellerName:"JANA BAZAR",
+status:"Published"
+});
 
-  var supabaseProduct = {
-    name: name,
-    slug: slug,
-    description: description || "",
-    sku: sku || "",
-    price: price,
-    mrp: mrp,
-    discount_percent: mrp > 0
-      ? Math.round(((mrp - price) / mrp) * 100)
-      : 0,
-    main_image_url: "",
-    is_active: true,
-    is_featured: false
-  };
-
-  supabaseClient
-    .from("products")
-    .insert(supabaseProduct)
-    .select("id,name,description,sku,price,mrp,discount_percent,main_image_url,is_active,is_featured")
-    .single()
-    .then(function(result){
-
-      if(result.error){
-
-        console.error(
-          "Supabase Admin Product Error:",
-          result.error
-        );
-
-        toast(
-          "❌ Product save failed: " +
-          result.error.message
-        );
-
-        return;
-      }
-
-      var product = result.data;
-
-      products.push({
-        id: product.id,
-        source: "supabase",
-        name: product.name,
-        category: category,
-        description: product.description || "",
-        mrp: Number(product.mrp || 0),
-        price: Number(product.price || 0),
-        stock: stock,
-        unit: unit,
-        icon: icon,
-        sellerType: "admin",
-        sellerId: "JANA",
-        sellerName: "JANA BAZAR",
-        status: "Published",
-        sku: product.sku || "",
-        discount_percent: Number(
-          product.discount_percent || 0
-        ),
-        isFeatured: !!product.is_featured
-      });
-
-      saveAll();
-
-      closeModal("productModal");
-
-      renderProducts();
-
-      renderAdmin();
-
-      openModal("adminModal");
-
-      toast(
-        "✅ JANA BAZAR Product Supabaseలో save అయింది"
-      );
-
-    })
-    .catch(function(error){
-
-      console.error(
-        "Supabase connection error:",
-        error
-      );
-
-      toast(
-        "❌ Supabase connection error"
-      );
-
-    });
-
-  return;
+saveAll();
+closeModal("productModal");
+renderProducts();
+renderAdmin();
+openModal("adminModal");
+toast("JANA BAZAR product added");
+return;
 }
 
-/* SELLER PRODUCT - SUPABASE */
-var sellerRecord = currentSeller();
+/* SELLER PRODUCT */
+var sellerRecord=currentSeller();
 
 if(!sellerRecord){
-  toast("Please register as seller first");
-  return;
+toast("Please register as seller first");
+return;
 }
 
-if(!sellerRecord.supabaseId){
-  toast("Seller profile is not connected to Supabase");
-  return;
-}
+products.push({
+id:"SELLER"+Date.now(),
+name:name,
+category:category,
+description:description,
+mrp:mrp,
+price:price,
+stock:stock,
+unit:unit,
+sku:sku,
+icon:icon,
+sellerType:"seller",
+sellerId:sellerRecord.id,
+sellerName:sellerRecord.shopName,
+status:"Pending"
+});
 
-var sellerProduct = {
-  name: name,
-  slug: name.toLowerCase()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-+|-+$/g,"") + "-" + Date.now(),
-  description: description || "",
-  sku: sku || null,
-  price: price,
-  mrp: mrp,
-  discount_percent: mrp > 0
-    ? Math.round(((mrp-price)/mrp)*100)
-    : 0,
-  main_image_url: "",
-  is_active: false,
-  is_featured: false,
-  seller_id: sellerRecord.supabaseId
+saveAll();
+closeModal("productModal");
+renderSellerDashboard();
+openModal("sellerDashboardModal");
+toast("Product submitted for admin approval");
 };
 
-supabaseClient
-  .from("products")
-  .insert(sellerProduct)
-
-  .then(function(result){
-
-    if(result.error){
-      console.error("Supabase Seller Product Error:", result.error);
-      toast("❌ Seller product save failed: " + result.error.message);
-      return;
-    }
-
-    var product = result.data;
-
-    products.push({
-      id: product.id,
-      source: "supabase",
-      name: product.name,
-      category: category,
-      description: product.description || "",
-      mrp: Number(product.mrp || 0),
-      price: Number(product.price || 0),
-      stock: stock,
-      unit: unit,
-      sku: product.sku || "",
-      icon: icon,
-      sellerType: "seller",
-      sellerId: sellerRecord.id,
-      sellerName: sellerRecord.shopName,
-      status: "Pending"
-    });
-
-    saveAll();
-    closeModal("productModal");
-    renderSellerDashboard();
-    openModal("sellerDashboardModal");
-
-    toast("✅ Product submitted for admin approval");
-  })
-  .catch(function(error){
-    console.error("Supabase connection error:", error);
-    toast("❌ Supabase connection error");
-  });
-};
 /* ADMIN */
 document.getElementById("adminAddProduct").onclick=function(){
 openProductForm("admin");
@@ -1295,22 +1082,10 @@ return p.id===approve.getAttribute("data-approve");
 
 if(product){
 product.status="Published";
-supabaseClient
-  .from("products")
-  .update({is_active:true})
-  .eq("id",product.id)
-  .then(function(result){
-    if(result.error){
-      console.error("Approve error:",result.error);
-      toast("❌ Approve failed: "+result.error.message);
-      return;
-    }
-
-    saveAll();
-    renderAdmin();
-    renderProducts();
-    toast("Seller product approved");
-});
+saveAll();
+renderAdmin();
+renderProducts();
+toast("Seller product approved");
 }
 }
 
@@ -1374,329 +1149,11 @@ openAdmin();
 }
 });
 
-/* SUPABASE PRODUCTS - V6 */
-
-var SUPABASE_URL = "https://fuabetbxblqrbvsjbqpf.supabase.co";
-
-var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_79FWeetpchZt7iDJywahkw_T_a49kBn";
-
-var supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-async function loadSupabaseProducts(){
-
-  try{
-
-    /* ===============================
-       1. LOAD PRODUCTS
-    =============================== */
-
-    var productResult = await supabaseClient
-      .from("products")
-      .select(
-        "id,category_id,name,description,sku,price,mrp,discount_percent,main_image_url,is_active,is_featured"
-      )
-      .eq("is_active",true)
-      .order("created_at",{ascending:false});
-
-    if(productResult.error){
-
-      console.error(
-        "Supabase Products Error:",
-        productResult.error
-      );
-
-      return;
-    }
-
-
-    /* ===============================
-       2. LOAD CATEGORIES
-    =============================== */
-
-    var categoryResult = await supabaseClient
-      .from("categories")
-      .select("id,name,slug")
-      .eq("is_active",true);
-
-    if(categoryResult.error){
-
-      console.error(
-        "Supabase Categories Error:",
-        categoryResult.error
-      );
-
-      return;
-    }
-
-
-    /* ===============================
-       3. CATEGORY MAP
-    =============================== */
-
-    var categoryMap = {};
-
-    (categoryResult.data || []).forEach(function(category){
-
-      categoryMap[String(category.id)] = {
-        name: category.name,
-        slug: category.slug
-      };
-
-    });
-
-
-    /* ===============================
-       4. CONVERT SUPABASE PRODUCTS
-    =============================== */
-
-    var liveProducts = (productResult.data || []).map(function(product){
-
-      var categoryData =
-        categoryMap[String(product.category_id)] || null;
-
-      return {
-
-        id: product.id,
-
-        source: "supabase",
-
-        name: product.name,
-
-        category:
-          categoryData
-            ? categoryData.name
-            : "Other",
-
-        description:
-          product.description || "",
-
-        mrp:
-          Number(
-            product.mrp ||
-            product.price ||
-            0
-          ),
-
-        price:
-          Number(
-            product.price || 0
-          ),
-
-        stock: 999,
-
-        unit: "piece",
-
-        icon: "🛍️",
-
-        image:
-          product.main_image_url || "",
-
-        sellerType: "admin",
-
-        sellerId: "JANA",
-
-        sellerName: "JANA BAZAR",
-
-        status: "Published",
-
-        sku:
-          product.sku || "",
-
-        discount_percent:
-          Number(
-            product.discount_percent || 0
-          ),
-
-        isFeatured:
-          !!product.is_featured
-
-      };
-
-    });
-
-
-    /* ===============================
-       5. REMOVE OLD LOCAL SEED DATA
-    =============================== */
-
-    var legacyIds = [
-
-      "JB001",
-      "JB002",
-      "JB003",
-      "JB004",
-      "JB005",
-      "JB006",
-      "JB007",
-      "JB008",
-      "JB009",
-      "JB010",
-      "JB011",
-      "JB012"
-
-    ];
-
-
-    var remoteIds =
-      liveProducts.map(function(remoteProduct){
-
-        return String(remoteProduct.id);
-
-      });
-
-
-    var localOnly =
-      products.filter(function(localProduct){
-
-        var localId =
-          String(localProduct.id);
-
-
-        if(
-          remoteIds.indexOf(localId) !== -1
-        ){
-
-          return false;
-
-        }
-
-
-        if(
-          legacyIds.indexOf(localId) !== -1
-        ){
-
-          return false;
-
-        }
-
-
-        if(
-          localProduct.name === "Test Rice" &&
-          localProduct.sellerId === "JANA"
-        ){
-
-          return false;
-
-        }
-
-
-        return localProduct.source !== "supabase";
-
-      });
-
-
-    /* ===============================
-       6. FINAL PRODUCT LIST
-    =============================== */
-
-    products =
-      liveProducts.concat(localOnly);
-
-
-    saveAll();
-
-    renderProducts();
-
-
-    console.log(
-      "JANA BAZAR: Supabase products loaded:",
-      liveProducts.length
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "Supabase connection error:",
-      error
-    );
-
-  }
-
-  }
-/* ADMIN LOGIN - SUPABASE */
-
-async function adminLogin(){
-
-  var email = document.getElementById("adminEmail").value.trim();
-  var password = document.getElementById("adminPassword").value;
-  var message = document.getElementById("adminLoginMessage");
-
-  if(!email || !password){
-    message.innerHTML = "⚠️ Email మరియు Password ఇవ్వండి.";
-    return;
-  }
-
-  message.innerHTML = "⏳ Login జరుగుతోంది...";
-
-  try{
-
-    var loginResult = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-
-    if(loginResult.error){
-      console.error(loginResult.error);
-      message.innerHTML = "❌ Login failed. Email లేదా Password సరిచూడండి.";
-      return;
-    }
-
-    var user = loginResult.data.user;
-
-    if(!user){
-      message.innerHTML = "❌ User session దొరకలేదు.";
-      return;
-    }
-
-    var profileResult = await supabaseClient
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if(profileResult.error){
-      console.error(profileResult.error);
-      await supabaseClient.auth.signOut();
-      message.innerHTML = "❌ Admin profile దొరకలేదు.";
-      return;
-    }
-
-    if(profileResult.data.role !== "admin"){
-      await supabaseClient.auth.signOut();
-      message.innerHTML = "❌ ఈ accountకి Admin access లేదు.";
-      return;
-    }
-
-    message.innerHTML = "✅ Admin Login successful!";
-
-    closeModal("adminLoginModal");
-
-    setTimeout(function(){
-
-  document.getElementById("adminLoginModal").classList.remove("open");
-
-  renderAdmin();
-
-  document.getElementById("adminModal").classList.add("open");
-
-}, 300);
-
-  }catch(error){
-
-    console.error(error);
-    message.innerHTML = "❌ Something went wrong. మళ్లీ ప్రయత్నించండి.";
-
-  }
-
-}/* START */
+/* START */
 saveAll();
 renderProducts();
 updateCartCount();
-loadSupabaseProducts();
+
 </script>
 </body>
 </html>
