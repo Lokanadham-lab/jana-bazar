@@ -196,7 +196,26 @@ function openSeller(){if(session)sellerDashboard();else openM("sellerModal")}
 function sellerTab(t){$("sellerLogin").classList.toggle("hidden",t!=="login");$("sellerRegister").classList.toggle("hidden",t!=="register")}
 async function sellerLogin(){let r=await db.auth.signInWithPassword({email:$("sLoginEmail").value.trim(),password:$("sLoginPass").value});if(r.error){msg("sMsg","❌ "+r.error.message);return}let p=await getProfile(r.data.user.id),sp=await db.from("seller_profiles").select("*").eq("user_id",r.data.user.id).maybeSingle();if(!sp.data||!["seller","admin"].includes(p?.role)||sp.data.status!=="approved"){await db.auth.signOut();msg("sMsg","❌ Seller account is not approved yet.");return}closeM("sellerModal");sellerDashboard()}
 async function sellerRegister(){let email=$("sEmail").value.trim(),pass=$("sPass").value;if(pass.length<8){msg("sMsg","Password must be at least 8 characters");return}let r=await db.auth.signUp({email,password:pass,options:{data:{full_name:$("sOwner").value.trim(),phone:$("sPhone").value.trim()}}});if(r.error){msg("sMsg","❌ "+r.error.message);return}if(!r.data.user){msg("sMsg","❌ Check email confirmation, then login.");return}let x=await db.from("seller_profiles").insert({user_id:r.data.user.id,owner_name:$("sOwner").value.trim(),business_name:$("sBusiness").value.trim(),seller_type:$("sType").value,phone:$("sPhone").value.trim(),gstin:$("sGST").value.trim()||null,pan:$("sPAN").value.trim()||null,pickup_address:$("sAddress").value.trim(),about:$("sAbout").value.trim(),status:"pending"});if(x.error)msg("sMsg","❌ "+x.error.message);else msg("sMsg","✅ Application submitted. Admin approval is required before listing products.",true)}
-async function sellerDashboard(){
+async function sellerForgotPassword(){
+  const email = document.getElementById("sLoginEmail").value.trim();
+
+  if(!email){
+    alert("Please enter your Seller Email");
+    return;
+  }
+
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin
+  });
+
+  if(error){
+    alert("❌ " + error.message);
+    return;
+  }
+
+  alert("✅ Password reset link has been sent to your Seller Email.");
+}
+ async function sellerDashboard(){
  let sp=await db.from("seller_profiles").select("*").eq("user_id",session.user.id).maybeSingle();if(!sp.data){openSeller();return}
  let ps=await db.from("products").select("*").eq("seller_id",session.user.id).order("created_at",{ascending:false});
  let ord=await db.from("order_items").select("order_id,quantity,unit_price").eq("seller_id",session.user.id);
