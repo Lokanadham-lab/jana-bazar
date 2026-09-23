@@ -250,10 +250,21 @@ async function updateOrder(id,status){if(!status)return;let r=await db.from("ord
 init();
 db.auth.onAuthStateChange(function(event, session){
   if(event === "PASSWORD_RECOVERY"){
-    openModal("resetPasswordModal");
+    setTimeout(function(){
+      openModal("resetPasswordModal");
+    }, 500);
   }
 });
 
+window.addEventListener("load", function(){
+  setTimeout(async function(){
+    const { data } = await db.auth.getSession();
+
+    if(data && data.session && window.location.hash.includes("type=recovery")){
+      openModal("resetPasswordModal");
+    }
+  }, 500);
+});
 async function updateSellerPassword(){
 
   const newPassword =
