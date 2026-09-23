@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b6b45">
+<title>JANA BAZAR PRO — Advanced Marketplace</title>
+<style>
+:root{--p:#0b6b45;--p2:#064b31;--g:#f4b400;--bg:#f5f7f9;--card:#fff;--txt:#15201b;--muted:#65736d;--line:#dfe7e3;--danger:#c62828}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--txt)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.wrap{max-width:1280px;margin:auto;padding:0 16px}
+.top{background:#063d29;color:#fff;font-size:13px}.top .wrap{display:flex;justify-content:space-between;padding:7px 16px;gap:10px}
+header{background:var(--p);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px #0002}.nav{display:flex;align-items:center;gap:10px;padding:12px 16px}.brand{font-size:25px;font-weight:900;white-space:nowrap}.tag{font-size:11px;opacity:.8}.search{flex:1;display:flex;max-width:680px}.search input{width:100%;padding:12px 14px;border:0;border-radius:9px 0 0 9px;outline:0}.search button{border:0;padding:0 16px;border-radius:0 9px 9px 0;background:var(--g)}.navbtn{background:#ffffff18;color:#fff;border:1px solid #ffffff35;border-radius:9px;padding:9px 11px}
+.hero{background:linear-gradient(120deg,#073d29,#0b6b45);color:#fff;padding:42px 0}.hero h1{font-size:42px;margin:0 0 8px}.hero p{max-width:850px;font-size:17px;line-height:1.6}.quick,.chips{display:flex;gap:8px;flex-wrap:wrap}.chip,.quick button{border:1px solid #ffffff40;background:#ffffff12;color:inherit;border-radius:999px;padding:9px 13px}
+.section{padding:24px 0}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.head h2{margin:0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:0 2px 10px #00000008}.product .pic{height:170px;border-radius:10px;background:#eef4f1;display:grid;place-items:center;font-size:70px}.price{font-size:21px;font-weight:800}.mrp{text-decoration:line-through;color:#88938f;font-size:13px}.discount{color:#087a48;font-weight:700;font-size:13px}.btn{border:0;border-radius:9px;background:var(--p);color:#fff;padding:10px 14px;font-weight:700}.btn.gold{background:var(--g);color:#222}.btn.outline{background:#fff;color:var(--p);border:1px solid var(--p)}.btn.red{background:var(--danger)}.actions{display:flex;gap:8px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.stat b{display:block;font-size:25px;margin-top:6px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;background:#fff}.table th,.table td{padding:10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.footer{background:#082f22;color:#dceae4;padding:35px 0;margin-top:30px}.footergrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:25px}.footer a{display:block;color:#dceae4;margin:7px 0}.modal{display:none;position:fixed;inset:0;background:#0008;z-index:50;padding:18px;overflow:auto}.modal.show{display:grid;place-items:center}.box{background:#fff;border-radius:16px;padding:20px;width:min(620px,100%);max-height:92vh;overflow:auto;position:relative}.box.wide{width:min(1050px,100%)}.close{position:absolute;right:12px;top:10px;border:0;background:none;font-size:28px}.field{margin:10px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #ccd8d3;border-radius:8px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.full{grid-column:1/-1}.tabs{display:flex;gap:5px;margin:12px 0;flex-wrap:wrap}.tab{border:0;background:#edf2ef;padding:9px 12px;border-radius:8px}.tab.active{background:var(--p);color:#fff}.hidden{display:none}.notice{padding:12px;background:#f0f6f3;border-left:4px solid var(--p);border-radius:7px}.toast{position:fixed;right:16px;bottom:16px;background:#17231e;color:#fff;padding:12px 16px;border-radius:9px;z-index:100;display:none}.small{font-size:12px}.muted{color:var(--muted)}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#edf5f1;font-size:12px}.module{min-height:120px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}.footergrid{grid-template-columns:1fr 1fr}.nav{flex-wrap:wrap}.search{order:3;max-width:none;flex-basis:100%}}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:8px}.product .pic{height:125px;font-size:52px}.hero h1{font-size:30px}.formgrid{grid-template-columns:1fr}.footergrid{grid-template-columns:1fr}.navbtn{padding:8px}.brand{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><span>🌾 Farmers • FPOs • Kirana • Homemade • Manufacturers • Brands</span><span>🌐 Multi-language • Voice • Local Delivery</span></div></div>
+<header><div class="wrap nav">
+<div><div class="brand">JANA BAZAR</div><div class="tag">PRO • ADVANCED MARKETPLACE</div></div>
+<div class="search"><input id="search" placeholder="Search products, brands, shops..." oninput="renderProducts()"><button onclick="voiceSearch()">🎙️</button></div>
+<button class="navbtn" onclick="openM('locationModal')">📍 Location</button><button class="navbtn" onclick="openCustomer()">👤 Account</button><button class="navbtn" onclick="openM('payModal')">💳 JANA Pay</button><button class="navbtn" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+</div></header>
+
+<section class="hero"><div class="wrap"><h1>JANA BAZAR 🛍️</h1><p>One marketplace for local businesses, farmers, FPOs, homemade sellers, manufacturers, brands and customers — commerce, payments, delivery, advertising and business tools in one platform.</p><div class="quick">
+<button onclick="filterCat('Grocery')">🛒 Grocery</button><button onclick="filterCat('Electronics')">📱 Electronics</button><button onclick="filterCat('Fashion')">👕 Fashion</button><button onclick="filterCat('Home')">🏠 Home</button><button onclick="filterCat('Beauty')">💄 Beauty</button><button onclick="filterCat('Agriculture')">🌾 Agriculture</button><button onclick="filterCat('Services')">🧰 Services</button>
+</div></div></section>
+
+<main class="wrap">
+<section class="section"><div class="head"><h2>🧭 Categories</h2><select id="sort" onchange="renderProducts()"><option value="new">Recommended / Newest</option><option value="low">Price: Low → High</option><option value="high">Price: High → Low</option></select></div><div id="categoryChips" class="chips"></div></section>
+<section class="section"><div class="head"><h2>🛍️ Products</h2><span id="productCount" class="muted"></span></div><div id="products" class="grid"></div></section>
+
+<section class="section"><div class="head"><h2>🏪 Sell on JANA BAZAR</h2><button class="btn" onclick="openM('sellerModal')">Seller Center</button></div><div class="grid">
+<div class="card"><h3>🌾 Farmer / FPO</h3><p class="muted">Direct-to-customer agriculture and fresh products.</p></div><div class="card"><h3>🏠 Homemade</h3><p class="muted">Home-made foods, crafts and local products.</p></div><div class="card"><h3>🏬 Kirana / Local Shop</h3><p class="muted">Local inventory and area delivery.</p></div><div class="card"><h3>🏭 Manufacturer / Brand</h3><p class="muted">Wholesale, retail and branded products.</p></div></div></section>
+
+<section class="section"><div class="head"><h2>🚚 Delivery Network</h2><button class="btn outline" onclick="openM('deliveryModal')">Delivery Center</button></div><div class="grid">
+<div class="card"><h3>📦 Customer Tracking</h3><p class="muted">Order timeline and delivery status.</p></div><div class="card"><h3>🔐 Delivery OTP</h3><p class="muted">Secure handover confirmation.</p></div><div class="card"><h3>🚴 Delivery Partner</h3><p class="muted">Registration, assignment, earnings and status.</p></div><div class="card"><h3>📍 Local Routing</h3><p class="muted">Seller → hub/depot → customer workflow.</p></div></div></section>
+
+<section class="section"><div class="head"><h2>📢 Advertising</h2><button class="btn gold" onclick="openM('adModal')">Advertise</button></div><div class="grid">
+<div class="card"><h3>🏷️ Sponsored Products</h3><p class="muted">Promote products in search/category.</p></div><div class="card"><h3>🖼️ Banner Ads</h3><p class="muted">Homepage and category campaigns.</p></div><div class="card"><h3>📍 Local Ads</h3><p class="muted">Target areas, cities and local customers.</p></div><div class="card"><h3>📊 Analytics</h3><p class="muted">Impressions, clicks, spend and status.</p></div></div></section>
+</main>
+
+<footer class="footer"><div class="wrap"><div class="footergrid"><div><h2>JANA BAZAR PRO</h2><p>Advanced multi-vendor marketplace infrastructure.</p><p class="small">Real-money providers connect through secure backend functions; provider secrets never belong in this HTML.</p></div><div><b>Customer</b><a href="#" onclick="openCustomer();return false">Login / Signup</a><a href="#" onclick="openCart();return false">Cart</a><a href="#" onclick="openM('payModal');return false">JANA Pay</a></div><div><b>Business</b><a href="#" onclick="openM('sellerModal');return false">Become a Seller</a><a href="#" onclick="openM('deliveryModal');return false">Delivery Partner</a><a href="#" onclick="openM('adModal');return false">Advertise</a></div><div><b>Admin</b><a href="#" onclick="openM('adminModal');return false">Admin Login</a><a href="#" onclick="showArchitecture();return false">Platform Modules</a></div></div></div></footer>
+<div id="toast" class="toast"></div>
+
+<!-- CUSTOMER -->
+<div class="modal" id="customerModal"><div class="box"><button class="close" onclick="closeM('customerModal')">×</button><h2>👤 Customer Account</h2><div class="tabs"><button class="tab active" id="ct1" onclick="customerTab('login')">Login</button><button class="tab" id="ct2" onclick="customerTab('signup')">Signup</button><button class="tab" id="ct3" onclick="customerTab('reset')">Forgot Password</button></div>
+<div id="customerLogin"><div class="field"><label>Email</label><input id="cEmail" type="email" autocomplete="email"></div><div class="field"><label>Password</label><input id="cPass" type="password" autocomplete="current-password"></div><button class="btn" onclick="customerLogin()">Login</button></div>
+<div id="customerSignup" class="hidden"><div class="field"><label>Full Name *</label><input id="cName"></div><div class="field"><label>Mobile *</label><input id="cPhone" inputmode="tel"></div><div class="field"><label>Email *</label><input id="cSEmail" type="email"></div><div class="field"><label>Password *</label><input id="cSPass" type="password" minlength="8"></div><button class="btn" onclick="customerSignup()">Create Account + Verification</button></div>
+<div id="customerReset" class="hidden"><div class="field"><label>Account Email</label><input id="cREmail" type="email"></div><button class="btn" onclick="sendReset('customer')">Send Reset Link</button></div><p id="cMsg" class="muted"></p></div></div>
+
+<!-- SELLER -->
+<div class="modal" id="sellerModal"><div class="box wide"><button class="close" onclick="closeM('sellerModal')">×</button><h2>🏪 Seller Center</h2><div class="tabs"><button class="tab active" id="st1" onclick="sellerTab('login')">Login</button><button class="tab" id="st2" onclick="sellerTab('register')">Registration</button><button class="tab" id="st3" onclick="sellerTab('reset')">Forgot Password</button></div>
+<div id="sellerLogin"><div class="field"><label>Email</label><input id="sEmail" type="email"></div><div class="field"><label>Password</label><input id="sPass" type="password"></div><button class="btn" onclick="sellerLogin()">Seller Login</button></div>
+<div id="sellerRegister" class="hidden"><div class="formgrid"><div class="field"><label>Owner Name *</label><input id="sOwner"></div><div class="field"><label>Business Name *</label><input id="sBusiness"></div><div class="field"><label>Seller Type *</label><select id="sType"><option>Farmer</option><option>FPO</option><option>Homemade</option><option>Kirana</option><option>Manufacturer</option><option>Brand</option><option>Service Provider</option></select></div><div class="field"><label>Mobile *</label><input id="sPhone"></div><div class="field"><label>Email *</label><input id="sRegEmail" type="email"></div><div class="field"><label>GSTIN</label><input id="sGST"></div><div class="field"><label>PAN</label><input id="sPAN"></div><div class="field"><label>Pincode</label><input id="sPin"></div><div class="field full"><label>Pickup Address *</label><textarea id="sAddress"></textarea></div></div><button class="btn" onclick="sellerRegister()">Register + Verification</button></div>
+<div id="sellerReset" class="hidden"><div class="field"><label>Seller Email</label><input id="sResetEmail" type="email"></div><button class="btn" onclick="sendReset('seller')">Send Reset Link</button></div><p id="sMsg" class="muted"></p></div></div>
+
+<!-- ADMIN -->
+<div class="modal" id="adminModal"><div class="box"><button class="close" onclick="closeM('adminModal')">×</button><h2>🔐 Admin Portal</h2><div class="field"><label>Admin Email</label><input id="aEmail" type="email"></div><div class="field"><label>Password</label><input id="aPass" type="password"></div><div class="actions"><button class="btn outline" onclick="sendReset('admin')">Forgot Password</button><button class="btn" onclick="adminLogin()">Secure Login</button></div><p id="aMsg" class="muted"></p></div></div>
+
+<!-- RESET -->
+<div class="modal" id="resetPasswordModal"><div class="box"><button class="close" onclick="closeM('resetPasswordModal')">×</button><h2>🔐 Reset Password</h2><p id="resetRoleText" class="muted"></p><div class="field"><label>New Password</label><input id="newPassword" type="password" minlength="8"></div><div class="field"><label>Confirm Password</label><input id="confirmPassword" type="password" minlength="8"></div><button class="btn" onclick="updatePassword()">Update Password</button><p id="resetMsg" class="muted"></p></div></div>
+
+<!-- OTP -->
+<div class="modal" id="otpModal"><div class="box"><button class="close" onclick="closeM('otpModal')">×</button><h2>📱 OTP Verification</h2><p id="otpInfo" class="muted">Production OTP is verified by Supabase Auth and your configured SMS/WhatsApp provider.</p><div class="field"><label>One-Time Password</label><input id="otpCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></div><button class="btn" onclick="verifyOTP()">Verify OTP</button><p id="otpMsg" class="muted"></p></div></div>
+
+<!-- CART -->
+<div class="modal" id="cartModal"><div class="box wide"><button class="close" onclick="closeM('cartModal')">×</button><h2>🛒 Cart & Checkout</h2><div id="cartItems"></div><div class="head"><b>Total: ₹<span id="cartTotal">0</span></b><button class="btn" onclick="checkout()">Checkout</button></div></div></div>
+
+<!-- PAY -->
+<div class="modal" id="payModal"><div class="box wide"><button class="close" onclick="closeM('payModal')">×</button><h2>💳 JANA Pay</h2><div class="stats"><div class="stat">Wallet Balance<b id="walletBalance">₹0</b></div><div class="stat">Transactions<b>—</b></div><div class="stat">Recharge<b>📱</b></div><div class="stat">Bills<b>💡</b></div></div><div class="grid" style="margin-top:15px"><div class="card"><h3>➕ Add Money</h3><button class="btn" onclick="providerNotice()">Payment Gateway</button></div><div class="card"><h3>📱 Recharge</h3><button class="btn" onclick="providerNotice()">Mobile / DTH</button></div><div class="card"><h3>💡 Bills</h3><button class="btn" onclick="providerNotice()">Electricity / Gas / Water</button></div><div class="card"><h3>🚗 FASTag</h3><button class="btn" onclick="providerNotice()">Pay Bill</button></div></div><div class="notice" style="margin-top:15px">Real wallet money, UPI, cards and BBPS are deliberately not simulated. They must be connected through secure Edge Functions and provider webhooks.</div></div></div>
+
+<!-- DELIVERY -->
+<div class="modal" id="deliveryModal"><div class="box wide"><button class="close" onclick="closeM('deliveryModal')">×</button><h2>🚚 Delivery Center</h2><div class="stats"><div class="stat">Active Orders<b>0</b></div><div class="stat">Out for Delivery<b>0</b></div><div class="stat">Delivered<b>0</b></div><div class="stat">Partners<b>0</b></div></div><div class="grid" style="margin-top:15px"><div class="card"><h3>Customer Tracking</h3><p>Order timeline + live status.</p></div><div class="card"><h3>Delivery Partner</h3><button class="btn" onclick="toast('Connect delivery backend/provider for live onboarding.')">Register</button></div><div class="card"><h3>Delivery OTP</h3><p>Secure handover OTP.</p></div><div class="card"><h3>WhatsApp / SMS</h3><p>Transactional notification hooks.</p></div></div></div></div>
+
+<!-- ADS -->
+<div class="modal" id="adModal"><div class="box wide"><button class="close" onclick="closeM('adModal')">×</button><h2>📢 Advertising Center</h2><div class="formgrid"><div class="field"><label>Business / Seller</label><input id="adBusiness"></div><div class="field"><label>Campaign</label><select id="adType"><option>Sponsored Product</option><option>Homepage Banner</option><option>Category Banner</option><option>Local Business Ad</option><option>Video Ad</option></select></div><div class="field"><label>Start</label><input id="adStart" type="date"></div><div class="field"><label>End</label><input id="adEnd" type="date"></div><div class="field"><label>Budget</label><input id="adBudget" type="number" min="0"></div><div class="field"><label>Target Location</label><input id="adLocation" placeholder="Country / State / District / City"></div><div class="field full"><label>Creative URL</label><input id="adCreative"></div></div><button class="btn gold" onclick="submitAd()">Submit Campaign</button><p class="muted">Production billing, approval, impressions and click tracking belong in the secure backend.</p></div></div>
+
+<!-- LOCATION -->
+<div class="modal" id="locationModal"><div class="box"><button class="close" onclick="closeM('locationModal')">×</button><h2>🌍 Delivery Location</h2><div class="formgrid"><div class="field"><label>Country</label><select id="country"><option>India</option><option>Other Country</option></select></div><div class="field"><label>State / Province</label><select id="state"><option>Andhra Pradesh</option><option>Telangana</option><option>Karnataka</option><option>Tamil Nadu</option><option>Other</option></select></div><div class="field"><label>District / County</label><input id="district" placeholder="e.g. Visakhapatnam"></div><div class="field"><label>City</label><input id="city" placeholder="e.g. Visakhapatnam"></div><div class="field"><label>Area</label><input id="area" placeholder="Area / Ward"></div><div class="field"><label>Pincode / ZIP</label><input id="zip"></div></div><button class="btn" onclick="saveLocation()">Save Location</button></div></div>
+
+<!-- ARCHITECTURE -->
+<div class="modal" id="archModal"><div class="box wide"><button class="close" onclick="closeM('archModal')">×</button><h2>⚙️ JANA BAZAR PRO Modules</h2><div class="grid">
+<div class="card module"><h3>Customer</h3><p>Auth • OTP • profile • addresses • wishlist • cart • checkout • orders • returns • support</p></div>
+<div class="card module"><h3>Seller</h3><p>Registration • KYC • products • inventory • orders • coupons • ads • settlements</p></div>
+<div class="card module"><h3>Admin</h3><p>Users • sellers • products • orders • commissions • payments • ads • analytics</p></div>
+<div class="card module"><h3>Payments</h3><p>UPI • Card • Netbanking • COD • refunds • webhook verification</p></div>
+<div class="card module"><h3>JANA Pay</h3><p>Wallet accounts • immutable ledger • credit/debit/refund • transaction history</p></div>
+<div class="card module"><h3>BBPS</h3><p>Recharge • electricity • gas • water • DTH • FASTag through provider APIs</p></div>
+<div class="card module"><h3>Delivery</h3><p>Partner onboarding • assignment • OTP • tracking • status history • payouts</p></div>
+<div class="card module"><h3>AI / Voice</h3><p>Search • multilingual assistant • product assistance • voice input/output hooks</p></div>
+</div><div class="notice" style="margin-top:15px"><b>Production rule:</b> this HTML never contains payment, SMS, WhatsApp, BBPS or Supabase service-role secrets.</div></div></div>
+
+<script>
+"use strict";
+
+/* ==========================================================
+   JANA BAZAR PRO FINAL ADVANCED — FRONTEND
+   Supabase publishable key may be used in browser.
+   NEVER put service-role/payment/SMS/WhatsApp/BBPS secrets here.
+   Real-money features intentionally call secure backend/provider
+   integration points instead of pretending a transaction happened.
+   ========================================================== */
+
+const SUPABASE_URL="https://fuabetbxblqrbvsjbqpf.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_79FWeetpchZt7iDJywahkw_T_a49kBn";
+let db=null;
+if(window.supabase && SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY){
+  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+}
+
+const products=[
+{id:"JB001",name:"Premium Rice",cat:"Grocery",price:599,mrp:650,icon:"🍚",seller:"JANA BAZAR"},
+{id:"JB002",name:"Fresh Milk",cat:"Grocery",price:60,mrp:65,icon:"🥛",seller:"Local Dairy"},
+{id:"JB003",name:"Fresh Apples",cat:"Grocery",price:180,mrp:210,icon:"🍎",seller:"Farmer"},
+{id:"JB004",name:"Body Care",cat:"Beauty",price:199,mrp:240,icon:"🧴",seller:"Brand Seller"},
+{id:"JB005",name:"Fresh Tomatoes",cat:"Agriculture",price:55,mrp:70,icon:"🍅",seller:"Farmer"},
+{id:"JB006",name:"Bananas",cat:"Agriculture",price:70,mrp:90,icon:"🍌",seller:"FPO"},
+{id:"JB007",name:"Cotton T-Shirt",cat:"Fashion",price:399,mrp:499,icon:"👕",seller:"Brand"},
+{id:"JB008",name:"Smart Phone",cat:"Electronics",price:8999,mrp:9999,icon:"📱",seller:"Manufacturer"},
+{id:"JB009",name:"Kitchen Set",cat:"Home",price:799,mrp:999,icon:"🍳",seller:"Kirana"},
+{id:"JB010",name:"Handmade Basket",cat:"Home",price:349,mrp:450,icon:"🧺",seller:"Homemade"},
+{id:"JB011",name:"Seed Pack",cat:"Agriculture",price:129,mrp:160,icon:"🌱",seller:"FPO"},
+{id:"JB012",name:"Notebook Set",cat:"Stationery",price:149,mrp:199,icon:"📚",seller:"Local Seller"}
+];
+
+let activeCat="All";
+let cart=JSON.parse(localStorage.getItem("jb_cart")||"[]");
+
+const $=id=>document.getElementById(id);
+function openM(id){$(id)?.classList.add("show")}
+function closeM(id){$(id)?.classList.remove("show")}
+function toast(t){const x=$("toast");x.textContent=t;x.style.display="block";clearTimeout(window.jbToast);window.jbToast=setTimeout(()=>x.style.display="none",2800)}
+function msg(id,t,ok=false){if($(id)){ $(id).textContent=t; $(id).style.color=ok?"#087a48":""; }}
+function money(n){return "₹"+Number(n).toLocaleString("en-IN")}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+function renderCats(){
+  const cats=["All","Grocery","Agriculture","Beauty","Fashion","Electronics","Home","Stationery","Services"];
+  $("categoryChips").innerHTML=cats.map(c=>`<button class="chip" style="color:#15201b;border:1px solid #ccd8d3;background:${c===activeCat?"#e6f1ec":"#fff"}" onclick="filterCat('${c}')">${c}</button>`).join("");
+}
+function filterCat(c){activeCat=c;renderCats();renderProducts()}
+function renderProducts(){
+  const q=($("search")?.value||"").toLowerCase().trim();
+  let a=products.filter(p=>(activeCat==="All"||p.cat===activeCat)&&(!q||(p.name+" "+p.seller+" "+p.cat).toLowerCase().includes(q)));
+  const sort=$("sort").value;
+  if(sort==="low")a.sort((x,y)=>x.price-y.price);
+  if(sort==="high")a.sort((x,y)=>y.price-x.price);
+  $("productCount").textContent=a.length+" products";
+  $("products").innerHTML=a.map(p=>`<div class="card product">
+    <div class="pic">${p.icon}</div>
+    <h3>${escapeHtml(p.name)}</h3>
+    <div class="muted">${escapeHtml(p.seller)} • ${escapeHtml(p.cat)}</div>
+    <div><span class="price">${money(p.price)}</span> <span class="mrp">${money(p.mrp)}</span></div>
+    <div class="discount">${Math.round((1-p.price/p.mrp)*100)}% offer</div>
+    <div class="actions" style="margin-top:9px"><button class="btn" style="flex:1" onclick="addCart('${p.id}')">Add to Cart</button><button class="btn outline" onclick="toast('Wishlist backend ready for Supabase integration')">♡</button></div>
+  </div>`).join("");
+}
+function persistCart(){localStorage.setItem("jb_cart",JSON.stringify(cart));$("cartCount").textContent=cart.length}
+function addCart(id){const p=products.find(x=>x.id===id);if(p){cart.push(p);persistCart();toast("Added to cart")}}
+function openCart(){openM("cartModal");renderCart()}
+function renderCart(){
+  const total=cart.reduce((s,p)=>s+p.price,0);
+  $("cartItems").innerHTML=cart.length?cart.map((p,i)=>`<div class="card" style="margin:7px 0;display:flex;justify-content:space-between;gap:10px"><span>${p.icon} ${escapeHtml(p.name)} <span class="muted">${money(p.price)}</span></span><button class="btn red" onclick="cart.splice(${i},1);persistCart();renderCart()">Remove</button></div>`).join(""):"<p class='muted'>Your cart is empty.</p>";
+  $("cartTotal").textContent=total.toLocaleString("en-IN");
+}
+async function checkout(){
+  if(!cart.length){toast("Cart is empty");return}
+  const user=await currentUser();
+  if(!user){toast("Please login before checkout");openCustomer();return}
+  providerNotice("Checkout payment");
+}
+function providerNotice(name="Provider"){
+  toast(name+" requires secure Supabase Edge Function + provider webhook. No fake transaction is created.");
+}
+async function currentUser(){
+  if(!db)return null;
+  const r=await db.auth.getUser();
+  return r.data?.user||null;
+}
+async function customerLogin(){
+  if(!db){toast("Supabase library unavailable");return}
+  const email=$("cEmail").value.trim(),password=$("cPass").value;
+  if(!email||!password){msg("cMsg","Enter email and password");return}
+  const r=await db.auth.signInWithPassword({email,password});
+  if(r.error){msg("cMsg","❌ "+r.error.message);return}
+  msg("cMsg","✅ Login successful",true);closeM("customerModal");toast("Welcome to JANA BAZAR");
+}
+async function customerSignup(){
+  if(!db)return;
+  const email=$("cSEmail").value.trim(),password=$("cSPass").value,phone=$("cPhone").value.trim(),name=$("cName").value.trim();
+  if(!email||password.length<8||!phone||!name){msg("cMsg","Complete all required fields; password must be 8+ characters");return}
+  const r=await db.auth.signUp({email,password,options:{data:{full_name:name,phone}}});
+  if(r.error){msg("cMsg","❌ "+r.error.message);return}
+  msg("cMsg","✅ Account created. Complete configured Supabase verification/OTP before sensitive actions.",true);
+}
+async function sellerLogin(){
+  if(!db)return;
+  const email=$("sEmail").value.trim(),password=$("sPass").value;
+  if(!email||!password){msg("sMsg","Enter email and password");return}
+  const r=await db.auth.signInWithPassword({email,password});
+  if(r.error){msg("sMsg","❌ "+r.error.message);return}
+  const p=await db.from("profiles").select("role").eq("id",r.data.user.id).maybeSingle();
+  if(p.data?.role!=="seller"){await db.auth.signOut();msg("sMsg","❌ Seller access is not approved");return}
+  closeM("sellerModal");toast("Seller login successful");
+}
+async function sellerRegister(){
+  if(!db)return;
+  const email=$("sRegEmail").value.trim(),phone=$("sPhone").value.trim(),owner=$("sOwner").value.trim(),business=$("sBusiness").value.trim();
+  if(!email||!phone||!owner||!business){msg("sMsg","Complete required seller details");return}
+  const generatedPassword=prompt("Create seller password (8+ characters):")||"";
+  if(generatedPassword.length<8){msg("sMsg","Password must be at least 8 characters");return}
+  const r=await db.auth.signUp({email,password:generatedPassword,options:{data:{full_name:owner,phone}}});
+  if(r.error){msg("sMsg","❌ "+r.error.message);return}
+  msg("sMsg","✅ Account created. Seller KYC/profile submission and admin approval must be completed through secure backend.",true);
+}
+async function adminLogin(){
+  if(!db)return;
+  const email=$("aEmail").value.trim(),password=$("aPass").value;
+  if(!email||!password){msg("aMsg","Enter admin email and password");return}
+  const r=await db.auth.signInWithPassword({email,password});
+  if(r.error){msg("aMsg","❌ "+r.error.message);return}
+  const p=await db.from("profiles").select("role").eq("id",r.data.user.id).maybeSingle();
+  if(p.data?.role!=="admin"){await db.auth.signOut();msg("aMsg","❌ Admin access denied");return}
+  closeM("adminModal");toast("Admin authenticated");
+}
+function resetEmailId(role){return role==="admin"?"aEmail":role==="seller"?"sResetEmail":"cREmail"}
+function resetMsgId(role){return role==="admin"?"aMsg":role==="seller"?"sMsg":"cMsg"}
+async function sendReset(role){
+  if(!db)return;
+  const email=$(resetEmailId(role)).value.trim();
+  if(!email){msg(resetMsgId(role),"Enter your email");return}
+  const r=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
+  if(r.error){msg(resetMsgId(role),"❌ "+r.error.message);return}
+  msg(resetMsgId(role),"✅ Password reset link sent. Check your email.",true);
+}
+async function prepareRecovery(){
+  const user=await currentUser();
+  if(!user){msg("resetMsg","Recovery session expired. Request a new link.");return}
+  document.getElementById("resetRoleText").textContent="Set a new password for your authenticated recovery session.";
+  $("newPassword").value="";$("confirmPassword").value="";$("resetMsg").textContent="";openM("resetPasswordModal");
+}
+async function updatePassword(){
+  if(!db)return;
+  const a=$("newPassword").value,b=$("confirmPassword").value;
+  if(a.length<8){msg("resetMsg","Password must be at least 8 characters");return}
+  if(a!==b){msg("resetMsg","Passwords do not match");return}
+  const r=await db.auth.updateUser({password:a});
+  if(r.error){msg("resetMsg","❌ "+r.error.message);return}
+  msg("resetMsg","✅ Password updated successfully",true);
+  setTimeout(()=>{closeM("resetPasswordModal");db.auth.signOut();toast("Password updated. Please login again.")},1200);
+}
+async function verifyOTP(){toast("Real OTP verification is handled by configured Supabase Auth/provider. Connect the OTP Edge Function before enabling this action.");}
+function customerTab(t){["login","signup","reset"].forEach(x=>$("customer"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("hidden",x!==t));["ct1","ct2","ct3"].forEach((id,i)=>$(id).classList.toggle("active",i===["login","signup","reset"].indexOf(t)))}
+function sellerTab(t){["login","register","reset"].forEach(x=>$("seller"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("hidden",x!==t));["st1","st2","st3"].forEach((id,i)=>$(id).classList.toggle("active",i===["login","register","reset"].indexOf(t)))}
+function openCustomer(){openM("customerModal")}
+function voiceSearch(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast("Voice search is not supported in this browser");return}
+  const r=new SR();r.lang=localStorage.getItem("jb_lang")==="తెలుగు"?"te-IN":"en-IN";
+  r.onresult=e=>{$("search").value=e.results[0][0].transcript;renderProducts()};r.start();
+}
+function saveLocation(){
+  const a=["country","state","district","city","area","zip"].map(id=>$(id).value.trim()).filter(Boolean).join(", ");
+  localStorage.setItem("jb_location",a);closeM("locationModal");toast("Location saved: "+a);
+}
+function submitAd(){if(!$("adBusiness").value.trim()){toast("Enter business/seller name");return}providerNotice("Advertising campaign")}
+function showArchitecture(){openM("archModal")}
+window.addEventListener("load",()=>{
+  renderCats();renderProducts();persistCart();
+  const hash=window.location.hash||"";
+  if(hash.includes("type=recovery"))setTimeout(prepareRecovery,500);
+});
+if(db){
+  db.auth.onAuthStateChange((event)=>{
+    if(event==="PASSWORD_RECOVERY")setTimeout(prepareRecovery,300);
+  });
+}
+</script>
+</body>
+</html>
