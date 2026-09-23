@@ -248,6 +248,82 @@ async function rejectSeller(id){await db.from("seller_profiles").update({status:
 async function productState(id,on){let r=await db.from("products").update({is_active:on}).eq("id",id);if(r.error){toast(r.error.message);return}await adminDashboard();await loadProducts();toast(on?"Product published":"Product unpublished")}
 async function updateOrder(id,status){if(!status)return;let r=await db.from("orders").update({order_status:status}).eq("id",id);if(r.error)toast(r.error.message);else{await adminDashboard();toast("Order updated")}}
 init();
-</script>
-</body>
+db.auth.onAuthStateChange(function(event, session){
+  if(event === "PASSWORD_RECOVERY"){
+    openModal("resetPasswordModal");
+  }
+});
+
+async function updateSellerPassword(){
+
+  const newPassword =
+    document.getElementById("newSellerPassword").value;
+
+  const confirmPassword =
+    document.getElementById("confirmSellerPassword").value;
+
+  const msg =
+    document.getElementById("resetPasswordMsg");
+
+  if(!newPassword || !confirmPassword){
+    msg.textContent = "❌ Please enter both passwords";
+    return;
+  }
+
+  if(newPassword.length < 8){
+    msg.textContent = "❌ Password must be at least 8 characters";
+    return;
+  }
+
+  if(newPassword !== confirmPassword){
+    msg.textContent = "❌ Passwords do not match";
+    return;
+  }
+
+  msg.textContent = "⏳ Updating password...";
+
+  const { error } = await db.auth.updateUser({
+    password: newPassword
+  });
+
+  if(error){
+    msg.textContent = "❌ " + error.message;
+    return;
+  }
+
+  msg.textContent = "✅ Password updated successfully";
+
+  setTimeout(async function(){
+    await db.auth.signOut();
+    closeModal("resetPasswordModal");
+  },1500);
+} </script>
+<div class="modal" id="resetPasswordModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('resetPasswordModal')">✕</button>
+
+    <h2>🔐 Reset Password</h2>
+    <p>మీ కొత్త Seller Password పెట్టండి</p>
+
+    <input
+      type="password"
+      id="newSellerPassword"
+      placeholder="New Password"
+      autocomplete="new-password"
+    >
+
+    <input
+      type="password"
+      id="confirmSellerPassword"
+      placeholder="Confirm New Password"
+      autocomplete="new-password"
+    >
+
+    <button class="btn" onclick="updateSellerPassword()">
+      🔐 Update Password
+    </button>
+
+    <div id="resetPasswordMsg"></div>
+  </div>
+</div> </body>
 </html>
