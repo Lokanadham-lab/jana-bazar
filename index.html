@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#075b32">
+  <meta name="description" content="JANA BAZAR — India's People's Marketplace">
+  <link rel="icon" href="favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>JANA BAZAR — India's People's Marketplace</title>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#home" aria-label="JANA BAZAR home">
+    <img src="jana-bazar-header.png" alt="JANA BAZAR">
+  </a>
+  <button id="locationBtn" class="pill">📍 <span id="locationText">Visakhapatnam</span></button>
+  <div class="search">
+    <input id="search" autocomplete="off" placeholder="Search products, stores, services…">
+    <button id="searchBtn" aria-label="Search">🔎</button>
+    <button id="voiceBtn" aria-label="Voice search">🎙️</button>
+  </div>
+  <nav class="topnav">
+    <a href="#orders">Orders</a>
+    <a href="#wishlist">Wishlist</a>
+    <button id="loginBtn">👤 Login</button>
+    <a href="#cart">🛒 <b id="cartCount">0</b></a>
+  </nav>
+</header>
+
+<section class="category-strip" id="categories"></section>
+<div id="modeBar" class="mode-bar"></div>
+<main id="app"></main>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <img src="jana-bazar-dark.png" alt="JANA BAZAR">
+    <p>India's People's Marketplace</p>
+  </div>
+  <div><b>Marketplace</b><a href="#products">Products</a><a href="#local">Local Commerce</a><a href="#services">Services</a><a href="#b2b">B2B</a></div>
+  <div><b>Business</b><a href="#seller">Sell on JANA BAZAR</a><a href="#advertising">Advertising</a><a href="#admin">Admin Portal</a></div>
+  <div><b>Utilities</b><a href="#utilities">Recharge & Bills</a><a href="#wallet">JANA Wallet</a><a href="#utilities">FASTag</a><a href="#utilities">LPG</a></div>
+  <div><b>Help</b><a href="#support">Support</a><a href="#policies">Policies</a></div>
+</footer>
+
+<div id="modalRoot"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
