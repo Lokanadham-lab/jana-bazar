@@ -1,0 +1,20 @@
+{
+  "primary":"jana-bazar-logo.png",
+  "header":"jana-bazar-header.png",
+  "dark":"jana-bazar-dark.png",
+  "icon":"jana-bazar-icon.png",
+  "appIcon":"jana-bazar-app-icon.png",
+  "favicon":"jana-bazar-favicon.png",
+  "wordmark":"jana-bazar-wordmark.png",
+  "customer":"jana-bazar-shop.png",
+  "seller":"jana-bazar-seller.png",
+  "b2b":"jana-bazar-b2b.png",
+  "services":"jana-bazar-services.png",
+  "utilities":"jana-bazar-utilities.png",
+  "admin":"jana-bazar-admin.png",
+  "splash":"jana-bazar-splash.png",
+  "monochromeBlack":"jana-bazar-monochrome-black.png",
+  "monochromeWhite":"jana-bazar-monochrome-white.png",
+  "browser":"jana-bazar-browser.png",
+  "usage":{"header":"header","hero":"dark","footer":"dark","customer":"customer","seller":"seller","b2b":"b2b","services":"services","utilities":"utilities","admin":"admin","pwa":"appIcon","favicon":"favicon","splash":"splash"}
+}
