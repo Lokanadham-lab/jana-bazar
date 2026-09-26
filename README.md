@@ -1,20 +1,53 @@
-# JANA BAZAR — Brand Upgraded Project
+# JANA BAZAR V9 — Admin & Brand Upgrade
 
-## Included
-- JANA BAZAR primary logo from the supplied official artwork
-- Square/app/favicon icon derived from the same artwork
-- Dark-background logo for footer/dark sections
-- Black/white monochrome fallbacks
-- Responsive JANA BAZAR PRO marketplace frontend
-- Customer, Seller, Admin, JANA Pay, cart, marketplace, utilities and seller/advertising surfaces from the reviewed master frontend
-- PWA manifest and mobile icon support
+This is a browser-runnable prototype/transition build.
 
-## Brand asset mapping
-- `assets/jana-bazar-logo.png` — website header / primary branding
-- `assets/jana-bazar-icon.png` — favicon / app icon / compact mobile surfaces
-- `assets/jana-bazar-dark.png` — dark footer/banner sections
-- `assets/jana-bazar-monochrome-black.png` — print/light-background fallback
-- `assets/jana-bazar-monochrome-white.png` — dark-background fallback
+## Brand assets
+The uploaded JANA BAZAR brand sheet was split into reusable assets:
+- Primary/header logo
+- Dark logo
+- Icon/app icon
+- Favicon
+- Wordmark
+- Monochrome variants
+- Customer / Shop
+- Seller
+- B2B
+- Services
+- Utilities
+- Admin
+- Header / splash / browser assets
+
+## Admin corrections
+- No generic `admin()` route automatically grants access.
+- Admin dashboard requires `admin` or `super_admin` role.
+- Admin actions check authorization again before mutation.
+- Seller approval is included.
+- Product add/delete is included.
+- Customer, seller/KYC, products, orders, payments/wallet, advertising, support and audit-log sections are included.
+- Admin login is separated from normal customer login.
+- Audit events are stored in demo mode.
+- Demo mode is clearly marked.
+
+## Demo admin
+Email: `admin@janabazar.demo`
+Password: `Admin@123`
+
+This demo credential is intentionally for local prototype testing only. Do NOT deploy it as production authentication.
+
+## Production
+Set Supabase URL and publishable key in `config.js`. The frontend must never contain service-role keys, payment secrets, OTP provider secrets or wallet signing secrets.
+
+Production authorization must be enforced with:
+- Supabase Auth
+- profiles/roles table
+- RLS policies
+- Edge Functions/server-side validation
+- MFA/OTP provider
+- payment gateway webhooks
+- audit logging
+- rate limiting
+- secure wallet ledger
 
 ## Important
-This package is a frontend upgrade. Real OTP/SMS/WhatsApp, payments, wallet money movement, BBPS, FASTag, LPG and delivery-provider transactions still require secure backend functions, provider credentials and webhook verification. Do not place service-role or payment secrets in frontend files.
+Real OTP, SMS/WhatsApp, UPI/Card/BBPS/FASTag/LPG, real wallet money, KYC verification and delivery transactions are NOT faked by this frontend.
