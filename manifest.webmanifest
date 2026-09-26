@@ -1,0 +1,11 @@
+{
+  "name": "JANA BAZAR — India's People's Marketplace",
+  "short_name": "JANA BAZAR",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#075b36",
+  "icons": [
+    {"src":"assets/jana-bazar-icon.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
