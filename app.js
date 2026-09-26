@@ -3,7 +3,7 @@
    Replace demo adapters with real backend/provider integrations before production. */
 (function(){
   const KEY='jana_bazar_db_v1';
-  const img='assets/jana-bazar-logo.png';
+  const img='jana-bazar-logo.png';
   const seed={
     location:'Visakhapatnam',
     users:[], currentUser:null,
