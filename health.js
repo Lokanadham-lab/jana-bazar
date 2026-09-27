@@ -1,1 +1,0 @@
-export default function handler(req,res){res.setHeader('Cache-Control','no-store');res.status(200).json({ok:true,service:'jana-bazar',version:'22.0-production-launch-candidate',time:new Date().toISOString(),delivery:'server-authorized',realMoney:'provider-gated'});}
