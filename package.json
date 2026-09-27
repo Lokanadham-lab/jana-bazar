@@ -1,8 +1,0 @@
-{
-  "name": "jana-bazar-v21",
-  "private": true,
-  "version": "21.0.0",
-  "scripts": {
-    "check": "node --check app.js"
-  }
-}
